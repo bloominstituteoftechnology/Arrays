@@ -6,14 +6,16 @@ For this assignment, you will be implementing high-level array functionality fro
 
 By the end of this assignment, you will gain much appreciation for the magic of high-level coding languages as well as a deeper understanding of the costs associated with their functionality.
 
+Similar to last week's assignment, move into the arrays directory and add your code to `arrays.c`. Run it by typing `make`, then `./arrays`. Run tests with `make tests`.
+
 ### Part 1: Create, Destroy, Read and Append
 
 You are given the skeleton of an array implementation in C which you will be responsible for filling out. Start by reviewing the Array struct, then fill out the following functions:
 
-* 1. `create_array()`
-* 2. `destroy_array()`
-* 3. `arr_append()`
-* 4. `arr_read()`
+1. `create_array()`
+2. `destroy_array()`
+3. `arr_append()`
+4. `arr_read()`
 
 Create and destroy should be self-explanatory: Initialize your array values and allocate memory on creation, then free that memory on destruction.
 
@@ -27,21 +29,21 @@ Insertion and deletion should work like the Python `insert()` and `delete()` lis
 
 Resizing involves allocating a block of memory with double the storage, copying elements from the old block to the new, and freeing the old block. You should automatically resize when an insert or append takes your array past the allocated capacity.
 
-* 1. `arr_insert()`
-* 2. `arr_remove()`
-* 3. `resize_array()`
+1. `arr_insert()`
+2. `arr_remove()`
+3. `resize_array()`
 
 ### Stretch Goals
 
 If you finish these goals, try implementing some of the other Python functions:
 
-* 1. `clear()`
-* 2. `copy()`
-* 3. `extend()`
-* 4. `index()`
-* 5. `pop()`
-* 6. `reverse()`
-* 7. `sort()`
+1. `clear()`
+2. `copy()`
+3. `extend()`
+4. `index()`
+5. `pop()`
+6. `reverse()`
+7. `sort()`
 
 Check the official documentation or use Python's `help()` method for implementation details.
 
