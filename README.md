@@ -1,6 +1,6 @@
 ### Part 1 Task list;
 
--[ ] `create_array()`
+- [ ] `create_array()`
 - [ ] `destroy_array()`
 - [ ] `arr_append()`
 - [ ] `arr_read()`
