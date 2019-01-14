@@ -17,7 +17,8 @@ DATA *top;
 
 #define STACKSIZE 5
 
-//pushes an item onto the top of the stack -returns 1 if the stack size was not exceeded, otherwise 0
+//pushes an item onto the top of the stack 
+//-returns 1 if the stack size was not exceeded, otherwise 0
 int push(DATA* data) {
     int ok;
     if (top == end){  //any more room?
