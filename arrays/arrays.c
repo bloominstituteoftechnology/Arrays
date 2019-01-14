@@ -244,6 +244,28 @@ void arr_extend(Array *arr, Array *extension)
   }
 }
 
+/* Returns the index of the first occurrence of the specified value. */
+int arr_index(Array *arr, char *element)
+{
+  int i = 0;
+  while (i < arr->count)
+  {
+    if (arr->elements[i] == element)
+    {
+      return i;
+    }
+    i++;
+  }
+
+  if (i == arr->count) // element was not found
+  {
+    fprintf(stderr, "element not found\n");
+    exit(1);
+  }
+
+  return 0;
+}
+
 
 #ifndef TESTING
 int main(void)
@@ -273,6 +295,10 @@ int main(void)
   printf("\nImplementing arr_extend:\n");
   arr_extend(arr, copy);
   arr_print(arr);
+
+  printf("\nImplementing arr_index:\n");
+  int index = arr_index(arr, "STRING4");
+  printf("Element found at index: %d\n", index);
 
   destroy_array(arr);
 
