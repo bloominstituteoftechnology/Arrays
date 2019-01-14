@@ -21,11 +21,17 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-
+  Array *newArr = malloc(sizeof(Array)); // allocates memory for a size of 1 struct Array
+  
   // Set initial values for capacity and count
+  newArr->capacity = capacity;
+  newArr->count = 0;
 
   // Allocate memory for elements
+  // hint: use `calloc`, code from lecture
+  newArr->elements = calloc(capacity, sizeof(char *));
 
+  return newArr;
 }
 
 
@@ -33,11 +39,15 @@ Array *create_array (int capacity) {
  * Free memory for an array and all of its stored elements
  *****/
 void destroy_array(Array *arr) {
-
   // Free all elements
+  if (arr->elements != NULL) { // free arr->elements if it exists
+    free(arr->elements); 
+  }
 
   // Free array
-
+  if (arr != NULL) { // free arr if it exists
+    free(arr); 
+  }
 }
 
 /*****
@@ -70,10 +80,14 @@ void resize_array(Array *arr) {
  * Throw an error if the index is out of range.
  *****/
 char *arr_read(Array *arr, int index) {
-
   // Throw an error if the index is greater than the current count
+  if (index > arr->count) {
+    printf("Index is out of range.");
+    exit(1);
+  }
 
   // Otherwise, return the element at the given index
+  return arr->elements[index];
 }
 
 
@@ -98,14 +112,20 @@ void arr_insert(Array *arr, char *element, int index) {
  * Append an element to the end of the array
  *****/
 void arr_append(Array *arr, char *element) {
-
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  int element_size = sizeof(element) / sizeof(char); // figure out the number of the elements being passed in
+
+  if (element_size > arr->capacity) { // if size is bigger than capacity, throw error
+    printf("The number of elements is over capacity.");
+    exit(1);
+  }
 
   // Copy the element and add it to the end of the array
+  arr->elements[arr->count + 1] = element;
 
   // Increment count by 1
-
+  arr->count++;
 }
 
 /*****
