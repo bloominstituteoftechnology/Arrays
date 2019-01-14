@@ -113,15 +113,30 @@ void arr_insert(Array *arr, char *element, int index) {
  * Append an element to the end of the array
  *****/
 void arr_append(Array *arr, char *element) {
+    int *new_arr_address;
+    // Resize the array if the number of elements is over capacity
+    // or throw an error if resize isn't implemented yet.
+    if(arr->count >= arr->capacity)
+    {
+        new_arr_address = calloc(arr->count, sizeof(arr->elements) + sizeof(element));
+    }
 
-  // Resize the array if the number of elements is over capacity
-  // or throw an error if resize isn't implemented yet.
+    // i = 5
+    // i - 1 = 4
+    // 4 < 5 true
+    // i-- = 3
+    for (int i = arr->count - 1; i <= arr->count; i--) {
+        arr->elements[i+1] = arr->elements[i];
+    }
 
-  // Copy the element and add it to the end of the array
+    // Copy the element and add it to the end of the array
+    char *element_copy = element;
+    arr->elements[arr->count] = element_copy;
 
-  // Increment count by 1
 
-}
+    // Increment count by 1
+    arr->count++;
+
 
 /*****
  * Remove the first occurence of the given element from the array,
