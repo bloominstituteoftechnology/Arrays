@@ -55,10 +55,10 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-
+ 
   // Copy elements into the new storage
 
-  // Free the old elements array (but NOT the strings they point to)
+  // new_arr->elements = strdup(arr->elements); 
 
   // Update the elements and capacity to new values
 
@@ -108,12 +108,17 @@ void arr_insert(Array *arr, char *element, int index) {
 void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
+  	if(arr->count >= arr->capacity){
+		resize_array(arr);
+	}
+  
   // or throw an error if resize isn't implemented yet.
 
   // Copy the element and add it to the end of the array
+	arr->elements[arr->count] = element;	
 
   // Increment count by 1
-
+	arr->count+=1; 
 }
 
 /*****
