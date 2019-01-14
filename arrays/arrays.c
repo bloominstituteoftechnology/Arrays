@@ -72,17 +72,19 @@ void resize_array(Array *arr)
  *****/
 char *arr_read(Array *arr, int index)
 {
+  if (arr->count > index)
+  {
+    printf("Error! that index doesn't exist.");
+  }
+  else
+  {
+    return arr->elements[index];
+  }
 
   // Throw an error if the index is greater than the current count
 
   // Otherwise, return the element at the given index
 }
-
-//
-///
-// day 2
-///
-//
 
 /*****
  * Insert an element to the array at the given index
