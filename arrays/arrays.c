@@ -128,12 +128,12 @@ void resize_array(Array *arr) {
  *****/
 char *arr_read(Array *arr, int index) {
   if (index >=sizeof(arr) || index<0){
-    printf("Index %d is not here\n", arr);
+    fprintf(stderr,"Index %d is not here\n", index);
     exit(1);
   }
   return arr->elements[index];
+  
   // Throw an error if the index is greater than the current count
-
   // Otherwise, return the element at the given index
 }
 
