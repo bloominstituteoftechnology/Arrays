@@ -40,6 +40,15 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
+
+  /*** This for loop is throwing malloc errors? ***/
+
+  // for(int i = 0; i < arr->count; i++){
+  //   free(arr->elements[i]);
+  // }
+
+  /***  ***/
+
   free(arr->elements);
 
   // Free array
@@ -52,16 +61,20 @@ void destroy_array(Array *arr) {
  * from old to new
  *****/
 void resize_array(Array *arr) {
-
   // Create a new element storage with double capacity
-  char **newElements = calloc((2 * arr->capacity), sizeof(char *));
+  char **newElements = calloc((2 * arr->capacity), sizeof(char *)); // use calloc for contiguous memory
 
   // Copy elements into the new storage
-  for(int i = 0; i < arr->count; i++){
+  for(int i = 0; i < arr->count; i++){ // use i < arr->count and not i <= arr->count since when i == arr->count, we're beyond valid indices
     newElements[i] = arr->elements[i];
   }
 
   // Free the old elements array (but NOT the strings they point to)
+  
+  // for(int i = 0; i < arr->count; i++){
+  //   free(arr->elements[i]);
+  // }
+
   free(arr->elements);
 
   // Update the elements and capacity to new values
@@ -85,7 +98,7 @@ void resize_array(Array *arr) {
  *****/
 char *arr_read(Array *arr, int index) {
 
-  // Throw an error if the index is greater than the current count
+  // Throw an error if the index is greater than the current count <- Q: Why use count and not capacity here? A: To prevent returning null values.
   if(index > arr->count){
     fprintf(stderr, "Index is beyond array bounds.");
     exit(1);
@@ -108,12 +121,12 @@ void arr_insert(Array *arr, char *element, int index) {
   }
 
   // Resize the array if the number of elements is over capacity
-  if(arr->count >= arr->capacity){
+  if(arr->count + 1 > arr->capacity){ // check to see if adding an element would require a resize
     resize_array(arr);
   }
 
   // Move every element after the insert index to the right one position
-  for(int i = index; i < arr->count; i++){
+  for(int i = index; i < arr->count; i++){ 
     arr->elements[i + 1] = arr->elements[i];
   }
 
@@ -121,7 +134,7 @@ void arr_insert(Array *arr, char *element, int index) {
   arr->elements[index] = element;
 
   // Increment count by 1
-  arr->count = arr->count + 1;
+  arr->count++;
 
 }
 
@@ -132,15 +145,15 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-  if(arr->count >= arr->capacity){
+  if(arr->count + 1 > arr->capacity){ // check to see if adding 1 element causes count to exceed capacity
     resize_array(arr);
   }
 
   // Copy the element and add it to the end of the array
-  arr->elements[arr->count + 1] = element;
+  arr->elements[arr->count] = element; // because the final element is elements[arr->count - 1], we can add to position elements[arr->count]
 
   // Increment count by 1
-  arr->count = arr->count + 1;
+  arr->count++;
 
 }
 
@@ -152,28 +165,31 @@ void arr_append(Array *arr, char *element) {
  *****/
 void arr_remove(Array *arr, char *element) {
 
-  int index = 0;
+  int index = 0; // this will keep track of the index of the found element
+
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
-  for(int i = 0; i < arr->count; i++){
+  for(int i = 0; i < arr->count; i++){ 
     if(arr->elements[i] == element){
-      index = i;
-      free(arr->elements[i]);
+      index = i; // assign index to value i so we can use it to shift elements later on
+
       arr->elements[i] = NULL;
-    } else {
+      free(arr->elements[i]);
+
+
+      // Shift over every element after the removed element to the left one position
+      for(int i = index; i < arr->count; i++){
+        arr->elements[i] = arr->elements[i + 1];
+      }
+
+      // Decrement count by 1
+      arr->count--;
+
+    } else if(i == arr->count){
       fprintf(stderr, "Element not found.");
       exit(1);
     }
   }
-
-  // Shift over every element after the removed element to the left one position
-  for(int i = index; i < arr->count; i++){
-    arr->elements[i] = arr->elements[i + 1];
-  }
-
-  // Decrement count by 1
-  arr->count = arr->count - 1;
-
 }
 
 
