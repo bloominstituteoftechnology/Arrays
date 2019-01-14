@@ -85,11 +85,15 @@ void destroy_array(Array *arr) {
  * from old to new
  *****/
 void resize_array(Array *arr) {
+
   char **arr_storage = calloc(2 * arr-> capacity, sizeof(char*));
-  for (int i=0, i<arr->count; i++)
+  for (int i=0;  i < arr->count; i++)
   {
     arr_storage[i] = arr->elements[i];
   }
+  free(arr->elements);
+  arr->elements=arr_storage;
+  arr->capacity= 2 * arr ->capacity;
  // int* tmp=calloc(sizeof(Array (arr)));
    //arr->elements[index]= element;
   // if (sizeof(arr) >= arr->capacity) {
@@ -107,7 +111,7 @@ void resize_array(Array *arr) {
 
   // Update the elements and capacity to new values
 
-}
+
 
 
 

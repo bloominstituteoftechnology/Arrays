@@ -16,7 +16,7 @@ typedef struct Array { //typedef struct{}Arrow is the definition of the Arrow ty
 void init(Array *arr){
     arr->size = 0;//count
     arr->capacity =ARRAY_INITIAL_CAPACITY;
-    arr->data = malloc(sizeof(int) * arr->capacity)//;element
+    arr->data = malloc(sizeof(int) * arr->capacity);//;element
 }
 
 int get(Array *arr, int index){
