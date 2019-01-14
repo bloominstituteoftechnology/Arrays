@@ -121,12 +121,8 @@ void arr_insert(Array *arr, char *element, int index) {
     resize_array(arr);
   }
 
-  // Move every element after the insert index to the right one position
-  for (int i = index; i < arr->count; i++) {
-    // Incrementing this to i + 2 gives the correct result but failed tests,
-    // but after some debugging and doing `make tests` i + 1 returns
-    // all tests passed, but somehow display incorrect elements in array.
-    arr->elements[i+1] = arr->elements[i];
+  for (int i = arr->count; i > index; i--) {
+    arr->elements[i] = arr->elements[i-1];
   }
 
   // Copy the element and add it to the array
@@ -151,7 +147,7 @@ void arr_append(Array *arr, char *element) {
 
   // Copy the element and add it to the end of the array
   char* elem = strdup(element);
-  arr->elements[arr->count] = elem;
+  arr->elements[arr->count] = element;
 
   // Increment count by 1
   arr->count++;
@@ -222,8 +218,10 @@ int main(void)
 
   arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
+  arr_append(arr, "STRING5");
   arr_insert(arr, "STRING2", 0);
   arr_insert(arr, "STRING3", 1);
+  arr_append(arr, "STRING6");
   arr_print(arr);
   arr_remove(arr, "STRING3");
   arr_print(arr);
