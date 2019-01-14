@@ -235,20 +235,15 @@ Array *arr_copy(Array *arr)
   return copy;
 }
 
+/* Add the elements of specified array to the end of current array. */
+void arr_extend(Array *arr, Array *extension)
+{
+  for (int i = 0; i < extension->count; i++)
+  {
+    arr_append(arr, extension->elements[i]);
+  }
+}
 
-// Array *create_array (int capacity) {
-//   // Allocate memory for the Array struct
-//   Array *arr = malloc(sizeof(Array));
-
-//   // Set initial values for capacity and count
-//   arr->capacity = capacity;
-//   arr->count = 0;
-
-//   // Allocate memory for elements
-//   arr->elements = calloc(capacity, sizeof(char *));
-
-//   return arr;
-// }
 
 #ifndef TESTING
 int main(void)
@@ -274,6 +269,10 @@ int main(void)
   arr_insert(arr, "STRING2", 0);
   Array *copy = arr_copy(arr);
   arr_print(copy);
+
+  printf("\nImplementing arr_extend:\n");
+  arr_extend(arr, copy);
+  arr_print(arr);
 
   destroy_array(arr);
 
