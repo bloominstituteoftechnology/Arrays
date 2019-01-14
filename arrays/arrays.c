@@ -73,10 +73,11 @@ void resize_array(Array *arr) {
  * Throw an error if the index is out of range.
  *****/
 char *arr_read(Array *arr, int index) {
-  arr->count = 0;
 
-  if (count > index) {
-
+  if (arr->count < index) {
+    printf("Error! that index doesn't exist.");
+  } else {
+    return arr->elements[index];
   }
   // Throw an error if the index is greater than the current count
 
@@ -90,7 +91,11 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
+  if (index > arr->count){
+    printf("Error! that index doesn't exist.");
+  } else {
 
+  }
   // Resize the array if the number of elements is over capacity
 
   // Move every element after the insert index to the right one position
@@ -108,10 +113,15 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  if ((arr->elements) > arr->capacity) {
+      int resized_arr = arr->count+1;
+      malloc(resized_arr*sizeof(char *));
+  }
 
   // Copy the element and add it to the end of the array
-
+      arr->elements[arr->count] = element;
   // Increment count by 1
+      arr->count = arr->count+1;
 
 }
 
