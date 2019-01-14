@@ -1,3 +1,27 @@
+### Part 1 Task list;
+
+-[ ] `create_array()`
+- [ ] `destroy_array()`
+- [ ] `arr_append()`
+- [ ] `arr_read()`
+
+### Part 2 Task List
+- [ ] `arr_insert()`
+- [ ] `arr_remove()`
+- [ ] `resize_array()`
+
+### Stretch Goals
+
+If you finish these goals, try implementing some of the other Python functions:
+
+- [ ] `clear()`
+- [ ] `copy()`
+- [ ] `extend()`
+- [ ] `index()`
+- [ ] `pop()`
+- [ ] `reverse()`
+- [ ] `sort()`
+
 # Arrays
 
 Arrays are the most common and perhaps the simplest data structures. Are they really so simple though? High-level languages like Python, JavaScript, Swift and Java all have built-in "magic" that hides the complexity of many array functions. Although the complexity is hidden, you still have to pay the performance costs of that complexity.
