@@ -14,8 +14,8 @@ You are given the skeleton of an array implementation in C which you will be res
 
 1. `create_array()`
 2. `destroy_array()`
-3. `arr_read()`
-4. `arr_append()`
+3. `arr_append()`
+4. `arr_read()`
 
 Create and destroy should be self-explanatory: Initialize your array values and allocate memory on creation, then free that memory on destruction.
 
@@ -30,7 +30,7 @@ Insertion and deletion should work like the Python `insert()` and `delete()` lis
 Resizing involves allocating a block of memory with double the storage, copying elements from the old block to the new, and freeing the old block. You should automatically resize when an insert or append takes your array past the allocated capacity.
 
 1. `arr_insert()`
-2. `arr_delete()`
+2. `arr_remove()`
 3. `resize_array()`
 
 ### Stretch Goals
