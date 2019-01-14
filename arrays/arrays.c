@@ -40,14 +40,10 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
-
-  /*** This for loop is throwing malloc errors? ***/
-
-  // for(int i = 0; i < arr->count; i++){
-  //   free(arr->elements[i]);
-  // }
-
-  /***  ***/
+  for(int i = 0; i < arr->count; i++){ // ensures deep deletion of all elements in the array
+    arr->elements[i] = NULL; 
+    free(arr->elements[i]);
+  }
 
   free(arr->elements);
 
@@ -70,10 +66,10 @@ void resize_array(Array *arr) {
   }
 
   // Free the old elements array (but NOT the strings they point to)
-  
-  // for(int i = 0; i < arr->count; i++){
-  //   free(arr->elements[i]);
-  // }
+  for(int i = 0; i < arr->count; i++){
+    arr->elements[i] = NULL;
+    free(arr->elements[i]);
+  }
 
   free(arr->elements);
 
