@@ -210,7 +210,7 @@ void arr_append(Array *arr, char *element) {
  *
  * Throw an error if the value is not found.
  *****/
- //int strcmp(const char *str1, const char *str2)-compare 2 strings
+ 
 void arr_remove(Array *arr, char *element) {
   int key=0;
   while (strcmp(element, arr->elements[key]!=0)
