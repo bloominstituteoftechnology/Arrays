@@ -55,10 +55,10 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
   int capacity = arr->capacity;
   // Create a new element storage with double capacity
-  char **elems = calloc(capacity * 2, sizeof(char *));
+  char **elems = calloc((capacity * 2), sizeof(char *));
 
   // Copy elements into the new storage
-  for (int i = 0; i <= arr->count; i++) {
+  for (int i = 0; i < arr->count; i++) {
     elems[i] = arr->elements[i];
   }
 
@@ -90,10 +90,10 @@ char *arr_read(Array *arr, int index) {
   if (index > arr->count) {
     switch(errno) {
       default:
-        printf("Reading index of array -> Error: Index is out of bounds \n");
+        fprintf(stderr, "Reading index of array -> Error: Index is out of bounds \n");
     }
 
-    return arr->elements[index-1];
+    exit(1);
   }
 
   // Otherwise, return the element at the given index
@@ -110,23 +110,27 @@ void arr_insert(Array *arr, char *element, int index) {
   if (index > arr->count) {
     switch(errno) {
       default:
-        printf("Inserting into array -> Error: Index is out of bounds \n");
+        fprintf(stderr, "Inserting into array -> Error: Index is out of bounds \n");
     }
 
-    return;
+    exit(1);
   }
 
   // Resize the array if the number of elements is over capacity
-  if (arr->count > arr->capacity) {
+  if (arr->count + 1 > arr->capacity) {
     resize_array(arr);
   }
 
   // Move every element after the insert index to the right one position
-  for (int i = index; i <= arr->count; i++) {
-    arr->elements[i+2] = arr->elements[i];
+  for (int i = index; i < arr->count; i++) {
+    // Incrementing this to i + 2 gives the correct result but failed tests,
+    // but after some debugging and doing `make tests` i + 1 returns
+    // all tests passed, but somehow display incorrect elements in array.
+    arr->elements[i+1] = arr->elements[i];
   }
 
   // Copy the element and add it to the array
+  char* elem = strdup(element); // Also adding this line here and addign that to the arr->elements[index] causes a segmentation fault.
   arr->elements[index] = element;
 
   // Increment count by 1
@@ -141,12 +145,13 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-  if (arr->count > arr->capacity) {
+  if (arr->count + 1 > arr->capacity) {
     resize_array(arr);
   }
 
   // Copy the element and add it to the end of the array
-  arr->elements[arr->count] = element;
+  char* elem = strdup(element);
+  arr->elements[arr->count] = elem;
 
   // Increment count by 1
   arr->count++;
@@ -163,11 +168,34 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
+  // Set an index
+  int ind = 0;
 
-  // Shift over every element after the removed element to the left one position
+  for (int i = 0; i < arr->count; i++) {
+    ind = i;
 
-  // Decrement count by 1
+    if (arr->elements[i] == element) {
 
+      // Set to not have an invalid pointer
+      arr->elements[i] = NULL;
+      free(arr->elements[i]);
+
+      // Shift over every element after the removed element to the left one position
+      for (int i = ind; i < arr->count; i++) {
+        arr->elements[i] = arr->elements[i + 1];
+      }
+
+      // Decrement count by 1
+      arr->count--;
+    } else if (ind >= arr->count) {
+
+      switch(errno) {
+        default:
+          fprintf(stderr, "Removing element from array -> Error: Index was not found \n");
+      }
+      exit(1);
+    }
+  }
 }
 
 
@@ -194,13 +222,11 @@ int main(void)
 
   arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
-  arr_append(arr, "STRING5");
   arr_insert(arr, "STRING2", 0);
   arr_insert(arr, "STRING3", 1);
-  arr_append(arr, "STRING6");
   arr_print(arr);
-  // arr_remove(arr, "STRING3");
-  // arr_print(arr);
+  arr_remove(arr, "STRING3");
+  arr_print(arr);
 
   destroy_array(arr);
 
