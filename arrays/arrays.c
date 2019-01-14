@@ -171,6 +171,12 @@ void arr_remove(Array *arr, char *element) {
     i++;
   }
 
+  if (i == arr->count) // element was not found
+  {
+    fprintf(stderr, "element not found\n");
+    exit(1);
+  }
+
   // Shift over every element after the removed element to the left one position
   while (i < arr->count)
   {
