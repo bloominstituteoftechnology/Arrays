@@ -21,11 +21,13 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-
+  Array *newArr = malloc(sizeof(Array));
   // Set initial values for capacity and count
-
+  newArr->capacity = capacity;
+  newArr->count = 0;
   // Allocate memory for elements
-
+  newArr->elements = calloc(capacity, sizeof(char*));
+  return newArr;
 }
 
 
