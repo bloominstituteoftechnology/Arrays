@@ -127,12 +127,12 @@ void resize_array(Array *arr) {
  * Throw an error if the index is out of range.
  *****/
 char *arr_read(Array *arr, int index) {
-  if (index >=sizeof(arr) || index<0){
+  if (index >=sizeof(arr) || index<0){ //index>=arr->count
     fprintf(stderr,"Index %d is not here\n", index);
     exit(1);
   }
   return arr->elements[index];
-  
+
   // Throw an error if the index is greater than the current count
   // Otherwise, return the element at the given index
 }
@@ -144,23 +144,32 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
   if (index >= sizeof(arr)){
     {
-    printf("Index %d is not here for arr of size %d\n", index, arr);
+    printf("Index %d is not here\n", index);
     exit(1);
   }
+  if (arr->count>=arr->capacity)
+  {
+    resize_array(arr); //call resize funct above
+  }
   // Throw an error if the index is greater than the current count
-
   // Resize the array if the number of elements is over capacity
-
   // Move every element after the insert index to the right one position
+  for (int i = arr->count; i>index; i--)
+  {
+    arr->elements[i]=arr->elements[i-1];
+  }
+  char *el_in = strdup(element);
+  arr->elements[index]= el_in;
 
+  arr->count++;
   // Copy the element and add it to the array
 
   // Increment count by 1
-  arr->elements[index]= element;
-  if (sizeof(arr) >= arr->capacity) {
+  //arr->elements[index]= element;
+  //if (sizeof(arr) >= arr->capacity) {
     // double arr->capacity and resize the allocated memory 
-    arr->capacity *= 2;
-    arr->elements = realloc(arr->elements, sizeof(int) * arr->capacity);
+    //arr->capacity *= 2;
+    //arr->elements = realloc(arr->elements, sizeof(int) * arr->capacity);
     //realloc(arr, sizeof(arr) * 2);
     //capacity = sizeof(arr) *2;
     //arr[index]=elements;
@@ -173,8 +182,17 @@ void arr_insert(Array *arr, char *element, int index) {
  * Append an element to the end of the array
  *****/
 void arr_append(Array *arr, char *element) {
-    arr_double_capacity_if_full(arr);
-    arr->elements[sizeof(arr)++];
+    
+    if (arr->count > arr->capacity)
+    {
+      resize_array(arr); //call func resize from above 
+    }
+
+    char *el_end =strdup(element);
+    arr->elements[arr->count] = el_end;
+
+    arr->count++;
+    //arr->elements[sizeof(arr)++];
 
 
   // Resize the array if the number of elements is over capacity
