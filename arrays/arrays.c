@@ -21,10 +21,16 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
+  Array *arr = malloc(sizeof(Array));
 
   // Set initial values for capacity and count
+  arr->capacity = capacity;
+  arr->count = 0;
 
   // Allocate memory for elements
+  arr->elements = calloc(capacity, sizeof(char *));
+
+  return arr;
 
 }
 
@@ -35,8 +41,10 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
+  free(arr->elements);
 
   // Free array
+  free(arr);
 
 }
 
@@ -45,7 +53,6 @@ void destroy_array(Array *arr) {
  * from old to new
  *****/
 void resize_array(Array *arr) {
-
   // Create a new element storage with double capacity
 
   // Copy elements into the new storage
@@ -72,8 +79,12 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
+  if (index > arr->count) {
+    return 0;
+  }
 
   // Otherwise, return the element at the given index
+  return arr->elements[index];
 }
 
 
@@ -101,10 +112,15 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  if (arr->count > arr->capacity) {
+    return 0;
+  }
 
   // Copy the element and add it to the end of the array
+  arr->elements[arr->count] = element;
 
   // Increment count by 1
+  arr->count++;
 
 }
 
@@ -147,15 +163,18 @@ int main(void)
 
   Array *arr = create_array(1);
 
-  arr_insert(arr, "STRING1", 0);
+  // arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
-  arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
+  arr_append(arr, "STRING5");
+  arr_append(arr, "STRING6");
+  arr_append(arr, "STRING7");
+  // arr_insert(arr, "STRING2", 0);
+  // arr_insert(arr, "STRING3", 1);
   arr_print(arr);
-  arr_remove(arr, "STRING3");
-  arr_print(arr);
+  // arr_remove(arr, "STRING3");
+  // arr_print(arr);
 
-  destroy_array(arr);
+  // destroy_array(arr);
 
   return 0;
 }
