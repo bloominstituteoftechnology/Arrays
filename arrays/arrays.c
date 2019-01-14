@@ -27,7 +27,7 @@ Array *create_array (int capacity) {
   // Set initial values for capacity and count
   newArray->capacity = capacity;
   newArray->count = 0;
-  
+
   // Allocate memory for elements
   newArray->elements = calloc(capacity, sizeof(char *));
 
@@ -41,10 +41,17 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
+  for(int i = 0; i < arr->count; i++){
+    arr->elements[i] = NULL;
+    free(arr->elements[i]);
+  }
 
+  free(arr->elements);
   // Free array
+  free(arr);
 
 }
+
 
 /*****
  * Create a new elements array with double capacity and copy elements
