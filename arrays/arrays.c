@@ -19,13 +19,18 @@ typedef struct Array {
 /*****
  * Allocate memory for a new array
  *****/
-Array *create_array (int capacity) {
+Array *create_array (int capacity) {       // This needs to return a pointer to an Array
   // Allocate memory for the Array struct
+  Array *array = malloc(sizeof(Array));
 
   // Set initial values for capacity and count
+  array->capacity = capacity;
+  array->count = 0;
 
   // Allocate memory for elements
+  array->elements = calloc(capacity, sizeof(char *)); // not sure if I need sizeof(char) or sizeof(char *) 
 
+  return array;
 }
 
 
@@ -72,8 +77,13 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
+  if(index > arr->count){
+    fprintf(stderr, "Index is greater than current count.");
+    exit(1);
+  }
 
   // Otherwise, return the element at the given index
+  return arr->elements[index];
 }
 
 
