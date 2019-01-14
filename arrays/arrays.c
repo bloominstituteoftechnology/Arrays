@@ -54,11 +54,20 @@ void destroy_array(Array *arr) {
  *****/
 void resize_array(Array *arr) {
 
-  // Create a new element storage with double capacity
- 
-  // Copy elements into the new storage
+	int capacity = ((arr->capacity)*2);
 
-  // new_arr->elements = strdup(arr->elements); 
+  // Create a new element storage with double capacity
+        Array *new_arr = create_array(capacity);
+
+  // Copy elements into the new storage
+        for(int i=0; i< arr->count; i++){
+                new_arr->elements[i] = arr->elements[i];
+        }
+
+        // new_arr->elements = strdup(arr->elements); 
+
+  // Free the old elements array (but NOT the strings they point to)
+        free(arr->elements);
 
   // Update the elements and capacity to new values
 
