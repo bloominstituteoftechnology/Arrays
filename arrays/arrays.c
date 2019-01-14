@@ -9,6 +9,22 @@ typedef struct Array {
   char **elements;  // The string elements contained in the array
 } Array;
 
+
+/*****
+ * Utility function to print an array.
+ *****/
+void arr_print(Array *arr) {
+  printf("[");
+  for (int i = 0 ; i < arr->count ; i++) {
+    printf("%s", arr->elements[i]);
+    if (i != arr->count - 1) {
+      printf(",");
+    }
+  }
+  printf("]\n");
+}
+
+
 /************************************
  *
  *   CREATE, DESTROY, RESIZE FUNCTIONS
@@ -188,20 +204,6 @@ void arr_remove(Array *arr, char *element) {
   arr->count--;
 }
 
-
-/*****
- * Utility function to print an array.
- *****/
-void arr_print(Array *arr) {
-  printf("[");
-  for (int i = 0 ; i < arr->count ; i++) {
-    printf("%s", arr->elements[i]);
-    if (i != arr->count - 1) {
-      printf(",");
-    }
-  }
-  printf("]\n");
-}
 
 #ifndef TESTING
 int main(void)
