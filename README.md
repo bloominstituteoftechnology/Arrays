@@ -1,5 +1,5 @@
 # Arrays
-
+ 
 Arrays are the most common and perhaps the simplest data structures. Are they really so simple though? High-level languages like Python, JavaScript, Swift and Java all have built-in "magic" that hides the complexity of many array functions. Although the complexity is hidden, you still have to pay the performance costs of that complexity.
 
 For this assignment, you will be implementing high-level array functionality from the ground up. You will construct methods from memory and pointers to create, destroy, read and write arrays. Then, you will write code to add and remove elements from your array. Sounds simple, right?
