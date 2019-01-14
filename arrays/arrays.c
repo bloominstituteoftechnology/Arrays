@@ -82,8 +82,13 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if (index > arr->count)
+  {
+    printf("Index not in range.");
+    exit(1);
+  }
   // Otherwise, return the element at the given index
+  return arr->elements[index];
 }
 
 
@@ -111,12 +116,19 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
+  int el_size = sizeof(element) / sizeof(char);  
+  if (el_size > arr->capacity)
+  {
+    printf("Over maximum capacity.");
+    exit(1);
+  }
   // Copy the element and add it to the end of the array
-
+  arr->elements[arr->count] = element;
   // Increment count by 1
-
+  arr->count++;
+  // printf("%s\n", arr->elements[arr->count]);
 }
+
 
 /*****
  * Remove the first occurence of the given element from the array,
