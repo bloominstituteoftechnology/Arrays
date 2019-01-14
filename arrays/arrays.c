@@ -204,6 +204,14 @@ void arr_remove(Array *arr, char *element) {
   arr->count--;
 }
 
+/* Remove all the elements from an array. */
+void arr_clear(Array *arr)
+{
+  char **new_elements = calloc(arr->capacity, sizeof(char *));
+  free(arr->elements);
+  arr->elements = new_elements;
+}
+
 
 #ifndef TESTING
 int main(void)
@@ -217,6 +225,10 @@ int main(void)
   arr_insert(arr, "STRING3", 1);
   arr_print(arr);
   arr_remove(arr, "STRING3");
+  arr_print(arr);
+
+  printf("\nImplementing arr_clear:\n");
+  arr_clear(arr);
   arr_print(arr);
 
   destroy_array(arr);
