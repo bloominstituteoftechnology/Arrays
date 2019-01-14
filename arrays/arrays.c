@@ -3,12 +3,12 @@
 #include <string.h>
 #include <errno.h>
 
-typedef struct Array {
-  int capacity;  // How many elements can this array hold?
-  int count;  // How many states does the array currently hold?
-  char **elements;  // The string elements contained in the array
+typedef struct Array
+{
+  int capacity;    // How many elements can this array hold?
+  int count;       // How many states does the array currently hold?
+  char **elements; // The string elements contained in the array
 } Array;
-
 
 /************************************
  *
@@ -19,7 +19,8 @@ typedef struct Array {
 /*****
  * Allocate memory for a new array
  *****/
-Array *create_array (int capacity) {
+Array *create_array(int capacity)
+{
   // Allocate memory for the Array struct
   Array *newarray = malloc(sizeof(Array));
   // Set initial values for capacity and count
@@ -31,11 +32,11 @@ Array *create_array (int capacity) {
   return newarray;
 }
 
-
 /*****
  * Free memory for an array and all of its stored elements
  *****/
-void destroy_array(Array *arr) {
+void destroy_array(Array *arr)
+{
 
   // Free all elements
   free(arr->elements);
@@ -47,24 +48,25 @@ void destroy_array(Array *arr) {
  * Create a new elements array with double capacity and copy elements
  * from old to new
  *****/
-Array *resize_array(Array *arr) {
+Array *resize_array(Array *arr)
+{
 
   // Create a new element storage with double capacity
-  Array *newarray = create_array((arr->capacity*2));
+  Array *newarray = create_array((arr->capacity * 2));
   // Copy elements into the new storage
-  for(int i = 0; i < newarray->capacity; i++) {
+  for (int i = 0; i < newarray->capacity; i++)
+  {
     newarray->elements[i] = arr->elements[i];
-    if(newarray->elements[i] != NULL) {
+    if (newarray->elements[i] != NULL)
+    {
       newarray->count++;
     }
-  } 
+  }
   // Free the old elements array (but NOT the strings they point to)
   destroy_array(arr);
   // Update the elements and capacity to new values
   return newarray;
 }
-
-
 
 /************************************
  *
@@ -77,53 +79,61 @@ Array *resize_array(Array *arr) {
  *
  * Throw an error if the index is out of range.
  *****/
-char *arr_read(Array *arr, int index) {
+char *arr_read(Array *arr, int index)
+{
 
   // Throw an error if the index is greater than the current count
-if(arr->count < index){
-  perror("Array only has %s indices.", arr->count);
-}
+  if (arr->count < index)
+  {
+    perror("Read error: index greater than current count");
+  }
   // Otherwise, return the element at the given index
   return arr->elements[index];
 }
 
-
 /*****
  * Insert an element to the array at the given index
  *****/
-void arr_insert(Array *arr, char *element, int index) {
+void arr_insert(Array *arr, char *element, int index)
+{
 
   // Throw an error if the index is greater than the current count
-if(arr->count < index){
-  perror("Array only has %s indices.", arr->count);
-}
+  if (arr->count < index)
+  {
+    perror("Insert error: index greater than current count");
+  }
   // Resize the array if the number of elements is over capacity
-if(arr->count == arr->capacity){
-  Array *arr = resize_array(arr);
-}
+  if (arr->count == arr->capacity)
+  {
+    Array *arr = resize_array(arr);
+  }
   // Move every element after the insert index to the right one position
-for(int i = arr->count; i > index; i--) {
-  arr->elements[i] = arr->elements[i-1];
-}
+  for (int i = arr->count; i > index; i--)
+  {
+    arr->elements[i] = arr->elements[i - 1];
+  }
   // Copy the element and add it to the array
-arr->elements[index] = element;
+  arr->elements[index] = element;
   // Increment count by 1
-arr->count++;
-
+  arr->count++;
 }
 
 /*****
  * Append an element to the end of the array
  *****/
-void arr_append(Array *arr, char *element) {
+void arr_append(Array *arr, char *element)
+{
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
+  if (arr->elements == arr->capacity)
+  {
+    Array *arr = resize_array(arr);
+  }
   // Copy the element and add it to the end of the array
-
+  arr->elements[arr->count] = element;
   // Increment count by 1
-
+  arr->count++;
 }
 
 /*****
@@ -132,32 +142,53 @@ void arr_append(Array *arr, char *element) {
  *
  * Throw an error if the value is not found.
  *****/
-void arr_remove(Array *arr, char *element) {
-
+void arr_remove(Array *arr, char *element)
+{
+  int found;
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
-
+  for (int i = 0; i < arr->count; i++)
+  {
+    if (arr->elements[i] == element)
+    {
+      found = 1;
+      arr->elements[i] = NULL;
+      if (i < arr->count)
+      {
+        for (int u = i; u < arr->count; u++)
+        {
+          arr->elements[u] = arr->elements[u+1];
+        }
+      }
+    }
+  }
   // Shift over every element after the removed element to the left one position
 
   // Decrement count by 1
-
+  if(found == 1) {
+  arr->count--;
+  }
+  else {
+    perror("Could not find element");
+  }
 }
-
 
 /*****
  * Utility function to print an array.
  *****/
-void arr_print(Array *arr) {
+void arr_print(Array *arr)
+{
   printf("[");
-  for (int i = 0 ; i < arr->count ; i++) {
+  for (int i = 0; i < arr->count; i++)
+  {
     printf("%s", arr->elements[i]);
-    if (i != arr->count - 1) {
+    if (i != arr->count - 1)
+    {
       printf(",");
     }
   }
   printf("]\n");
 }
-
 
 #ifndef TESTING
 int main(void)
