@@ -7,7 +7,7 @@
 
 //Are we creating a vector? A vector is a dynamically sized array with operations such as append, prepend, delete and find.
 
-#define ARRAY_INITIAL_CAPACITY 100
+//#define ARRAY_INITIAL_CAPACITY 100
 
 
 typedef struct Array { //typedef struct{}Arrow is the definition of the Arrow type
@@ -47,11 +47,10 @@ Array *create_array (int capacity)
 //};
 
  Array *arr = malloc(sizeof( Array));
-  assert(arr !=NULL);
 
   arr->capacity = capacity;
-  arr->count = count;
-  arr->elements=elements;
+  arr->count = 0;
+  arr->elements=malloc(capacity * sizeof(char*));
 
   return arr;
  }
