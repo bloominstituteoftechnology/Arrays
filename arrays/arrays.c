@@ -158,7 +158,7 @@ void arr_insert(Array *arr, char *element, int index) {
   {
     arr->elements[i]=arr->elements[i-1];
   }
-  char *el_in = strdup(element);
+  char *el_in = strdup(element);//duplicate 
   arr->elements[index]= el_in;
 
   arr->count++;
@@ -188,7 +188,7 @@ void arr_append(Array *arr, char *element) {
       resize_array(arr); //call func resize from above 
     }
 
-    char *el_end =strdup(element);
+    char *el_end =strdup(element);//duplicate
     arr->elements[arr->count] = el_end;
 
     arr->count++;
@@ -222,7 +222,13 @@ void arr_remove(Array *arr, char *element) {
   // Shift over every element after the removed element to the left one position
 
   // Decrement count by 1
-free(arr->elements[counter]);
+  free(arr->elements[]]);
+  for(int i; i<arr->count; i++)
+  {
+    arr->elements[i] = arr->elements[i+1];
+  }
+  arr->count--;
+  arr->elements[arr->count] =NULL;
 
 }
 
