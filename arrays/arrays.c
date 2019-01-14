@@ -39,8 +39,14 @@ void destroy_array(Array *arr)
 {
 
   // Free all elements
-
+  for (int i = 0; i < arr->count; i++)
+  {
+    arr->elements[i] = NULL;
+    free(arr->elements[i]);
+  }
   // Free array
+  free(arr->elements);
+  free(arr);
 }
 
 /*****
