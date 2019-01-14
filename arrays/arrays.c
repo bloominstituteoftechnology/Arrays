@@ -93,7 +93,23 @@ char *arr_read(Array *arr, int index) {
  * Insert an element to the array at the given index
  *****/
 void arr_insert(Array *arr, char *element, int index) {  
-
+   // Throw an error if the index is greater than the current count
+  if (index > arr->count) {
+    fprintf(stderr, "Index greater than count of array (insert)\n");
+    exit(1);
+  }
+  // Resize the array if the number of elements is over capacity
+  if (arr->capacity <= arr->count) {
+    resize_array(arr);
+  }
+  // Move every element after the insert index to the right one position
+  for (int i = 0; i < arr->count; i++) {
+    arr->elements[i + 1] = arr->elements[i]; // --> Free up a space for new insert
+  }
+  // Copy the element and add it to the array
+  arr->elements[index] = element; // --> Given an index, we insert the element given here
+  // Increment count by 1
+  arr->count = arr->count + 1;  
 }
 
 /*****
