@@ -19,7 +19,8 @@ typedef struct Array {
 /*****
  * Allocate memory for a new array
  *****/
-Array *create_array (int capacity) {
+Array *create_array (int capacity) 
+{
   // Allocate memory for the Array struct
   Array *newArr = malloc(sizeof(Array));
   // Set initial values for capacity and count
@@ -34,12 +35,19 @@ Array *create_array (int capacity) {
 /*****
  * Free memory for an array and all of its stored elements
  *****/
-void destroy_array(Array *arr) {
+void destroy_array(Array *arr) 
+{
 
   // Free all elements
-
+  if (arr->elements != NULL)
+  {
+    free(arr->elements);
+  }
   // Free array
-
+  if (arr != NULL)
+  {
+    free(arr);
+  }
 }
 
 /*****
