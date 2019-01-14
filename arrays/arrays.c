@@ -82,9 +82,13 @@ void resize_array(Array *arr) {
 //  *****/
 char *arr_read(Array *arr, int index) {
 
-  // Throw an error if the index is greater than the current count
+    // Throw an error if the index is greater than the current count
+    if(index >= arr->count) {
+        perror("Index greater than count");
+    }
 
-  // Otherwise, return the element at the given index
+    // Otherwise, return the element at the given index
+    return arr->elements[index];
 }
 
 
