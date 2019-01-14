@@ -22,13 +22,19 @@ typedef struct Array {
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
   Array *array = malloc(sizeof(Array *));
+  printf("array malloc'ed with cap: %d\n", capacity);
   // Set initial values for capacity and count
   array->capacity = capacity;
   array->count = 0;
+  printf("cap: %d, count %d\n", array->capacity, array-> count);
   // Allocate memory for elements
-  for (int i = 0; i < capacity; i++) {
-    array->elements[i] = malloc(sizeof(char *));
-  }
+  array->elements = malloc(sizeof(char ** ));
+  // for (int i = 0; i < capacity; i++) {
+  //   // printf("element[%d]: %s", i, array->elements[i]);
+  //
+  //   printf("element %d malloc'ed!\n", i);
+  // }
+  printf("array made with cap: %d, count %d\n", array->capacity, array-> count);
   return array;
 }
 
@@ -53,15 +59,17 @@ free(arr);
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-  Array new_arr = create_array((arr->capacity * 2));
+  char **new_elements = malloc(sizeof(arr->capacity * 2));
   // Copy elements into the new storage
-  for (int i = 0; i < arr-> capacity; i++) {
-
+  for (int i = 0; i < arr->capacity; i++) {
+    new_elements[i] = arr->elements[i];
   }
   // Free the old elements array (but NOT the strings they point to)
-
+  free(arr->elements);
   // Update the elements and capacity to new values
-
+  arr->elements = malloc(sizeof(new_elements));
+  arr->elements = new_elements;
+  arr->capacity = arr->capacity * 2;
 }
 
 
@@ -80,8 +88,13 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if (index > (arr->count - 1)) {
+    perror("index out of bounds");
+    return NULL;
+  }
   // Otherwise, return the element at the given index
+  printf("reading element %s\n", arr->elements[index]);
+  return arr->elements[index];
 }
 
 
@@ -109,11 +122,21 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
+  if (arr->count == arr->capacity-1) {
+    printf("array needs to be resized\n");
+    resize_array(arr);
+  }
   // Copy the element and add it to the end of the array
-
+  printf("About to add element %s to array\n", element);
+  char *scratch = malloc(sizeof(element));
+  printf("element: %s\n", element);
+  int index = arr->count;
+  arr->elements[index] = malloc(sizeof(element));
+  arr->elements[index] = element;
+  printf("arr->elements[%d]: %s\n", index, arr->elements[index]);
   // Increment count by 1
-
+  arr->count ++;
+  printf("count is at %d, after adding element: %s\n", arr->count, arr->elements[index]);
 }
 
 /*****
