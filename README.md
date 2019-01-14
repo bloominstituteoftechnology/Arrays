@@ -46,8 +46,3 @@ If you finish these goals, try implementing some of the other Python functions:
 7. `sort()`
 
 Check the official documentation or use Python's `help()` method for implementation details.
-
-
-
-
-
