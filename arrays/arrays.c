@@ -222,7 +222,8 @@ void arr_remove(Array *arr, char *element) {
   // Shift over every element after the removed element to the left one position
 
   // Decrement count by 1
-free(arr->elements);
+free(arr->elements[counter]);
+
 }
 
 
