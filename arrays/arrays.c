@@ -210,9 +210,26 @@ void arr_append(Array *arr, char *element) {
  *
  * Throw an error if the value is not found.
  *****/
+ //int strcmp(const char *str1, const char *str2)-compare 2 strings
 void arr_remove(Array *arr, char *element) {
-    getw(arr, 0, element);
-    sizeof(arr)++;
+  int key=0;
+  while (strcmp(element, arr->elements[key]!=0)
+  {
+    key++;
+  }
+    if(key >= arr->count) {
+      fprintf(stderr, "element %s is not in array", element);
+      return;
+
+    }
+    free(arr->elements[key]);
+    for(int i = key; i<arr->count; i++)
+  {
+    arr->elements[i] = arr->elements[i+1];
+  }
+  arr->count--;
+  arr->elements[arr->count] =NULL;
+    
       }
     
 
