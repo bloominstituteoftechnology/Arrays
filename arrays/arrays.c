@@ -104,7 +104,7 @@ void resize_array(Array *arr) {
  *****/
 char *arr_read(Array *arr, int index) {
   // Throw an error if the index is greater than the current count
-  if (index > arr->count)
+  if (index >= arr->count)
   {
     fprintf(stderr, "index out of range\n");
     exit(1);
@@ -266,6 +266,34 @@ int arr_index(Array *arr, char *element)
   return 0;
 }
 
+/* Remove the element at the specified index and return it */
+char *arr_pop(Array *arr, int index)
+{
+  if (index >= arr->count)
+  {
+    fprintf(stderr, "index out of range\n");
+    exit(1);
+  }
+
+  // Remove the element
+  char *removed_element = arr->elements[index];
+  arr->elements[index] = NULL;
+  free(arr->elements[index]);
+
+  // Shift over every element after the removed element to the left one position
+  int i = index;
+  while (i < arr->count)
+  {
+    arr->elements[i] = arr->elements[i + 1];
+    i++;
+  }
+
+  // Decrement count by 1
+  arr->count--;
+
+  return removed_element;
+}
+
 
 #ifndef TESTING
 int main(void)
@@ -282,23 +310,44 @@ int main(void)
   arr_print(arr);
 
   printf("\nImplementing arr_clear:\n");
+  printf("Array before clear: ");
+  arr_print(arr);
   arr_clear(arr);
+  printf("Array after clear: ");
   arr_print(arr);
 
   printf("\nImplementing arr_copy:\n");
   arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
   arr_insert(arr, "STRING2", 0);
+  printf("Array to copy: ");
+  arr_print(arr);
   Array *copy = arr_copy(arr);
+  printf("New copied array: ");
   arr_print(copy);
 
   printf("\nImplementing arr_extend:\n");
+  printf("Array before extend: ");
+  arr_print(arr);
   arr_extend(arr, copy);
+  printf("Array after extend: ");
   arr_print(arr);
 
   printf("\nImplementing arr_index:\n");
-  int index = arr_index(arr, "STRING4");
+  printf("Array indexed: ");
+  arr_print(arr);
+  char *element = "STRING4";
+  printf("Element to find: %s\n", element);
+  int index = arr_index(arr, element);
   printf("Element found at index: %d\n", index);
+
+  printf("\nImplementing arr_pop:\n");
+  printf("Array before removal: ");
+  arr_print(arr);
+  char *removed_element = arr_pop(arr, index);
+  printf("Removed element: %s, at index: %d\n", removed_element, index);
+  printf("Array after removal: ");
+  arr_print(arr);
 
   destroy_array(arr);
 
