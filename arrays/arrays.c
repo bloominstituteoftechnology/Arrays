@@ -37,7 +37,9 @@ Array *create_array (int capacity) {
  *****/
 void destroy_array(Array *arr) {
 
-  
+  free(arr->elements);
+
+  free(arr);
 
 }
 
@@ -71,7 +73,11 @@ void resize_array(Array *arr) {
  * Throw an error if the index is out of range.
  *****/
 char *arr_read(Array *arr, int index) {
+  arr->count = 0;
 
+  if (count > index) {
+
+  }
   // Throw an error if the index is greater than the current count
 
   // Otherwise, return the element at the given index
