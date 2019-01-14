@@ -47,16 +47,21 @@ void destroy_array(Array *arr) {
  * Create a new elements array with double capacity and copy elements
  * from old to new
  *****/
-void resize_array(Array *arr) {
+Array *resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-
+  Array *newarray = create_array((arr->capacity*2));
   // Copy elements into the new storage
-
+  for(int i = 0; i < newarray->capacity; i++) {
+    newarray->elements[i] = arr->elements[i];
+    if(newarray->elements[i] != NULL) {
+      newarray->count++;
+    }
+  } 
   // Free the old elements array (but NOT the strings they point to)
-
+  destroy_array(arr);
   // Update the elements and capacity to new values
-
+  return newarray;
 }
 
 
@@ -75,8 +80,11 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-
+if(arr->count < index){
+  perror("Array only has %s indices.", arr->count);
+}
   // Otherwise, return the element at the given index
+  return arr->elements[index];
 }
 
 
@@ -86,14 +94,21 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
+if(arr->count < index){
+  perror("Array only has %s indices.", arr->count);
+}
   // Resize the array if the number of elements is over capacity
-
+if(arr->count == arr->capacity){
+  Array *arr = resize_array(arr);
+}
   // Move every element after the insert index to the right one position
-
+for(int i = arr->count; i > index; i--) {
+  arr->elements[i] = arr->elements[i-1];
+}
   // Copy the element and add it to the array
-
+arr->elements[index] = element;
   // Increment count by 1
+arr->count++;
 
 }
 
