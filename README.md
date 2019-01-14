@@ -6,9 +6,9 @@
 - [ ] `arr_read()`
 
 ### Part 2 Task List
-- [ ] `arr_insert()`
-- [ ] `arr_remove()`
-- [ ] `resize_array()`
+- [x] `arr_insert()`
+- [x] `arr_remove()`
+- [x] `resize_array()`
 
 ### Stretch Goals
 
