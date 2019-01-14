@@ -28,7 +28,8 @@ Array *create_array (int capacity) {       // This needs to return a pointer to 
   array->count = 0;
 
   // Allocate memory for elements
-  array->elements = calloc(capacity, sizeof(char *)); // not sure if I need sizeof(char) or sizeof(char *) 
+  array->elements = calloc(capacity, sizeof(char *)); // calloc takes 2 args: # of blocks to allocate, and size of each block
+                                                      // use sizeof(char *) because elements holds char *'s not actual char's
 
   return array;
 }
@@ -52,13 +53,22 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-
+  char **newElements = calloc((arr->capacity * 2), sizeof(char *));
   // Copy elements into the new storage
-
+    //step through length of arr->elements, meaning step through arr->count
+    //for each i set newElements[i] = arr->elements[i]
+  for (int i = 0; i < arr->count; i++) {
+    newElements[i] = arr->elements[i];
+  }
   // Free the old elements array (but NOT the strings they point to)
-
+  for (int i = 0; i < arr->count; i++) {
+    arr->elements[i] = NULL;
+    free(arr->elements[i]);
+  }
+  free(arr->elements);
   // Update the elements and capacity to new values
-
+  arr->elements = newElements;
+  arr->capacity = arr->capacity * 2;
 }
 
 
@@ -75,13 +85,11 @@ void resize_array(Array *arr) {
  * Throw an error if the index is out of range.
  *****/
 char *arr_read(Array *arr, int index) {
-
   // Throw an error if the index is greater than the current count
   if(index > arr->count){
     fprintf(stderr, "Index is greater than current count.");
     exit(1);
   }
-
   // Otherwise, return the element at the given index
   return arr->elements[index];
 }
@@ -93,7 +101,10 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if(index > arr->count){
+    fprintf(stderr, "Index is greater than current count.");
+    exit(1);
+  }
   // Resize the array if the number of elements is over capacity
 
   // Move every element after the insert index to the right one position
