@@ -210,8 +210,45 @@ void arr_clear(Array *arr)
   char **new_elements = calloc(arr->capacity, sizeof(char *));
   free(arr->elements);
   arr->elements = new_elements;
+  arr->count = 0;
 }
 
+/* Return a copy of the specified array. */
+Array *arr_copy(Array *arr)
+{
+  // Allocate memory for the Array struct
+  Array *copy = malloc(sizeof(Array));
+
+  // Set initial values for capacity and count
+  copy->capacity = arr->capacity;
+  copy->count = arr->count;
+
+  // Allocate memory for elements
+  copy->elements = calloc(copy->capacity, sizeof(char *));
+
+  // Copy elements from specified array
+  for (int i = 0; i < arr->count; i++)
+  {
+    copy->elements[i] = arr->elements[i];
+  }
+
+  return copy;
+}
+
+
+// Array *create_array (int capacity) {
+//   // Allocate memory for the Array struct
+//   Array *arr = malloc(sizeof(Array));
+
+//   // Set initial values for capacity and count
+//   arr->capacity = capacity;
+//   arr->count = 0;
+
+//   // Allocate memory for elements
+//   arr->elements = calloc(capacity, sizeof(char *));
+
+//   return arr;
+// }
 
 #ifndef TESTING
 int main(void)
@@ -230,6 +267,13 @@ int main(void)
   printf("\nImplementing arr_clear:\n");
   arr_clear(arr);
   arr_print(arr);
+
+  printf("\nImplementing arr_copy:\n");
+  arr_insert(arr, "STRING1", 0);
+  arr_append(arr, "STRING4");
+  arr_insert(arr, "STRING2", 0);
+  Array *copy = arr_copy(arr);
+  arr_print(copy);
 
   destroy_array(arr);
 
