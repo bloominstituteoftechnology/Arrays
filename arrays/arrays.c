@@ -6,9 +6,8 @@
 typedef struct Array {
   int capacity;  // How many elements can this array hold?
   int count;  // How many states does the array currently hold?
-  char **elements;  // The string elements contained in the array
+  char *elements;  // The string elements contained in the array
 } Array;
-
 
 /************************************
  *
@@ -21,11 +20,13 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-
+  Array *arr = malloc(sizeof(Array));
   // Set initial values for capacity and count
-
+  arr->capacity = capacity;
+  arr->count = 0;
   // Allocate memory for elements
-
+  arr->elements = malloc(capacity);
+  return arr;
 }
 
 
@@ -33,11 +34,8 @@ Array *create_array (int capacity) {
  * Free memory for an array and all of its stored elements
  *****/
 void destroy_array(Array *arr) {
-
-  // Free all elements
-
-  // Free array
-
+  // free(arr->elements);
+  // free(arr);
 }
 
 /*****
@@ -73,6 +71,18 @@ char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
 
+  if (arr->count == 0){
+    return NULL;
+  }
+
+  // if (arr->count < index){
+  //   return NULL;
+  // }
+  // if (arr->elements[index] == '\0'){
+  //   return NULL;
+  // }
+
+  // return &arr->elements[index];
   // Otherwise, return the element at the given index
 }
 
@@ -101,11 +111,18 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
-  // Copy the element and add it to the end of the array
-
-  // Increment count by 1
-
+  if (arr->capacity < strlen(element)){
+    arr->capacity += strlen(element);
+    arr->count += 1;
+  }
+  
+  char *x = malloc(arr->capacity + 1);
+  arr->elements = x;
+  
+  for (int i = 0; i < arr->capacity; i++){
+    arr->elements[i + 1] = element[i];
+  }
+  arr->elements[0] = '\0';
 }
 
 /*****
@@ -125,14 +142,13 @@ void arr_remove(Array *arr, char *element) {
 
 }
 
-
 /*****
  * Utility function to print an array.
  *****/
 void arr_print(Array *arr) {
   printf("[");
   for (int i = 0 ; i < arr->count ; i++) {
-    printf("%s", arr->elements[i]);
+    // printf("%s", arr->elements[i]);
     if (i != arr->count - 1) {
       printf(",");
     }
