@@ -4,7 +4,7 @@
 #include <errno.h>
 
 typedef struct Array {
-  int capacity;  // How many elements can this array hold?
+  int capacity;  //  How many elements can this array hold?
   int count;  // How many states does the array currently hold?
   char **elements;  // The string elements contained in the array
 } Array;
