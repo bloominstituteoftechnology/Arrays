@@ -42,6 +42,7 @@ void destroy_array(Array *arr) {
 
   // Free all elements
 	for(int i=0; i < arr->count; i++){
+		arr->elements[i] = NULL;
 		free(arr->elements[i]);
 	}
   // Free array
@@ -124,7 +125,8 @@ void arr_insert(Array *arr, char *element, int index) {
 	}	
 	
   // Copy the element and add it to the array
-	arr->elements[index] = element;
+  	char *copy_element = element;
+	arr->elements[index] = copy_element;
 
   // Increment count by 1
   	arr->count+=1;
@@ -146,7 +148,8 @@ void arr_append(Array *arr, char *element) {
   // or throw an error if resize isn't implemented yet.
 	
   // Copy the element and add it to the end of the array
-	arr->elements[arr->count] = element;	
+	char *copy_e = element; 
+	arr->elements[arr->count] = copy_e;	
 
   // Increment count by 1
 	arr->count+=1; 
