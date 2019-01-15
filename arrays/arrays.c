@@ -57,14 +57,16 @@ void destroy_array(Array *arr) {
  *****/
 void resize_array(Array *arr) {
 
-  // char **resized = malloc(arr->capacity*2*sizeof(char*));
-
   // Copy elements into the new storage
-
+  char **resized = malloc(arr->capacity*2*sizeof(char*));
+  for(int i = 0; i< arr->count; i++){
+    resized[i] = arr->elements[i];
+  }
   // Free the old elements array (but NOT the strings they point to)
-
+  free(arr->elements);
   // Update the elements and capacity to new values
-
+  arr->elements = resized;
+  arr->capacity = arr->capacity*2;
 }
 
 
@@ -104,8 +106,7 @@ void arr_insert(Array *arr, char *element, int index) {
   }
   // Resize the array if the number of elements is over capacity
   if(arr->count >= arr->capacity){
-    //TODO: Implement resize
-    return;
+    resize_array(arr);
   }
   
   // Move every element after the insert index to the right one position
@@ -128,7 +129,7 @@ void arr_append(Array *arr, char *element) {
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
   if (arr->count + 1 > arr->capacity){
-    fprintf(stderr, "IndexError: Array at capacity");
+    resize_array(arr);
     return;
   } 
   // Copy the element and add it to the end of the array
@@ -176,7 +177,7 @@ void arr_print(Array *arr) {
 int main(void)
 {
 
-  Array *arr = create_array(15);
+  Array *arr = create_array(3);
   arr_append(arr,"STRING1");
   arr_append(arr,"STRING2");
   arr_append(arr,"STRING3");
@@ -190,6 +191,7 @@ int main(void)
   for(int i = 0; i< arr->count; i++){
     printf("ELEMENT: %s\n", arr->elements[i]);
   }
+  printf("Capacity:%d\n", arr->capacity);
   destroy_array(arr);
 
   return 0;
