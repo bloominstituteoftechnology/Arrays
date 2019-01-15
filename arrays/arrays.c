@@ -100,7 +100,7 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-  if(index >= arr->count){
+  if(index > arr->count){
     fprintf(stderr, "IndexError: index out of bounds");
     return;
   }
@@ -193,22 +193,22 @@ int main(void)
 {
 
   Array *arr = create_array(3);
-  arr_append(arr,"STRING1");
-  arr_append(arr,"STRING2");
-  arr_append(arr,"STRING3");
-  arr_append(arr,"STRING4");
-  arr_append(arr,"STRING5");
+  // arr_append(arr,"STRING1");
+  // arr_append(arr,"STRING2");
+  // arr_append(arr,"STRING3");
+  // arr_append(arr,"STRING4");
+  // arr_append(arr,"STRING5");
   arr_insert(arr, "BANG!", 0);
-  arr_remove(arr,"STRING3");
-  // arr_insert(arr, "STRING3", 1);
-  // arr_print(arr);
-  // arr_remove(arr, "STRING3");
-  // arr_print(arr);
-  for(int i = 0; i< arr->count; i++){
-    printf("ELEMENT: %s\n", arr->elements[i]);
-  }
-  printf("Capacity:%d\n", arr->capacity);
-  destroy_array(arr);
+  // arr_remove(arr,"STRING3");
+  // // arr_insert(arr, "STRING3", 1);
+  // // arr_print(arr);
+  // // arr_remove(arr, "STRING3");
+  // // arr_print(arr);
+  // for(int i = 0; i< arr->count; i++){
+  //   printf("ELEMENT: %s\n", arr->elements[i]);
+  // }
+  // printf("Capacity:%d\n", arr->capacity);
+  // destroy_array(arr);
 
   return 0;
 }
