@@ -21,7 +21,17 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
+  Array *newArr = malloc(sizeof(Array)); //1 struct Array
+  
+  // Set initial values for capacity and count
+  newArr->capacity = capacity;
+  newArr->count = 0;
 
+  // Allocate memory for elements
+  // hint: use `calloc`, code from lecture
+  newArr->elements = calloc(capacity, sizeof(char *));
+
+  return newArr;
   // Set initial values for capacity and count
 
   // Allocate memory for elements
