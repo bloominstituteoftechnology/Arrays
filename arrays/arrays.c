@@ -26,7 +26,7 @@ Array *create_array (int capacity) {
   array->capacity = capacity;
   array->count = 0;
   // Allocate memory for elements
-  array->elements = malloc(sizeof(char *));
+  array->elements = malloc(capacity * sizeof(char *));
   return array;
 }
 
@@ -40,8 +40,9 @@ void destroy_array(Array *arr) {
   for (int i = 0; i == arr->count; i++) {
     free(arr->elements[i]);
   }
+  free(arr->elements);
   // Free array
-free(arr);
+  free(arr);
 }
 
 /*****
@@ -111,13 +112,19 @@ void arr_insert(Array *arr, char *element, int index) {
   for (int i = 0; (arr->count - i) == index; i++) {
     int old_index = (arr->count - i);
     printf("old_index: %d\n", old_index);
-    arr->elements[old_index + 1] = malloc(sizeof(arr->elements[old_index]));
+    printf("old_index value: %s\n", arr->elements[old_index]);
+
+    arr->elements[old_index + 1] = malloc(sizeof(arr->elements[old_index] + 1));
     printf("malloc'ed the space alright\n");
-    arr->elements[old_index + 1] = arr->elements[old_index];
+
+    char *scratch = arr->elements[old_index + 1];
+    strcpy(arr->elements[old_index + 1], scratch);
     printf("@old_index: %s; @new_index: %s\n", arr->elements[old_index], arr->elements[old_index + 1]);
+    free(arr->elements[old_index]);
   }
   // Copy the element and add it to the array
-  arr->elements[index] = malloc(sizeof(element));
+  printf("copying new element in here\n");
+  arr->elements[index] = malloc(sizeof(element) + 1);
   strcpy(arr->elements[index], element);
   // Increment count by 1
   arr->count ++;
@@ -135,7 +142,7 @@ void arr_append(Array *arr, char *element) {
   }
   // Copy the element and add it to the end of the array
   int index = arr->count;
-  arr->elements[index] = malloc(sizeof(element));
+  arr->elements[index] = malloc(sizeof(element + 1));
   strcpy(arr->elements[index], element);
   // Increment count by 1
   arr->count ++;
