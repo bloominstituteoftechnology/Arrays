@@ -57,12 +57,25 @@ void resize_array(Array *arr)
 {
 
   // Create a new element storage with double capacity
+  char **newElements = calloc((2 * arr->capacity), sizeof(char *));
 
   // Copy elements into the new storage
+  for (int i = 0; i < arr->count; i++)
+  {
+    newElements[i] = arr->elements[i];
+  }
 
   // Free the old elements array (but NOT the strings they point to)
+  for (int i = 0; i < arr->count; i++)
+  {
+    arr->elements[i] = NULL;
+    free(arr->elements[i]);
+  }
+  free(arr->elements);
 
   // Update the elements and capacity to new values
+  arr->elements = newElements;
+  arr->capacity = arr->capacity * 2;
 }
 
 /************************************
