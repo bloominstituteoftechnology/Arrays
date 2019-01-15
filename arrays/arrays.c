@@ -27,7 +27,7 @@ Array *create_array (int capacity) {
     arr->count = 0;
 
   // Allocate memory for elements
-    arr->elements = malloc(sizeof(char *));
+    arr->elements = calloc(capacity, sizeof(char *));
 
     return arr;
 }
@@ -52,13 +52,20 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
+  int new_storage = 2 * arr->capacity;
+  char ** new_elements = calloc(new_storage, sizeof(char *));
 
   // Copy elements into the new storage
+  for (int i = 0; i < arr->capacity; i++) {
+    new_elements[i] = arr->elements[i];
+  }
 
   // Free the old elements array (but NOT the strings they point to)
+  free(arr->elements);
 
   // Update the elements and capacity to new values
-
+  arr->elements = new_elements;
+  arr->capacity = new_storage;
 }
 
 
@@ -77,8 +84,7 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-
-  // Otherwise, return the element at the given index
+  
 }
 
 
