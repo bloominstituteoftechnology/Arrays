@@ -30,10 +30,9 @@ Array *create_array (int capacity) {
     // Allocate memory for elements
     arr->elements = calloc(capacity, sizeof(char*));
 
-    return 0;
+    return arr;
 
 }
-
 
 // /*****
 //  * Free memory for an array and all of its stored elements
