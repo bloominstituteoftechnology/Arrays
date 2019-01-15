@@ -294,6 +294,19 @@ char *arr_pop(Array *arr, int index)
   return removed_element;
 }
 
+/* Reverse the order of the array. */
+void arr_reverse(Array *arr)
+{
+  int mid = arr->count / 2;
+  char *temp;
+  for (int i = 0; i <= mid; i++)
+  {
+    temp = arr->elements[i];
+    arr->elements[i] = arr->elements[arr->count - 1 - i];
+    arr->elements[arr->count - 1 - i] = temp;
+  }
+}
+
 
 #ifndef TESTING
 int main(void)
@@ -347,6 +360,13 @@ int main(void)
   char *removed_element = arr_pop(arr, index);
   printf("Removed element: %s, at index: %d\n", removed_element, index);
   printf("Array after removal: ");
+  arr_print(arr);
+
+  printf("\nImplementing arr_reverse:\n");
+  printf("Array before reversal: ");
+  arr_print(arr);
+  arr_reverse(arr);
+  printf("Array after reversal: ");
   arr_print(arr);
 
   destroy_array(arr);
