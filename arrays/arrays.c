@@ -26,7 +26,7 @@ Array *create_array (int capacity) {
   array->capacity = capacity;
   array->count = 0;
   // Allocate memory for elements
-  array->elements = malloc(sizeof(char ** ));
+  array->elements = malloc(sizeof(char *));
   return array;
 }
 
@@ -84,7 +84,8 @@ char *arr_read(Array *arr, int index) {
     return NULL;
   }
   // Otherwise, return the element at the given index
-  return arr->elements[index];
+  printf(">>>> reading: \n");
+  return *(arr->elements+index);
 }
 
 
@@ -94,15 +95,32 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if (index > arr->count) {
+    perror("index out of bounds");
+    return;
+  }
   // Resize the array if the number of elements is over capacity
-
+  if (arr->count == arr->capacity) {
+    printf("array of count %d about to be resized\n", arr->count);
+    resize_array(arr);
+  }
   // Move every element after the insert index to the right one position
-
+  printf("about to shift everything; insert element %s at index: %d\n", element, index);
+  arr->elements[arr->count] = malloc(sizeof(arr->elements[arr->count-1]));
+  printf("first shift achieved; count: %d\n", arr->count);
+  for (int i = 0; (arr->count - i) == index; i++) {
+    int old_index = (arr->count - i);
+    printf("old_index: %d\n", old_index);
+    arr->elements[old_index + 1] = malloc(sizeof(arr->elements[old_index]));
+    printf("malloc'ed the space alright\n");
+    arr->elements[old_index + 1] = arr->elements[old_index];
+    printf("@old_index: %s; @new_index: %s\n", arr->elements[old_index], arr->elements[old_index + 1]);
+  }
   // Copy the element and add it to the array
-
+  arr->elements[index] = malloc(sizeof(element));
+  strcpy(arr->elements[index], element);
   // Increment count by 1
-
+  arr->count ++;
 }
 
 /*****
