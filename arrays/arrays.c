@@ -38,9 +38,7 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
-  for (int i=0; i<arr->count; i++){
-    free(arr->elements[i]);
-  }
+  free(arr->elements);
 
   // Free array
   free(arr);
@@ -101,7 +99,7 @@ void arr_insert(Array *arr, char *element, int index) {
   // Throw an error if the index is greater than the current count
   if (index > arr->count){
     perror("Index is greater than the current count.");
-    exit(0);
+    exit(1);
   }
   // Resize the array if the number of elements is over capacity
   if (arr->count == arr->capacity-1 ){
@@ -146,20 +144,23 @@ void arr_remove(Array *arr, char *element) {
   int i=0;
   int found = -1;
   while (i<arr->count && found == -1){
-    printf("here");
-    if (*arr->elements[i] == *element){
+    // printf("here");
+    if (arr->elements[i] == element){
       found = i;
+      arr->elements[i] = NULL;
       free(arr->elements[i]);
     }
     i++;
   }
   // Shift over every element after the removed element to the left one position
-  for (int j=found; j<arr->count; j++){
-    arr->elements[j] = arr->elements[j+1];
+  if (found != -1){
+    for (int j=found; j<arr->count; j++){
+      arr->elements[j] = arr->elements[j+1];
+    }
+    free(arr->elements[arr->count]);
+    // Decrement count by 1
+    arr->count--;
   }
-  free(arr->elements[arr->count]);
-  // Decrement count by 1
-  arr->count--;
 }
 
 
@@ -185,14 +186,26 @@ int main(void)
   Array *arr = create_array(1);
 
   arr_insert(arr, "STRING1", 0);
-  arr_print(arr);
   arr_append(arr, "STRING4");
-  arr_print(arr);
+  // printf("count: %d\n", arr->count);
+  // printf("capacity: %d\n", arr->capacity);
+  // arr_print(arr);
+
   arr_insert(arr, "STRING2", 0);
-  arr_print(arr);
+  // printf("count: %d\n", arr->count);
+  // printf("capacity: %d\n", arr->capacity);
+  // arr_print(arr);
+
   arr_insert(arr, "STRING3", 1);
+  // printf("count: %d\n", arr->count);
+  // printf("capacity: %d\n", arr->capacity);
   arr_print(arr);
   arr_remove(arr, "STRING3");
+  // printf("count: %d\n", arr->count);
+  // printf("capacity: %d\n", arr->capacity);
+  arr_print(arr);
+
+  arr_remove(arr, "STRING4");
   arr_print(arr);
 
   destroy_array(arr);
