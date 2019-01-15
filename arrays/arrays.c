@@ -90,7 +90,6 @@ char *arr_read(Array *arr, int index) {
     return NULL;
   }
   // Otherwise, return the element at the given index
-  printf(">>>> reading: %s\n", *(arr->elements+index));
   return *(arr->elements+index);
 }
 
@@ -154,11 +153,20 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
-
+  int i;
+  for (i = 0; i < arr->count; i++) {
+    if (strcmp(arr->elements[i], element) == 0) {
+      free(arr->elements[i]);
+      break;
+    }
+  }
   // Shift over every element after the removed element to the left one position
+  for (; i < arr->count-1; i ++) {
+    arr->elements[i] = strdup(arr->elements[i+1]);
+  }
 
   // Decrement count by 1
-
+  arr->count --;
 }
 
 
