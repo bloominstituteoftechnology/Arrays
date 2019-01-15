@@ -204,6 +204,25 @@ void arr_remove(Array *arr, char *element) {
   }
 }
 
+/*****
+ * Remove the first element from the array,
+ * then shift every element after that occurence to the left one slot.
+ *
+ * Throw an error if the array is empty
+ *****/
+void arr_pop(Array *arr) {
+  if (arr->count == 0) {
+    fprintf(stderr, "Index out of range");
+  }
+  free(arr->elements[0]);
+
+  for (int i = 0; i < arr->count; i++) {
+    arr->elements[i] = arr->elements[i + 1];
+  }
+
+  arr->count--;
+}
+
 
 /*****
  * Utility function to print an array.
@@ -237,6 +256,8 @@ int main(void)
   arr_remove(arr, "STRING4");
   arr_print(arr);
   arr_remove(arr, "STRING4");
+  arr_print(arr);
+  arr_pop(arr);
   arr_print(arr);
 
   destroy_array(arr);
