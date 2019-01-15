@@ -21,11 +21,16 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-
+  Array *new_arr = malloc(sizeof(Array));
+    
   // Set initial values for capacity and count
+  new_arr -> capacity = capacity;
+  new_arr -> count = 0;
 
   // Allocate memory for elements
+  new_arr -> elements = calloc(capacity, sizeof(char*));
 
+  return new_arr;
 }
 
 
@@ -33,11 +38,14 @@ Array *create_array (int capacity) {
  * Free memory for an array and all of its stored elements
  *****/
 void destroy_array(Array *arr) {
-
+  for(int i = 0; i<arr->count; i++){
   // Free all elements
-
+  free(arr -> elements[i]);
+  }
   // Free array
-
+  free(arr->elements);
+  free(arr);
+  arr = NULL;
 }
 
 /*****
@@ -45,15 +53,19 @@ void destroy_array(Array *arr) {
  * from old to new
  *****/
 void resize_array(Array *arr) {
-
   // Create a new element storage with double capacity
+  char **double_elements = calloc((arr->capacity*2) * sizeof(char*));
 
   // Copy elements into the new storage
-
+  for(int 1 =0; i<arr->count; i++){
+    double_elements[i] = arr_elements[i];
+  }
   // Free the old elements array (but NOT the strings they point to)
+   free(arr->elements);
 
   // Update the elements and capacity to new values
-
+ arr->elements = double_elements;
+ arr->capacity = arr->capacity * 2;
 }
 
 
@@ -72,8 +84,12 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if(index >= arr->count){
+    printf("Array capacity has been reached");
+    return 0;
+  }
   // Otherwise, return the element at the given index
+  arr->elements[index]; 
 }
 
 
@@ -83,15 +99,25 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if(index >= arr->count){
+    printf("Array capacity has been reached");
+    return 0;
+  }
   // Resize the array if the number of elements is over capacity
-
+  if(arr->count+1 > arr->capacity){
+    resize_array(arr);
+  }
+  
   // Move every element after the insert index to the right one position
-
+  for(int i = index +1; i<arr->count; i++){
+    arr->elements[i+1] = arr->elements[i];
+  }
   // Copy the element and add it to the array
+  char *element_cpy = element;
+  arr->elements[index] = element_cpy;
 
   // Increment count by 1
-
+  arr->count++;
 }
 
 /*****
