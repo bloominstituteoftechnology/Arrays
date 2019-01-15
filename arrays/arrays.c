@@ -46,6 +46,7 @@ void destroy_array(Array *arr) {
 		free(arr->elements[i]);
 	}
   // Free array
+  	//free(arr->elements);
   	free(arr);
 	printf("Array Destroyed\n");
 
@@ -103,7 +104,7 @@ char *arr_read(Array *arr, int index) {
   // Throw an error if the index is greater than the current count
 	if(index > arr->count){
 		fprintf(stderr, "Error: Index value is greater than the current count");
-		exit(1);
+		exit(1);   //or return NULL; works too
 	}
 	else{
 		printf("Reading a value from array\n");
@@ -136,9 +137,9 @@ void arr_insert(Array *arr, char *element, int index) {
 	}	
 	
   // Copy the element and add it to the array
-  	//strcpy()
-  	char *copy_element = element;
-	arr->elements[index] = copy_element;
+  	char *copy_e = element;
+	//char *copy_es = strdup(element);
+	arr->elements[index] = copy_e;
 
   // Increment count by 1
   	arr->count+=1;
@@ -161,8 +162,9 @@ void arr_append(Array *arr, char *element) {
   // or throw an error if resize isn't implemented yet.
 	
   // Copy the element and add it to the end of the array
-	char *copy_e = element; 
-	arr->elements[arr->count] = copy_e;	
+	//char *copy_e = element; 
+	char *copy_element = strdup(element);    //using strdup to make a copy of the element
+	arr->elements[arr->count] = copy_element;	
 
   // Increment count by 1
 	arr->count+=1; 
@@ -202,6 +204,25 @@ void arr_remove(Array *arr, char *element) {
 
 }
 
+void arr_clear(Array *arr){
+	
+	char **new_elements = calloc(arr->capacity, sizeof(char *));
+
+	for(int i=0; i< arr->count; i++){
+		arr->elements[i] = NULL;
+		free(arr->elements[i]);
+	}
+	free(arr->elements);
+
+	arr->count = 0;
+	arr->elements = new_elements;
+
+
+}
+
+
+
+
 
 /*****
  * Utility function to print an array.
@@ -224,12 +245,14 @@ int main(void)
 
   Array *arr = create_array(1);
 
+
   arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
   arr_insert(arr, "STRING2", 0);
   arr_insert(arr, "STRING3", 1);
   arr_print(arr);
   arr_remove(arr, "STRING3");
+  arr_clear(arr);
   arr_print(arr);
 
   destroy_array(arr);
