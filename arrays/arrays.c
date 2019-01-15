@@ -20,12 +20,17 @@ typedef struct Array {
  * Allocate memory for a new array
  *****/
 Array *create_array (int capacity) {
-  // Allocate memory for the Array struct
+  
 
   // Set initial values for capacity and count
 
   // Allocate memory for elements
+  Array *arrayPtr = (Array*) malloc(sizeof(Array));
+  arrayPtr->capacity = capacity;
+  arrayPtr->count = 0;
 
+  arrayPtr->elements = malloc(capacity*sizeof(char*));
+  return arrayPtr;
 }
 
 
@@ -34,7 +39,10 @@ Array *create_array (int capacity) {
  *****/
 void destroy_array(Array *arr) {
 
-  // Free all elements
+  free(arr->elements);
+  free(arr);
+
+  arr = NULL;
 
   // Free array
 
@@ -72,6 +80,13 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
+  if (index > arr->count){
+    perror("index out of range");
+    exit(1);
+  }
+
+  return *(arr->elements + index);
+
 
   // Otherwise, return the element at the given index
 }
@@ -98,14 +113,23 @@ void arr_insert(Array *arr, char *element, int index) {
  * Append an element to the end of the array
  *****/
 void arr_append(Array *arr, char *element) {
-
+  
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
+  if (arr->count + 1 > arr->capacity){
+    exit(1);
+  }
   // Copy the element and add it to the end of the array
+  char copy[strlen(element)+1];
+
+  strcpy(copy,element);
+  // printf("%s\n", copy);
+  
+  // printf("%d\n", arr->count);
+  *(arr->elements+arr->count) = &copy;
 
   // Increment count by 1
-
+  arr->count = arr->count + 1;
 }
 
 /*****
@@ -145,15 +169,29 @@ void arr_print(Array *arr) {
 int main(void)
 {
 
-  Array *arr = create_array(1);
-
-  arr_insert(arr, "STRING1", 0);
-  arr_append(arr, "STRING4");
-  arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
-  arr_print(arr);
-  arr_remove(arr, "STRING3");
-  arr_print(arr);
+  Array *arr = create_array(15);
+  printf("%d\n", arr->count);
+  printf("%d\n", arr->capacity);
+  char string[10];
+  for(int i = 0; i< 10; i++){
+    char msg[50];
+    
+    sprintf(msg, "SPRINT%d",i);
+    printf("%s\n", msg);
+    arr_append(arr, msg);  
+  }
+  
+  for(int i = 0; i< 10; i++){
+    printf("Element: %s\n", arr_read(arr,i) );  
+  }
+  
+  
+  printf("complete");
+  // arr_insert(arr, "STRING2", 0);
+  // arr_insert(arr, "STRING3", 1);
+  // arr_print(arr);
+  // arr_remove(arr, "STRING3");
+  // arr_print(arr);
 
   destroy_array(arr);
 

@@ -4,7 +4,7 @@
 char *day_1_array_tests()
 {
     Array *arr = create_array(3);
-
+    printf("Test count:%d\n", arr->count);
     mu_assert(arr->count == 0, "Create failed");
     mu_assert(arr->capacity == 3, "Create failed");
 
