@@ -205,7 +205,8 @@ void arr_remove(Array *arr, char *element) {
 }
 
 void arr_clear(Array *arr){
-	
+
+	printf("Clearing the array\n");	
 	char **new_elements = calloc(arr->capacity, sizeof(char *));
 
 	for(int i=0; i< arr->count; i++){
@@ -216,11 +217,19 @@ void arr_clear(Array *arr){
 
 	arr->count = 0;
 	arr->elements = new_elements;
-
-
 }
 
+char *arr_pop(Array *arr){
+	
+	printf("Poping the last element of the array \n");
+	char *last_element = strdup(arr->elements[(arr->count)-1]);
 
+	arr->elements[(arr->count)-1] = NULL;
+	free(arr->elements[(arr->count)-1]);
+	arr->count-=1;
+ 	
+	return last_element;
+ }
 
 
 
@@ -252,6 +261,9 @@ int main(void)
   arr_insert(arr, "STRING3", 1);
   arr_print(arr);
   arr_remove(arr, "STRING3");
+  arr_print(arr);
+  printf("Poped element is: %s\n",arr_pop(arr));
+  arr_print(arr);
   arr_clear(arr);
   arr_print(arr);
 
