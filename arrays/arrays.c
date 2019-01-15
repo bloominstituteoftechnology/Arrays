@@ -160,14 +160,30 @@ void arr_append(Array *arr, char *element) {
  * Throw an error if the value is not found.
  *****/
 void arr_remove(Array *arr, char *element) {
+  int index = 0;
 
   // Search for the first occurence of the element and remove it.
+  for(int i = 0; i < arr->count; i ++){
+    if(arr->elements[i] == element){
+      index = i;
+
   // Don't forget to free its memory!
+      arr->elements[i] = NULL;
+      free(arr->elements[i]);
 
   // Shift over every element after the removed element to the left one position
+      for(int i = index; i < arr->count; i++){
+        arr->elements[i] = arr->elements[i + 1];
+      }
 
   // Decrement count by 1
-
+      arr->count--;
+    } 
+      else if(i == arr->count){
+      fprintf(stderr, "Element not found.");
+      exit(1);
+    }
+  }
 }
 
 
