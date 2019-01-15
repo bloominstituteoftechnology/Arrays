@@ -80,12 +80,12 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-  if (index > arr->count){
-    perror("index out of range");
-    exit(1);
+  if (index >= arr->count){
+    return NULL;
   }
-
-  return *(arr->elements + index);
+  // printf("Print index:%d\n", index);
+  // printf("%s\n", arr->elements[index]);
+  return arr->elements[index];
 
 
   // Otherwise, return the element at the given index
@@ -118,18 +118,19 @@ void arr_append(Array *arr, char *element) {
   // or throw an error if resize isn't implemented yet.
   if (arr->count + 1 > arr->capacity){
     exit(1);
-  }
+  } 
   // Copy the element and add it to the end of the array
-  char copy[strlen(element)+1];
+  char *copy = malloc(sizeof(strlen(element)));
+  // char copy[strlen(element)+1];
 
   strcpy(copy,element);
-  // printf("%s\n", copy);
   
   // printf("%d\n", arr->count);
-  *(arr->elements+arr->count) = &copy;
-
+  *(arr->elements+arr->count) = copy;
+  printf("Appending:%s\n", *(arr->elements+arr->count));
   // Increment count by 1
   arr->count = arr->count + 1;
+  // printf("New count:%d\n", arr->count);
 }
 
 /*****
@@ -170,23 +171,7 @@ int main(void)
 {
 
   Array *arr = create_array(15);
-  printf("%d\n", arr->count);
-  printf("%d\n", arr->capacity);
-  char string[10];
-  for(int i = 0; i< 10; i++){
-    char msg[50];
-    
-    sprintf(msg, "SPRINT%d",i);
-    printf("%s\n", msg);
-    arr_append(arr, msg);  
-  }
-  
-  for(int i = 0; i< 10; i++){
-    printf("Element: %s\n", arr_read(arr,i) );  
-  }
-  
-  
-  printf("complete");
+ 
   // arr_insert(arr, "STRING2", 0);
   // arr_insert(arr, "STRING3", 1);
   // arr_print(arr);
