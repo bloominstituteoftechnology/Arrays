@@ -28,7 +28,7 @@ Array *create_array(int capacity)
   arr->capacity = capacity;
   arr->count = 0;
   // Allocate memory for elements
-  arr->elements = malloc(capacity * sizeof(char));
+  arr->elements = calloc(capacity, sizeof(char *));
 
   return arr;
 }
@@ -74,10 +74,14 @@ void resize_array(Array *arr)
  *****/
 char *arr_read(Array *arr, int index)
 {
-
-  // Throw an error if the index is greater than the current count
-
-  // Otherwise, return the element at the given index
+  if (index > (arr->count))
+  {
+    exit(1);
+  }
+  else
+  {
+    return arr->elements[index];
+  }
 }
 
 /*****
