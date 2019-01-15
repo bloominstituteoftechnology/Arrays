@@ -105,14 +105,18 @@ void arr_insert(Array *arr, char *element, int index) {
     fprintf(stderr, "Index is greater than current count.");
     exit(1);
   }
-  // Resize the array if the number of elements is over capacity
-
+  // Resize the array if the number of elements (after insert) is over capacity
+  if (arr->count + 1 > arr->capacity) {
+    resize_array(arr);
+  }
   // Move every element after the insert index to the right one position
-
+  for (int i = arr->count - 1; i >= index; i--) {
+    arr->elements[i + 1] = arr->elements[i];
+  }
   // Copy the element and add it to the array
-
+  arr->elements[index] = element;
   // Increment count by 1
-
+  arr->count++;
 }
 
 /*****
