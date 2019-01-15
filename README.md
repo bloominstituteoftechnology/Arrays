@@ -25,7 +25,7 @@ Reading from an array is simple as well: Check if the given index is in range, t
 
 ### Part 2: Insert, Delete and Resize
 
-Insertion and deletion should work like the Python `insert()` and `delete()` list methods. Insert should let you add an element to an arbitrary index in the array and delete should look for the first instance of the provided element and remove it. Remember that arrays require each element to be side-by-side like a bookshelf so you will need to move each element after the given index to the right or left for insert/delete respectively.
+Insertion and deletion should work like the Python `insert()` and `remove()` list methods. Insert should let you add an element to an arbitrary index in the array and delete should look for the first instance of the provided element and remove it. Remember that arrays require each element to be side-by-side like a bookshelf so you will need to move each element after the given index to the right or left for insert/delete respectively.
 
 Resizing involves allocating a block of memory with double the storage, copying elements from the old block to the new, and freeing the old block. You should automatically resize when an insert or append takes your array past the allocated capacity.
 
