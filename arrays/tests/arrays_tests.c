@@ -37,12 +37,12 @@ arr_print(arr);
     mu_assert(strcmp(arr_read(arr, 0), "VALUE-1") == 0, "Insert value failed");
 
     arr_insert(arr, "VALUE-2", 0);
-
+printf("---> reached here with array:\n");
     mu_assert(arr->capacity == 2, "Resize array on insert failed");
     mu_assert(arr->count == 2, "Resize array on insert failed");
 
     mu_assert(strcmp(arr_read(arr, 0), "VALUE-2") == 0, "Insert value failed");
-printf("---> reached here with array:\n");
+
 arr_print(arr);
     mu_assert(strcmp(arr_read(arr, 1), "VALUE-1") == 0, "Insert value failed");
 
@@ -75,7 +75,7 @@ char *all_tests()
 {
     mu_suite_start();
 
-    mu_run_test(day_1_array_tests);
+    // mu_run_test(day_1_array_tests);
     mu_run_test(day_2_array_tests);
 
     return NULL;
