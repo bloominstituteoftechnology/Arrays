@@ -44,9 +44,14 @@ Array *create_array (int capacity) {
  *****/
 void destroy_array(Array *arr) {
 
-  // Free all elements
+  if (arr->elements != NULL) { // free arr->elements if it exists
+    free(arr->elements); 
+  }
 
   // Free array
+  if (arr != NULL) { // free arr if it exists
+    free(arr); 
+
 
 }
 
