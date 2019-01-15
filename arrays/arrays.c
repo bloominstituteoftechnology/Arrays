@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <assert.h>
 
 typedef struct Array {
   int capacity;  // How many elements can this array hold?
@@ -126,7 +127,7 @@ void arr_insert(Array *arr, char *element, int index) {
   }
 
   // Copy the element and add it to the array
-  char* elem = strdup(element); // Also adding this line here and addign that to the arr->elements[index] causes a segmentation fault.
+  char *elem = strdup(element); // Also adding this line here and adding that to the arr->elements[index] causes a segmentation fault
   arr->elements[index] = element;
 
   // Increment count by 1
@@ -164,6 +165,7 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
+  
   // Set an index
   int ind = 0;
 
@@ -183,6 +185,7 @@ void arr_remove(Array *arr, char *element) {
 
       // Decrement count by 1
       arr->count--;
+      return;
     } else if (ind >= arr->count) {
 
       switch(errno) {
@@ -224,6 +227,10 @@ int main(void)
   arr_append(arr, "STRING6");
   arr_print(arr);
   arr_remove(arr, "STRING3");
+  arr_insert(arr, "STRING4", 2);
+  arr_insert(arr, "STRING4", 3);
+  arr_print(arr);
+  arr_remove(arr, "STRING4");
   arr_print(arr);
 
   destroy_array(arr);
