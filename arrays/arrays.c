@@ -131,7 +131,7 @@ void arr_insert(Array *arr, char *element, int index) {
 
   // Increment count by 1
   arr->count++;
-  
+
 }
 
 /*****
@@ -141,10 +141,15 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  if(arr->count + 1 > arr->capacity){
+    resize_array(arr);
+  }
 
   // Copy the element and add it to the end of the array
+  arr->elements[arr->count] = element;
 
   // Increment count by 1
+  arr->count++;
 
 }
 
