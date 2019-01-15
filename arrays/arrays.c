@@ -58,15 +58,16 @@ void *resize_array(Array *arr)
   for (int i = 0; i < capacity; i++)
   {
     newelements[i] = arr->elements[i];
-    if (newarray->elements[i] != NULL)
+/*     if (arr->elements[i] != NULL)
     {
-      newarray->count++;
-    }
+      arr->count++;
+    } */
   }
   // Free the old elements array (but NOT the strings they point to)
-  destroy_array(arr);
+  free(arr->elements);
   // Update the elements and capacity to new values
-  return newarray;
+  arr->elements = newelements;
+  arr->capacity *= 2;
 }
 
 /************************************
@@ -106,7 +107,7 @@ void arr_insert(Array *arr, char *element, int index)
   // Resize the array if the number of elements is over capacity
   if (arr->count == arr->capacity)
   {
-    Array *arr = resize_array(arr);
+    resize_array(arr);
   }
   // Move every element after the insert index to the right one position
   for (int i = arr->count; i > index; i--)
@@ -127,9 +128,9 @@ void arr_append(Array *arr, char *element)
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-  if (*arr->elements == arr->capacity)
+  if (arr->count == arr->capacity)
   {
-    Array *arr = resize_array(arr);
+    resize_array(arr);
   }
   // Copy the element and add it to the end of the array
   arr->elements[arr->count] = strdup(element);
@@ -145,12 +146,12 @@ void arr_append(Array *arr, char *element)
  *****/
 void arr_remove(Array *arr, char *element)
 {
-  int found;
+  int found = 0;
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
   for (int i = 0; i < arr->count; i++)
   {
-    if (arr->elements[i] == element)
+    if (strcmp(arr->elements[i], element) == 0);
     {
       found = 1;
       arr->elements[i] = NULL;
