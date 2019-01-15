@@ -81,14 +81,11 @@ char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
   if (index >= arr->count){
+    fprintf(stderr, "IndexError: index out of bounds");
     return NULL;
   }
-  // printf("Print index:%d\n", index);
-  // printf("%s\n", arr->elements[index]);
-  return arr->elements[index];
-
-
   // Otherwise, return the element at the given index
+  return arr->elements[index]; 
 }
 
 
@@ -117,20 +114,17 @@ void arr_append(Array *arr, char *element) {
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
   if (arr->count + 1 > arr->capacity){
-    exit(1);
+    fprintf(stderr, "IndexError: Array at capacity");
+    return;
   } 
   // Copy the element and add it to the end of the array
   char *copy = malloc(sizeof(strlen(element)));
-  // char copy[strlen(element)+1];
 
   strcpy(copy,element);
-  
-  // printf("%d\n", arr->count);
   *(arr->elements+arr->count) = copy;
-  printf("Appending:%s\n", *(arr->elements+arr->count));
+  
   // Increment count by 1
   arr->count = arr->count + 1;
-  // printf("New count:%d\n", arr->count);
 }
 
 /*****
