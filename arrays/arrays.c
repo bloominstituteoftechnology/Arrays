@@ -47,7 +47,7 @@ void destroy_array(Array *arr) {
  * Create a new elements array with double capacity and copy elements
  * from old to new
  *****/
-void resize_array(Array *arr) {
+// void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
 
@@ -57,7 +57,7 @@ void resize_array(Array *arr) {
 
   // Update the elements and capacity to new values
 
-}
+// }
 
 
 
@@ -76,6 +76,7 @@ char *arr_read(Array *arr, int index) {
 
   if (arr->count < index) {
     printf("Error! that index doesn't exist.");
+    exit(1);
   } else {
     return arr->elements[index];
   }
@@ -88,14 +89,14 @@ char *arr_read(Array *arr, int index) {
 /*****
  * Insert an element to the array at the given index
  *****/
-void arr_insert(Array *arr, char *element, int index) {
+// void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-  if (index > arr->count){
-    printf("Error! that index doesn't exist.");
-  } else {
+  // if (index > arr->count){
+  //   printf("Error! that index doesn't exist.");
+  // } else {
 
-  }
+  // }
   // Resize the array if the number of elements is over capacity
 
   // Move every element after the insert index to the right one position
@@ -104,7 +105,7 @@ void arr_insert(Array *arr, char *element, int index) {
 
   // Increment count by 1
 
-}
+// }
 
 /*****
  * Append an element to the end of the array
@@ -113,7 +114,7 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-  if ((arr->elements) > arr->capacity) {
+  if ((arr->count) > arr->capacity) {
       int resized_arr = arr->count+1;
       malloc(resized_arr*sizeof(char *));
   }
@@ -131,7 +132,7 @@ void arr_append(Array *arr, char *element) {
  *
  * Throw an error if the value is not found.
  *****/
-void arr_remove(Array *arr, char *element) {
+// void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
@@ -140,7 +141,7 @@ void arr_remove(Array *arr, char *element) {
 
   // Decrement count by 1
 
-}
+// }
 
 
 /*****
@@ -164,12 +165,12 @@ int main(void)
 
   Array *arr = create_array(1);
 
-  arr_insert(arr, "STRING1", 0);
+  // arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
-  arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
+  // arr_insert(arr, "STRING2", 0);
+  // arr_insert(arr, "STRING3", 1);
   arr_print(arr);
-  arr_remove(arr, "STRING3");
+  // arr_remove(arr, "STRING3");
   arr_print(arr);
 
   destroy_array(arr);
