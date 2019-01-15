@@ -65,13 +65,28 @@ void resize_array(Array *arr) {
   }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /************************************
  *
  *   ARRAY FUNCTIONS
  *
  ************************************/
 
-/*****
+//*****
  * Return the element in the array at the given index.
  *
  * Throw an error if the index is out of range.
@@ -79,8 +94,37 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if(index > arr->count)
+  {
+    fprintf(stderr, "invalid index\n");
+    exit(2);
+  }
   // Otherwise, return the element at the given index
+  else
+  {
+    return arr->elements[index];
+  }
+}
+
+int get_length(char *string)
+{
+  int length = 0;
+  for(int i=0; string[i]!='\0'; i++)
+  {
+    length++;
+  }
+  return ++length;
+}
+
+char* copy_of_string(char* string)
+{
+  int length = get_length(string);
+  char *p = malloc(length);
+  for(int i=0; i<length; i++)
+  {
+    p[i] = string[i];
+  }
+  return p;
 }
 
 
