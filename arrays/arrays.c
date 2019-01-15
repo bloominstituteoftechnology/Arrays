@@ -65,7 +65,7 @@ void resize_array(Array *arr) {
 
   // Update the elements and capacity to new values
  arr->elements = double_elements;
- arr->capacity = capacity * 2;
+ arr->capacity = arr->capacity * 2;
 }
 
 
