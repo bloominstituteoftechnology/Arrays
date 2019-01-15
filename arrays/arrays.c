@@ -117,6 +117,7 @@ void arr_insert(Array *arr, char *element, int index) {
   arr->elements[index] = element;
   // Increment count by 1
   arr->count++;
+  // insert seems to be working based on prints in main()
 }
 
 /*****
