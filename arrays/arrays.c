@@ -25,7 +25,6 @@ Array *create_array (int capacity) {
   // Set initial values for capacity and count
   an_array->capacity = capacity;
   an_array->count = 0;
-  
 
   // Allocate memory for elements
   an_array->elements = malloc(capacity);
@@ -37,11 +36,18 @@ Array *create_array (int capacity) {
  *****/
 void destroy_array(Array *arr) {
 
+    printf("working\n");
   // Free all elements
-  while (arr->elements){
-    free(arr->elements);
-    arr->elements++;
-  }
+      //Luisan: aparentemente necesario solo si logro usar strdup()
+      // para dynamically allocate memory to the elements
+      //https://stackoverflow.com/questions/21513666/how-to-free-memory-from-char-array-in-c
+  // for (int i = 0 ; i < arr->count ; i++) {
+    printf("working\n");
+    // free(arr->elements[i]);
+    // if (i != arr->count - 1) {
+    //   printf(",");
+    // }
+  // }
   // Free array
   free(arr);
 
@@ -114,13 +120,10 @@ void arr_append(Array *arr, char *element) {
   }
 
   // Copy the element and add it to the end of the array
-  char * copy = strdup(element); //remember to free this
-  printf("append>count: %d\n", arr->count);
-  printf("append>copy: %s\n", element);
   arr->elements[arr->count] = element;    //arr[count++]???
   // Increment count by 1
   arr->count++;
-  printf("append>element: %s\n",  arr->elements[0]);
+  // printf("append>element: %s\n",  arr->elements[0]);
 
 }
 
@@ -161,22 +164,29 @@ void arr_print(Array *arr) {
 int main(void)
 {
 
-  Array *arr = create_array(1);
+  Array *arr = create_array(3);
   printf("count: %d\n", arr->count);
   printf("capacity: %d\n", arr->capacity);
-  printf("elements: %s\n", (arr->elements[0]));
+  arr_print(arr);
   printf("segmenshutup\n");
   // arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
+  arr_append(arr, "JLOPIE");
+  arr_append(arr, "AMIGOS");
+  arr_append(arr, "PEDRO");
   printf("count: %d\n", arr->count);
   printf("capacity: %d\n", arr->capacity);
+  arr_print(arr);
   // arr_insert(arr, "STRING2", 0);
   // arr_insert(arr, "STRING3", 1);
   // arr_print(arr);
   // arr_remove(arr, "STRING3");
   // arr_print(arr);
 
-  // destroy_array(arr);
+  destroy_array(arr);
+  printf("array destroyed\n");
+  printf("capacity: %d\n", arr->capacity);
+  arr_print(arr);
 
   return 0;
 }
