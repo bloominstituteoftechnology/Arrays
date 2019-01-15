@@ -54,6 +54,7 @@ void resize_array(Array *arr) {
   // Create a new element storage with double capacity
   int new_storage = 2 * arr->capacity;
   char ** new_elements = calloc(new_storage, sizeof(char *));
+  //char ** new_elements = malloc(sizeof(char *));
 
   // Copy elements into the new storage
   for (int i = 0; i < arr->capacity; i++) {
@@ -100,15 +101,26 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if (index > arr->count) {
+    fprintf(stderr, "index is out of range.\n");
+    exit(1);
+  }
   // Resize the array if the number of elements is over capacity
+  if (arr->count == arr->capacity) {
+    resize_array(arr);
+  }
 
   // Move every element after the insert index to the right one position
+  for (int i = arr->count - 1; i >= index; i--) {
+    arr->elements[i + 1] = arr->elements[i];
+  }
 
   // Copy the element and add it to the array
+  char * elem_to_insert = element;
+  arr->elements[index] = elem_to_insert;
 
   // Increment count by 1
-
+  arr->count++;
 }
 
 /*****
@@ -141,11 +153,30 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
+  int i = 0;
+  while (i < arr->count) {
+    if (arr->elements[i] == element) {
+      arr->elements[i] = NULL;
+      free(arr->elements[i]);
+      break;
+    }
+    i++;
+  }
+
+  // Throw an error if the value is not found.
+  if (i == arr->count) {
+    fprintf( stderr, "element not found.\n");
+    exit(1);
+  }
 
   // Shift over every element after the removed element to the left one position
+  while (i < arr->count) {
+    arr->elements[i] = arr->elements[i + 1];
+    i++;
+  }
 
   // Decrement count by 1
-
+  arr->count--;
 }
 
 
@@ -179,6 +210,18 @@ int main(void)
   arr_print(arr);
 
   destroy_array(arr);
+
+  return 0;
+
+  // Array *arr = create_array(3);
+
+  // printf("%d",arr->count == 0);
+  // printf("%d",arr->capacity == 3);
+
+  // printf("%d",arr_read(arr, 0) == NULL);
+
+  // arr_append(arr, "VALUE-1");
+
 
   return 0;
 }
