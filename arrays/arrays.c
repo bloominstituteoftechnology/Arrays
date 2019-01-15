@@ -29,10 +29,9 @@ Array *create_array (int capacity) {
   arr->count = 0;
 
   // Allocate memory for elements
-  arr->elements = calloc(capacity, sizeof(char *));
+  arr->elements = malloc(capacity * sizeof(char *));
 
   return arr;
-
 }
 
 
@@ -42,6 +41,10 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
+  for (int i = 0; i < arr->count; i++) {
+    free(arr->elements[i]);
+  }
+
   free(arr->elements);
 
   // Free array
@@ -56,7 +59,7 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
   int capacity = arr->capacity;
   // Create a new element storage with double capacity
-  char **elems = calloc((capacity * 2), sizeof(char *));
+  char **elems = malloc((capacity * 2) * sizeof(char *));
 
   // Copy elements into the new storage
   for (int i = 0; i < arr->count; i++) {
@@ -118,7 +121,7 @@ void arr_insert(Array *arr, char *element, int index) {
   }
 
   // Resize the array if the number of elements is over capacity
-  if (arr->count + 1 > arr->capacity) {
+  if (arr->capacity <= arr->count) {
     resize_array(arr);
   }
 
@@ -128,7 +131,7 @@ void arr_insert(Array *arr, char *element, int index) {
 
   // Copy the element and add it to the array
   char *elem = strdup(element); // Also adding this line here and adding that to the arr->elements[index] causes a segmentation fault
-  arr->elements[index] = element;
+  arr->elements[index] = elem;
 
   // Increment count by 1
   arr->count++;
@@ -142,13 +145,14 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-  if (arr->count + 1 > arr->capacity) {
+  if (arr->capacity <= arr->count) {
     resize_array(arr);
   }
 
   // Copy the element and add it to the end of the array
-  char* elem = strdup(element);
-  arr->elements[arr->count] = element;
+  char *elem = strdup(element);
+  arr->elements[arr->count] = elem;
+
 
   // Increment count by 1
   arr->count++;
@@ -165,35 +169,38 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
-  
-  // Set an index
-  int ind = 0;
+  int index = 0;
+  int found = -1;
 
+  // Loop through the elements in the array
   for (int i = 0; i < arr->count; i++) {
-    ind = i;
+    // Use string copy so we can check if the two elements match
+    int res = strcmp(arr->elements[i], element);
+    if (res == 0) {
 
-    if (arr->elements[i] == element) {
-
-      // Set to not have an invalid pointer
-      arr->elements[i] = NULL;
+      // arr->elements[i] = NULL;
+      // Free the element
       free(arr->elements[i]);
 
-      // Shift over every element after the removed element to the left one position
-      for (int i = ind; i < arr->count; i++) {
-        arr->elements[i] = arr->elements[i + 1];
-      }
-
-      // Decrement count by 1
-      arr->count--;
-      return;
-    } else if (ind >= arr->count) {
-
-      switch(errno) {
-        default:
-          fprintf(stderr, "Removing element from array -> Error: Index was not found \n");
-      }
-      exit(1);
+      // Set index and set found
+      index = i;
+      found = 1;
+      break;
     }
+  }
+
+  // Check if element was found, if not, return error
+  if (found  != -1) {
+    // Shift each element at the index to the left
+    for (int i = index; i < arr->count; i++) {
+      arr->elements[i] = arr->elements[i + 1];
+    }
+
+    // Decrement the count
+    arr->count--;
+  } else {
+    fprintf(stderr, "Removing element from array -> Error: Index was not found \n");
+    return;
   }
 }
 
@@ -221,14 +228,13 @@ int main(void)
 
   arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
-  arr_append(arr, "STRING5");
+  arr_append(arr, "STRING4");
+  arr_append(arr, "STRING4");
   arr_insert(arr, "STRING2", 0);
   arr_insert(arr, "STRING3", 1);
   arr_append(arr, "STRING6");
   arr_print(arr);
-  arr_remove(arr, "STRING3");
-  arr_insert(arr, "STRING4", 2);
-  arr_insert(arr, "STRING4", 3);
+  arr_remove(arr, "STRING4");
   arr_print(arr);
   arr_remove(arr, "STRING4");
   arr_print(arr);
