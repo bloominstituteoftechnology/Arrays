@@ -37,10 +37,10 @@ void destroy_array(Array *arr) {
 
   // Free all elements
   if (arr->elements != NULL) { // free arr->elements if it exists
-    free(arr->elements); 
+    free(arr->elements);
   // Free array
   if (arr != NULL) { // free arr if it exists
-    free(arr); 
+    free(arr);
   }
 
 
@@ -49,17 +49,20 @@ void destroy_array(Array *arr) {
  * from old to new
  *****/
 void resize_array(Array *arr) {
-
-  // Create a new element storage with double capacity
-
+  char **new_storage = malloc(arr->capacity*2*sizeof(char*));
   // Copy elements into the new storage
-
+  char **p = arr->elements;
+  for(int i=0; i<arr->count; i++)
+  {
+    new_storage[i] = *p++;
+  }
   // Free the old elements array (but NOT the strings they point to)
-
+  free(arr->elements);
   // Update the elements and capacity to new values
-
-}
-
+  arr->elements = new_storage;
+  set_rest_null(arr);
+  arr->capacity *= 2;
+  }
 
 
 /************************************
