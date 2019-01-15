@@ -57,13 +57,17 @@ void destroy_array(Array *arr)
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-
+  char **doubleCap = malloc(arr->capacity * sizeof(char*) * 2); 
   // Copy elements into the new storage
-
+  for (int i = 0; i < arr->count; i++)
+  {
+    doubleCap[i] = arr->elements[i];
+  }
   // Free the old elements array (but NOT the strings they point to)
-
+  free(arr->elements);
   // Update the elements and capacity to new values
-
+  arr->elements = doubleCap;
+  arr->capacity *= 2;
 }
 
 
@@ -126,8 +130,7 @@ void arr_append(Array *arr, char *element) {
    
   if (arr->count > arr->capacity)
   {
-    printf("Over maximum capacity.");
-    exit(1);
+    resize_array(arr);
   }
   // Copy the element and add it to the end of the array
   arr->elements[arr->count] = element;
@@ -151,7 +154,8 @@ void arr_remove(Array *arr, char *element) {
   {
     if(arr->elements[i] == element)
     {
-      // arr->elements[i] == NULL;
+      printf("%s",arr->elements[i]);
+      arr->elements[i] == NULL;
       free(arr->elements[i]);
       index = i;
     }
