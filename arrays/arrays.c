@@ -189,13 +189,13 @@ void arr_insert(Array *arr, char *element, int index) {
  *****/
 void arr_append(Array *arr, char *element) {
     
-    if (arr->count > arr->capacity)
+    if (arr->count +1 > arr->capacity)
     {
       resize_array(arr); //call func resize from above 
     }
 
-    char *el_end =strdup(element);//duplicate
-    arr->elements[arr->count] = el_end;
+    //char *el_end =strdup(element);//duplicate
+    arr->elements[arr->count] = element;
 
     arr->count++;
 
