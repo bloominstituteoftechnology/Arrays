@@ -5,7 +5,7 @@
 
 typedef struct Array {
   int capacity;  // How many elements can this array hold?
-  int count;  // How many states does the array currently hold?
+  int count;  // Number of elements or size/length of array (How many states does the array currently hold?)
   char **elements;  // The string elements contained in the array
 } Array;
 
@@ -19,6 +19,8 @@ typedef struct Array {
 /*****
  * Allocate memory for a new array
  *****/
+// Use malloc() if you are going to set everything that you use in the allocated space.
+// Use calloc() if you're going to leave parts of the data uninitialized - and it would be beneficial to have the unset parts zeroed.
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
   Array *newArr = malloc(sizeof(Array)); // allocates memory for a size of 1 struct Array
@@ -40,14 +42,10 @@ Array *create_array (int capacity) {
  *****/
 void destroy_array(Array *arr) {
   // Free all elements
-  if (arr->elements != NULL) { // free arr->elements if it exists
-    free(arr->elements); 
-  }
+  free(arr->elements);
 
   // Free array
-  if (arr != NULL) { // free arr if it exists
     free(arr); 
-  }
 }
 
 /*****
@@ -67,7 +65,6 @@ void resize_array(Array *arr) {
 }
 
 
-
 /************************************
  *
  *   ARRAY FUNCTIONS
@@ -79,10 +76,14 @@ void resize_array(Array *arr) {
  *
  * Throw an error if the index is out of range.
  *****/
+// fprintf writes formatted text to the output stream you specify.
+// printf is equivalent to writing fprintf(stdout, ...) and
+// writes formatted text to wherever the standard output stream is currently pointing.
+// sprintf writes formatted text to an array of char, as opposed to a stream.
 char *arr_read(Array *arr, int index) {
   // Throw an error if the index is greater than the current count
   if (index > arr->count) {
-    printf("Index is out of range.");
+    fprintf(stderr, "Index is out of range.");
     exit(1);
   }
 
@@ -114,15 +115,13 @@ void arr_insert(Array *arr, char *element, int index) {
 void arr_append(Array *arr, char *element) {
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-  int element_size = sizeof(element) / sizeof(char); // figure out the number of the elements being passed in
-
-  if (element_size > arr->capacity) { // if size is bigger than capacity, throw error
-    printf("The number of elements is over capacity.");
+  if (arr->count > arr->capacity) {
+    fprintf(stderr, "The number of elements is over capacity.");
     exit(1);
   }
 
   // Copy the element and add it to the end of the array
-  arr->elements[arr->count + 1] = element;
+  arr->elements[arr->count] = element;
 
   // Increment count by 1
   arr->count++;
@@ -135,7 +134,6 @@ void arr_append(Array *arr, char *element) {
  * Throw an error if the value is not found.
  *****/
 void arr_remove(Array *arr, char *element) {
-
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
 
@@ -164,18 +162,27 @@ void arr_print(Array *arr) {
 #ifndef TESTING
 int main(void)
 {
-
-  Array *arr = create_array(1);
-
-  arr_insert(arr, "STRING1", 0);
-  arr_append(arr, "STRING4");
-  arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
+  // MY TESTS
+  Array *arr = create_array(3);
+  arr_append(arr, "ABC");
+  arr_append(arr, "DEF");
+  arr_append(arr, "GHI");
+  printf("%s \n", arr_read(arr, 1));
   arr_print(arr);
-  arr_remove(arr, "STRING3");
-  arr_print(arr);
-
   destroy_array(arr);
+
+  // PRESET TESTS
+  // Array *arr = create_array(1);
+
+  // arr_insert(arr, "STRING1", 0);
+  // arr_append(arr, "STRING4");
+  // arr_insert(arr, "STRING2", 0);
+  // arr_insert(arr, "STRING3", 1);
+  // arr_print(arr);
+  // arr_remove(arr, "STRING3");
+  // arr_print(arr);
+
+  // destroy_array(arr);
 
   return 0;
 }
