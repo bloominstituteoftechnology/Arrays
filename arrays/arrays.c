@@ -21,11 +21,13 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-
+  Array *arr = malloc(sizeof(Array));
   // Set initial values for capacity and count
-
+  arr->capacity = capacity;
+  arr->count = 0;
   // Allocate memory for elements
-
+  arr->elements = calloc(capacity, sizeof(char *));
+  return arr;
 }
 
 
@@ -33,11 +35,14 @@ Array *create_array (int capacity) {
  * Free memory for an array and all of its stored elements
  *****/
 void destroy_array(Array *arr) {
-
   // Free all elements
-
+  if (arr->elements != NULL) {
+    free(arr->elements);
+  }
   // Free array
-
+  if (arr != NULL) {
+    free(arr);
+  }
 }
 
 /*****
@@ -47,13 +52,13 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-
+  
   // Copy elements into the new storage
-
+  
   // Free the old elements array (but NOT the strings they point to)
-
+  free(arr);
   // Update the elements and capacity to new values
-
+  
 }
 
 
@@ -72,8 +77,14 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if(index > (arr->count)) {
+    printf(stderr, "error");
+    exit(1);
+  }
   // Otherwise, return the element at the given index
+  else {
+    return arr->elements[index];
+  }
 }
 
 
@@ -101,11 +112,13 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
+  if ((sizeof(arr->count + 1)) > (arr->capacity)) {
+    resize_array(arr);
+  }
   // Copy the element and add it to the end of the array
-
+  arr->elements[arr->count] = element;
   // Increment count by 1
-
+  arr->count = count + 1;
 }
 
 /*****
