@@ -38,7 +38,7 @@ Array *create_array (int capacity) {
  * Free memory for an array and all of its stored elements
  *****/
 void destroy_array(Array *arr) {
-  for(int i = 0; i<arr->count; ++i){
+  for(int i = 0; i<arr->count; i++){
   // Free all elements
   free(arr -> elements[i]);
   }
@@ -53,15 +53,19 @@ void destroy_array(Array *arr) {
  * from old to new
  *****/
 void resize_array(Array *arr) {
-
   // Create a new element storage with double capacity
+  char **double_elements = calloc((arr->capacity*2) * sizeof(char*));
 
   // Copy elements into the new storage
-
+  for(int 1 =0; i<arr->count; i++){
+    double_elements[i] = arr_elements[i];
+  }
   // Free the old elements array (but NOT the strings they point to)
+   free(arr->elements);
 
   // Update the elements and capacity to new values
-
+ arr->elements = double_elements;
+ arr->capacity = capacity * 2;
 }
 
 
