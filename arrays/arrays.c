@@ -38,6 +38,9 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
+  for (int i=0; i<arr->count; i++){
+    free(arr->elements[i]);
+  }
   free(arr->elements);
 
   // Free array
@@ -110,7 +113,8 @@ void arr_insert(Array *arr, char *element, int index) {
     arr->elements[i] = arr->elements[i-1];
   }
   // Copy the element and add it to the array
-  arr->elements[index] = element;
+  char *new_element = strdup(element);
+  arr->elements[index] = new_element;
   // Increment count by 1
   arr->count++;
 }
@@ -126,7 +130,8 @@ void arr_append(Array *arr, char *element) {
     resize_array(arr);
   }
   // Copy the element and add it to the end of the array
-  arr->elements[arr->count] = element;
+  char *new_element = strdup(element);
+  arr->elements[arr->count] = new_element;
   // Increment count by 1
   arr->count++;
 }
@@ -142,11 +147,12 @@ void arr_remove(Array *arr, char *element) {
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
   int i=0;
-  int found = -1;
+  int found = -1; //create a flag for a match
+  char *new_element = strdup(element);
+
   while (i<arr->count && found == -1){
-    // printf("here");
-    if (arr->elements[i] == element){
-      found = i;
+    if (strcmp(arr->elements[i], new_element) == 0){
+      found = i;  //extract the index when a match is found
       arr->elements[i] = NULL;
       free(arr->elements[i]);
     }
