@@ -52,7 +52,7 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-  char **new_elements = malloc(sizeof(arr->capacity * 2));
+  char **new_elements = malloc(sizeof(arr->capacity) * 2);
   // Copy elements into the new storage
   for (int i = 0; i < arr->capacity; i++) {
     new_elements[i] = arr->elements[i];
@@ -61,8 +61,13 @@ void resize_array(Array *arr) {
   free(arr->elements);
   // Update the elements and capacity to new values
   arr->elements = malloc(sizeof(new_elements));
-  arr->elements = new_elements;
+  for (int i = 0; i < arr->capacity; i++) {
+    arr->elements[i] = strdup(new_elements[i]);
+  }
+
+  // arr->elements = new_elements;
   arr->capacity = arr->capacity * 2;
+  free(new_elements);
 }
 
 
@@ -95,8 +100,6 @@ char *arr_read(Array *arr, int index) {
  *****/
 void arr_insert(Array *arr, char *element, int index) {
 
-  printf("element to be added: %s\n", element);
-
   // Throw an error if the index is greater than the current count
   if (index > arr->count) {
     perror("index out of bounds");
@@ -104,60 +107,23 @@ void arr_insert(Array *arr, char *element, int index) {
   }
   // Resize the array if the number of elements is over capacity
   if (arr->count == arr->capacity) {
-    printf("array of count %d about to be resized\n", arr->count);
     resize_array(arr);
   }
   // Move every element after the insert index to the right one position
 
-  // for loop to move everything over one starting with arr->count -1
-
-  // char **right_shift = arr->elements+index;
-  // arr->elements[index+1] = right_shift;
-
   if (arr->count > 0) {
-    printf("if: count is %d\n", arr->count);
-    for (int i = 0; arr->count - i > index; i++) {
-
-      printf("got inside the for loop \n");
-      int old_index = arr->count - 1 - i;
-      // malloc space for string in destination
-      arr->elements[old_index + 1] = malloc(sizeof(arr->elements[old_index]));
-      // duplicate into destination
-      printf("old_index (%d): %s\n", old_index, arr->elements[old_index]);
-      arr->elements[old_index + 1] = strdup(arr->elements[old_index]);
+    for (int i = arr->count; i > index; i--) {
+      // duplicate into destination (complimentary malloc)
+      arr->elements[i] = strdup(arr->elements[i - 1]);
       // free source
-      free(arr->elements[old_index]);
+      free(arr->elements[i - 1]);
     }
   }
 
-
-
-
-
-  // printf("about to shift everything; insert element %s at index: %d\n", element, index);
-  // arr->elements[arr->count] = malloc(sizeof(arr->elements[arr->count-1]));
-  // printf("first shift achieved; count: %d\n", arr->count);
-  // for (int i = 0; (arr->count - i) < index; i++) {
-  //   int old_index = (arr->count - i - 1);
-  //   printf("old_index: %d\n", old_index);
-  //   printf("old_index value: %s\n", arr->elements[old_index]);
-  //
-  //   // arr->elements[old_index + 1] = malloc(sizeof(arr->elements[old_index] + 1));
-  //   // printf("malloc'ed the space alright\n");
-  //
-  //   arr->elements[old_index + 1] = strdup(arr->elements[old_index]);
-  //   printf("@old_index: %s; @new_index: %s\n", arr->elements[old_index], arr->elements[old_index + 1]);
-  //   free(arr->elements[old_index]);
-  // }
-
   // Copy the element and add it to the array
-  printf("copying new element in here\n");
-  arr->elements[index] = malloc(sizeof(element) + 1);
-  strcpy(arr->elements[index], element);
+  arr->elements[index] = strdup(element);
   // Increment count by 1
-  printf("count before incrementing: %d\n", arr->count);
   arr->count ++;
-  printf("count after incrementing: %d\n", arr->count);
 }
 
 /*****
