@@ -16,15 +16,18 @@ typedef struct Array {
  *
  ************************************/
 
-/*****
- * Allocate memory for a new array
- *****/
+
+ 
+ 
 Array *create_array (int capacity) {
-  // Allocate memory for the Array struct
+  Array *arr = malloc(sizeof(Array));
 
-  // Set initial values for capacity and count
+  arr->capacity = capacity;
+  arr->count = 0;
 
-  // Allocate memory for elements
+  arr->elements = calloc(capacity, sizeof(char *));
+
+  return arr;
 
 }
 
@@ -34,9 +37,9 @@ Array *create_array (int capacity) {
  *****/
 void destroy_array(Array *arr) {
 
-  // Free all elements
+  free(arr->elements);
 
-  // Free array
+  free(arr);
 
 }
 
@@ -46,13 +49,18 @@ void destroy_array(Array *arr) {
  *****/
 void resize_array(Array *arr) {
 
+    int dubStorage = arr->capacity;
   // Create a new element storage with double capacity
-
+    char **newStorage = calloc(dubStorage*2, sizeof(char *)); // what is this for <--
   // Copy elements into the new storage
+    for ( int i = 0; i < arr->count; i++ ) {
+        newStorage[i] = arr->elements[i]; 
+    }
+    free(arr->elements);  // Free the old elements array (but NOT the strings they point to)
+  
 
-  // Free the old elements array (but NOT the strings they point to)
-
-  // Update the elements and capacity to new values
+    arr->capacity = arr->capacity*2;
+    arr->elements = newStorage;  // Update the elements and capacity to new values
 
 }
 
@@ -71,6 +79,12 @@ void resize_array(Array *arr) {
  *****/
 char *arr_read(Array *arr, int index) {
 
+  if (arr->count > index) {
+    printf("Error! that index doesn't exist.");
+    exit(1);
+  } else {
+    return arr->elements[index];
+  }
   // Throw an error if the index is greater than the current count
 
   // Otherwise, return the element at the given index
@@ -82,16 +96,26 @@ char *arr_read(Array *arr, int index) {
  *****/
 void arr_insert(Array *arr, char *element, int index) {
 
+    
   // Throw an error if the index is greater than the current count
+  if (index > arr->count){
+    printf("Error! that index doesn't exist.");
+    exit(1);
+  } else if (arr->count+1 > arr->capacity) {
+      resize_array(arr); // Resize the array if the number of elements is over capacity
+  } for ( int i = index; i < arr->count; i++) {
+      arr->elements[i+1] = arr->elements[i];
+  }
 
-  // Resize the array if the number of elements is over capacity
+  
+  
 
   // Move every element after the insert index to the right one position
 
   // Copy the element and add it to the array
-
+    arr->elements[index] = element;
   // Increment count by 1
-
+    arr->count = arr->count+1;
 }
 
 /*****
@@ -101,10 +125,14 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  if ((arr->count+1) > arr->capacity) {
+      resize_array(arr);
+  }
 
   // Copy the element and add it to the end of the array
-
+      arr->elements[arr->count] = element;
   // Increment count by 1
+      arr->count = arr->count+1;
 
 }
 
@@ -115,14 +143,29 @@ void arr_append(Array *arr, char *element) {
  * Throw an error if the value is not found.
  *****/
 void arr_remove(Array *arr, char *element) {
+   
+   for ( int i = 0; i > arr->count; i++ ) {
+     if (arr->elements[i] == element) {
+     arr->elements[i] = NULL;
+     free(arr->elements[i]);
 
+     int deletedI = i;
+     for ( int i = deletedI; i < arr->count; i++ ) {
+       arr->elements[i] = arr->elements[i + 1];
+     }
+       arr->count--;
+     } else if (arr->count == i) {
+      exit(1);
+    }
+
+   } 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
-
+    
   // Shift over every element after the removed element to the left one position
 
   // Decrement count by 1
-
+    
 }
 
 
