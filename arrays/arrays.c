@@ -184,7 +184,7 @@ void arr_remove(Array *arr, char *element) {
   // Search for the first occurence of the element and remove it.
   	for(int i=0; i< arr->count; i++){
 		if(arr->elements[i] == element){
-			index = 1;
+			index = i;
 			arr->elements[i] = NULL;
 			free(arr->elements[i]);	
 		}
@@ -200,7 +200,7 @@ void arr_remove(Array *arr, char *element) {
   // Decrement count by 1
   	arr->count-=1;
   
-	printf("Removing element from array \n");
+	printf("Removing %s from array \n", element);
 
 }
 
@@ -231,7 +231,22 @@ char *arr_pop(Array *arr){
 	return last_element;
  }
 
+void arr_sort(Array *arr){
+	printf("Sorting array \n");
 
+	//using  bubble sort to sort the array	
+	for(int i=0; i< arr->count; i++){
+		 for(int j=i+1; j< arr->count-1; j++){
+			if(arr->elements[i] > arr->elements[j]){
+				char *swap = arr->elements[i];
+				arr->elements[i] = arr->elements[j];
+				arr->elements[j] = swap;
+			}
+
+		 }	
+	
+	}
+}
 
 /*****
  * Utility function to print an array.
@@ -259,6 +274,9 @@ int main(void)
   arr_append(arr, "STRING4");
   arr_insert(arr, "STRING2", 0);
   arr_insert(arr, "STRING3", 1);
+  arr_print(arr);
+  arr_sort(arr);
+  printf("Sorted array is:\n");
   arr_print(arr);
   arr_remove(arr, "STRING3");
   arr_print(arr);
