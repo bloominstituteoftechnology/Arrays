@@ -21,11 +21,14 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-
+  Array *an_array = malloc(sizeof(Array));
   // Set initial values for capacity and count
+  an_array->capacity = capacity;
+  an_array->count = 0;
+  
 
   // Allocate memory for elements
-
+  an_array->elements = malloc(capacity);
 }
 
 
@@ -35,8 +38,12 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
-
+  while (arr->elements){
+    free(arr->elements);
+    arr->elements++;
+  }
   // Free array
+  free(arr);
 
 }
 
@@ -101,10 +108,19 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  if (arr->count >= arr->capacity){
+    printf("too many elements, implent resize\n");
+    return 0;
+  }
 
   // Copy the element and add it to the end of the array
-
+  char * copy = strdup(element); //remember to free this
+  printf("append>count: %d\n", arr->count);
+  printf("append>copy: %s\n", element);
+  arr->elements[arr->count] = element;    //arr[count++]???
   // Increment count by 1
+  arr->count++;
+  printf("append>element: %s\n",  arr->elements[0]);
 
 }
 
@@ -146,16 +162,21 @@ int main(void)
 {
 
   Array *arr = create_array(1);
-
-  arr_insert(arr, "STRING1", 0);
+  printf("count: %d\n", arr->count);
+  printf("capacity: %d\n", arr->capacity);
+  printf("elements: %s\n", (arr->elements[0]));
+  printf("segmenshutup\n");
+  // arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
-  arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
-  arr_print(arr);
-  arr_remove(arr, "STRING3");
-  arr_print(arr);
+  printf("count: %d\n", arr->count);
+  printf("capacity: %d\n", arr->capacity);
+  // arr_insert(arr, "STRING2", 0);
+  // arr_insert(arr, "STRING3", 1);
+  // arr_print(arr);
+  // arr_remove(arr, "STRING3");
+  // arr_print(arr);
 
-  destroy_array(arr);
+  // destroy_array(arr);
 
   return 0;
 }
