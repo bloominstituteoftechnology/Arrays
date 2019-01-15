@@ -48,12 +48,10 @@ char *arr_read(Array *arr, int index) {
 }
 
 void arr_append(Array *arr, char *element) {
-  // Resize the array if the number of elements is over capacity
+  // Resize the array if the number of elements is equal to or over capacity
   // or throw an error if resize isn't implemented yet.
-
-  if (arr->count > arr->capacity) { // if size is bigger than capacity, throw error
-    fprintf(stderr, "The number of elements is over capacity.");
-    exit(1);
+  if (arr->count >= arr->capacity) {
+    resize_array(arr);
   }
 
   // Copy the element and add it to the end of the array
@@ -120,13 +118,17 @@ void arr_print(Array *arr) {
 
 int main() {
   Array *arr = create_array(3);
-  arr_append(arr, "ABC");
-  arr_append(arr, "DEF");
-  arr_append(arr, "GHI");
+  arr_append(arr, "first");
+  arr_append(arr, "second");
+  arr_append(arr, "third");
   printf("%s \n", arr_read(arr, 1));
   arr_print(arr);
-  arr_insert(arr, "JKL", 0);
-  arr_insert(arr, "middle", 2);
+  arr_insert(arr, "fourth", 0);
+  arr_print(arr);
+  arr_insert(arr, "fifth", 2);
+  arr_print(arr);
+  arr_append(arr, "sixth");
+  arr_append(arr, "seventh");
   arr_print(arr);
   destroy_array(arr);
 }
