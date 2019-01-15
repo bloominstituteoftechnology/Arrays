@@ -85,6 +85,12 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
+  if (index > arr->count) {
+    printf("Index out of range. Max index: %d", arr->count);
+    return "\0 ho";
+  } else {
+    return arr->elements[index];
+  }
 
   // Otherwise, return the element at the given index
 }
@@ -174,9 +180,11 @@ int main(void)
   arr_append(arr, "JLOPIE");
   arr_append(arr, "AMIGOS");
   arr_append(arr, "PEDRO");
+  printf("1\n");
+  printf("%s\n", arr_read(arr, 10));
+  printf("2\n");
   printf("count: %d\n", arr->count);
   printf("capacity: %d\n", arr->capacity);
-  arr_print(arr);
   // arr_insert(arr, "STRING2", 0);
   // arr_insert(arr, "STRING3", 1);
   // arr_print(arr);
