@@ -4,8 +4,8 @@
 #include <errno.h>
 
 typedef struct Array {
-  int capacity;  // How many elements can this array hold?
-  int count;  // How many states does the array currently hold?
+  int capacity;     // How many elements can this array hold?
+  int count;        // How many states does the array currently hold?
   char **elements;  // The string elements contained in the array
 } Array;
 
@@ -40,9 +40,16 @@ Array *create_array (int capacity) {       // This needs to return a pointer to 
  *****/
 void destroy_array(Array *arr) {
 
-  // Free all elements
+  // Set elements equal to NULL and then free all elements
+  for(int i = 0; i < arr->count; i++){ 
+    arr->elements[i] = NULL; 
+    free(arr->elements[i]);
+  }
+
+  free(arr->elements);
 
   // Free array
+  free(arr);
 
 }
 
@@ -127,11 +134,14 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
+  if(arr->count >= arr->capacity){
+		resize_array(arr);
+	}
   // Copy the element and add it to the end of the array
-
+  char *new_element = strdup(element);
+  arr->elements[arr->count] = new_element;
   // Increment count by 1
-
+  arr->count++;
 }
 
 /*****
