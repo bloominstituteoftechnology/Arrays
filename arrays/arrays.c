@@ -27,7 +27,7 @@ Array *create_array (int capacity) {
   an_array->count = 0;
 
   // Allocate memory for elements
-  an_array->elements = malloc(capacity);
+  an_array->elements = malloc(capacity*sizeof(char *));
 }
 
 
@@ -36,18 +36,9 @@ Array *create_array (int capacity) {
  *****/
 void destroy_array(Array *arr) {
 
-    printf("working\n");
-  // Free all elements
-      //Luisan: aparentemente necesario solo si logro usar strdup()
-      // para dynamically allocate memory to the elements
-      //https://stackoverflow.com/questions/21513666/how-to-free-memory-from-char-array-in-c
-  // for (int i = 0 ; i < arr->count ; i++) {
-    printf("working\n");
-    // free(arr->elements[i]);
-    // if (i != arr->count - 1) {
-    //   printf(",");
-    // }
-  // }
+  for (int i = 0 ; i < arr->count ; i++) {
+    free(arr->elements[i]);
+  }
   // Free array
   free(arr);
 
@@ -58,15 +49,18 @@ void destroy_array(Array *arr) {
  * from old to new
  *****/
 void resize_array(Array *arr) {
-
   // Create a new element storage with double capacity
+  arr->capacity *= 2;
+  char **new_elements = malloc(arr->capacity*sizeof(char *));
 
   // Copy elements into the new storage
-
+  for (int i=0; i<arr->count; i++){
+    new_elements[i] = arr->elements[i];
+  }
   // Free the old elements array (but NOT the strings they point to)
-
+  free(arr->elements);
   // Update the elements and capacity to new values
-
+  arr->elements = new_elements;
 }
 
 
@@ -87,7 +81,7 @@ char *arr_read(Array *arr, int index) {
   // Throw an error if the index is greater than the current count
   if (index > arr->count) {
     printf("Index out of range. Max index: %d", arr->count);
-    return "\0 ho";
+    return "\0";
   } else {
     return arr->elements[index];
   }
@@ -100,17 +94,37 @@ char *arr_read(Array *arr, int index) {
  * Insert an element to the array at the given index
  *****/
 void arr_insert(Array *arr, char *element, int index) {
-
   // Throw an error if the index is greater than the current count
+  if (index > arr->count) {
+    printf("Index out of range. Max index: %d", arr->count);
+    return;
+  } 
 
   // Resize the array if the number of elements is over capacity
+  if (arr->count >= arr->capacity){
+    resize_array(arr);
+  }
 
   // Move every element after the insert index to the right one position
+  int i;
+  i = arr->count;
 
+  for (i; i>index; i--){
+    arr->elements[i] = arr->elements[i-1];
+
+    // SIDE PROJECT - ignore
+    // printf("%d:    ", &(arr->elements[i]));
+    // printf("%10s    ", (arr->elements[i]));
+    // (&(arr->elements[i+1]))++;  //this was working before. now I get lvalue error
+    // printf("%10s    ", (arr->elements[i]));
+    // printf("%10d\n", &(arr->elements[i]));
+  }
   // Copy the element and add it to the array
+  char *copy = strdup(element);
 
+  arr->elements[index] = copy;
   // Increment count by 1
-
+  arr->count++;
 }
 
 /*****
@@ -121,16 +135,16 @@ void arr_append(Array *arr, char *element) {
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
   if (arr->count >= arr->capacity){
-    printf("too many elements, implent resize\n");
-    return 0;
+    resize_array(arr);
   }
 
   // Copy the element and add it to the end of the array
-  arr->elements[arr->count] = element;    //arr[count++]???
+  char *copy = malloc(strlen(element) + 1);
+  strcpy(copy, element);
+  arr->elements[arr->count] = copy;    //arr[count++]???
   // Increment count by 1
   arr->count++;
-  // printf("append>element: %s\n",  arr->elements[0]);
-
+  return;
 }
 
 /*****
@@ -143,11 +157,22 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
-
+  int index;
+  // char *copy = element;
+  for (int i=0; i<arr->count; i++){
+    if (strcmp(element, arr->elements[i]) == 0){
+      index = i;
+      break;
+    }
+  }
+  free(arr->elements[index]);
   // Shift over every element after the removed element to the left one position
-
+  for (index; index < arr->count; index++){
+    arr->elements[index] = arr->elements[index+1];
+  }
   // Decrement count by 1
-
+  arr->count--;
+  return;
 }
 
 
@@ -170,31 +195,17 @@ void arr_print(Array *arr) {
 int main(void)
 {
 
-  Array *arr = create_array(3);
-  printf("count: %d\n", arr->count);
-  printf("capacity: %d\n", arr->capacity);
-  arr_print(arr);
-  printf("segmenshutup\n");
-  // arr_insert(arr, "STRING1", 0);
+  Array *arr = create_array(1);
+
+  arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
-  arr_append(arr, "JLOPIE");
-  arr_append(arr, "AMIGOS");
-  arr_append(arr, "PEDRO");
-  printf("1\n");
-  printf("%s\n", arr_read(arr, 10));
-  printf("2\n");
-  printf("count: %d\n", arr->count);
-  printf("capacity: %d\n", arr->capacity);
-  // arr_insert(arr, "STRING2", 0);
-  // arr_insert(arr, "STRING3", 1);
-  // arr_print(arr);
-  // arr_remove(arr, "STRING3");
-  // arr_print(arr);
+  arr_insert(arr, "STRING2", 0);
+  arr_insert(arr, "STRING3", 1);
+  arr_print(arr);
+  arr_remove(arr, "STRING3");
+  arr_print(arr);
 
   destroy_array(arr);
-  printf("array destroyed\n");
-  printf("capacity: %d\n", arr->capacity);
-  arr_print(arr);
 
   return 0;
 }
