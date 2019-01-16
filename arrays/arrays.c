@@ -151,16 +151,17 @@ void arr_remove(Array *arr, char *element)
   // Don't forget to free its memory!
   for (int i = 0; i < arr->count; i++)
   {
-    if (strcmp(arr->elements[i], element) == 0);
+    if (strcmp(arr->elements[i], element) == 0)
     {
       found = 1;
       arr->elements[i] = NULL;
       if (i < arr->count)
       {
-        for (int u = i; u < arr->count; u++)
+        for (int u = i; u < arr->count-1; u++)
         {
           arr->elements[u] = arr->elements[u+1];
         }
+        break;
       }
     }
   }
