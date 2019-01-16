@@ -58,9 +58,10 @@ void destroy_array(Array *arr) {
  * from old to new
  *****/
 void resize_array(Array *arr) {
+  int newCapacity = arr->capacity * 2;
 
   // Create a new element storage with double capacity
-  char **newElements = calloc((2 * arr->capacity), sizeof(char *));
+  char **newElements = calloc(newCapacity, sizeof(char *));
 
   // Copy elements into the new storage
   for(int i = 0; i < arr->count; i++){
@@ -68,15 +69,11 @@ void resize_array(Array *arr) {
   }
 
   // Free the old elements array (but NOT the strings they point to)
-  for(int i = 0; i < arr->count; i++){
-    arr->elements[i] = NULL;
-    free(arr->elements[i]);
-  }
     free(arr->elements);
 
   // Update the elements and capacity to new values
   arr->elements = newElements;
-  arr->capacity = arr->capacity * 2;
+  arr->capacity = newCapacity;
 }
 
 
