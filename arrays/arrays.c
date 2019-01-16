@@ -248,6 +248,22 @@ void arr_sort(Array *arr){
 	}
 }
 
+void arr_reverse(Array *arr){
+	printf("Reversed array is:\n");
+
+	char **reversed_elements = calloc(arr->count, sizeof(char *));
+
+	int j = arr->count-1;
+
+	for(int i=0; i< arr->count; i++){
+		reversed_elements[i] = arr->elements[j];
+		j--;
+	}
+
+	arr->elements = reversed_elements;
+}
+
+
 /*****
  * Utility function to print an array.
  *****/
@@ -277,6 +293,8 @@ int main(void)
   arr_print(arr);
   arr_sort(arr);
   printf("Sorted array is:\n");
+  arr_print(arr);
+  arr_reverse(arr);
   arr_print(arr);
   arr_remove(arr, "STRING3");
   arr_print(arr);
