@@ -138,13 +138,17 @@ if (index > arr->count) {
  *****/
 void arr_append(Array *arr, char *element) {
 
-  // Resize the array if the number of elements is over capacity
+  // Resize the array if the number of elements is equal to or over capacity
   // or throw an error if resize isn't implemented yet.
+  if (arr->count >= arr->capacity) {
+    resize_array(arr);
+  }
 
   // Copy the element and add it to the end of the array
+  arr->elements[arr->count] = element;
 
   // Increment count by 1
-
+  arr->count++;
 }
 
 /*****
@@ -156,11 +160,29 @@ void arr_append(Array *arr, char *element) {
 void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
-  // Don't forget to free its memory!
+  int found;
 
-  // Shift over every element after the removed element to the left one position
+  for (int i=0; i < arr->count; i++) { // loop over to find matching element
+    if (arr->elements[i] == element) { // if match occurs at index
+      found = i; // set temp variable to hold the index
+      arr->elements[i] = NULL; // WITHOUT -> ERROR: 0x1063a9fa8: pointer being freed was not allocated
+      // Don't forget to free its memory!
+      free(arr->elements[i]);
 
-  // Decrement count by 1
+      // Shift over every element after the removed element to the left one position
+      for (int j = found; j < arr->count; j++) {
+        arr->elements[j] = arr->elements[j+1];
+      }
+
+      // Decrement count by 1
+      arr->count--;
+      break;
+    }
+    else if (i == arr->count) { // if the index has reached the end of the array
+      fprintf(stderr, "Value is not found.");
+      exit(1);
+    }
+  }
 
 }
 
