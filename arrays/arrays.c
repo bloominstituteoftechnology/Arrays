@@ -58,25 +58,13 @@ void destroy_array(Array *arr)
   // Free all elements
   for (int i = 0; i < arr->count; i++)
   {
-    if (arr->elements[i] != NULL)
-    {
-      arr->elements[i] = NULL;
-      free(arr->elements[i]);
-    }
+    if (arr->elements[i] != NULL) free(arr->elements[i]);
   }
 
-  if (arr->elements != NULL)
-  {
-    arr->elements = NULL;
-    free(arr->elements); 
-  }
+  if (arr->elements != NULL) free(arr->elements); 
 
   // Free array
-  if (arr != NULL)
-  {
-    arr = NULL;
-    free(arr);
-  }
+  if (arr != NULL) free(arr);
 }
 
 /*****
@@ -90,32 +78,15 @@ void resize_array(Array *arr)
   char **new_elements = calloc(new_size, sizeof(char *));
 
   // Copy elements into the new storage
-  for (int i = 0; i < arr->capacity; i++)
-  {
-    new_elements[i] = arr->elements[i];
-  }
+  for (int i = 0; i < arr->capacity; i++) new_elements[i] = arr->elements[i];
 
   // Free the old elements array (but NOT the strings they point to)
-  for (int i = 0; i < arr->count; i++)
-  {
-    if (arr->elements[i] != NULL)
-    {
-      arr->elements[i] = NULL;
-      free(arr->elements[i]);
-    }
-  }
-
-  if (arr->elements != NULL)
-  {
-    arr->elements = NULL;
-    free(arr->elements); 
-  }
+  if (arr->elements != NULL) free(arr->elements);
 
   // Update the elements and capacity to new values
   arr->elements = new_elements;
   arr->capacity = new_size;
 }
-
 
 
 /************************************
@@ -156,7 +127,7 @@ void arr_insert(Array *arr, char *element, int index)
   }
 
   // Resize the array if the number of elements is over capacity
-  if (arr->count == arr->capacity)
+  if (arr->count >= arr->capacity)
   {
     resize_array(arr);
   }
@@ -211,7 +182,6 @@ void arr_remove(Array *arr, char *element)
   {
     if (strcmp(arr->elements[i], element) == 0)
     {
-      arr->elements[i] = NULL;
       free(arr->elements[i]);
       break;
     }
@@ -233,26 +203,23 @@ void arr_remove(Array *arr, char *element)
 
   // Decrement count by 1
   arr->count--;
+
+  // previous last element is no longer part of the array
+  arr->elements[arr->count] = NULL;
 }
 
 /* Remove all the elements from an array. */
 void arr_clear(Array *arr)
 {
   char **new_elements = calloc(arr->capacity, sizeof(char *));
+
   for (int i = 0; i < arr->count; i++)
   {
-    if (arr->elements[i] != NULL)
-    {
-      arr->elements[i] = NULL;
-      free(arr->elements[i]);
-    }
+    if (arr->elements[i] != NULL) free(arr->elements[i]);
   }
 
-  if (arr->elements != NULL)
-  {
-    arr->elements = NULL;
-    free(arr->elements); 
-  }
+  if (arr->elements != NULL) free(arr->elements);
+
   arr->elements = new_elements;
   arr->count = 0;
 }
@@ -282,10 +249,7 @@ Array *arr_copy(Array *arr)
 /* Add the elements of specified array to the end of current array. */
 void arr_extend(Array *arr, Array *extension)
 {
-  for (int i = 0; i < extension->count; i++)
-  {
-    arr_append(arr, extension->elements[i]);
-  }
+  for (int i = 0; i < extension->count; i++) arr_append(arr, extension->elements[i]);
 }
 
 /* Returns the index of the first occurrence of the specified value. */
@@ -294,10 +258,7 @@ int arr_index(Array *arr, char *element)
   int i = 0;
   while (i < arr->count)
   {
-    if (strcmp(arr->elements[i], element) == 0)
-    {
-      return i;
-    }
+    if (strcmp(arr->elements[i], element) == 0) return i;
     i++;
   }
 
@@ -319,9 +280,10 @@ char *arr_pop(Array *arr, int index)
     exit(1);
   }
 
+  // Copy the element to be removed
+  char *removed_element = strdup(arr->elements[index]);
+
   // Remove the element
-  char *removed_element = arr->elements[index];
-  arr->elements[index] = NULL;
   free(arr->elements[index]);
 
   // Shift over every element after the removed element to the left one position
@@ -335,6 +297,10 @@ char *arr_pop(Array *arr, int index)
   // Decrement count by 1
   arr->count--;
 
+  // Previous last element is no longer part of the array
+  arr->elements[arr->count] = NULL;
+
+  // Return the removed element
   return removed_element;
 }
 
@@ -379,18 +345,16 @@ void arr_sort(Array *arr)
         )
         {
           // > 0 ==> arr->elements[i] comes before new_array->elements[j] alphabetically
-          // == 0 ==> they are the same word
+          // == 0 ==> they are the same word/string
           arr_insert(new_array, arr->elements[i], j); // insert arr->elements[i] at index j
           break;
         }
         j++;
       }
-      // if the for loop ends without returning a 1 or a 0,
+      // if the previous while loop ends without returning > 0 or == 0 for strcmp(),
       // append arr->elements[i] to the end of the array
-      if (j == i)
-      {
-        arr_append(new_array, arr->elements[i]);
-      }
+      if (j == i) arr_append(new_array, arr->elements[i]);
+
       i++;
       j = 0;
     }
