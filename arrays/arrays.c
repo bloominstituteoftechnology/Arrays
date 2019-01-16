@@ -79,7 +79,10 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if (arr->capacity <=arr->count) {
+      fprintf(stderr, "IndexError: Index is out of range");
+      return;
+  }
   // Otherwise, return the element at the given index
 }
 
@@ -115,7 +118,7 @@ void arr_append(Array *arr, char *element) {
   }
   // Copy the element and add it to the end of the array
   char *new_element = strdup(element);
-
+  arr->elements[arr->count] = new_element;
   // Increment count by 1
   arr->count++;
 }
