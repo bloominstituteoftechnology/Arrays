@@ -169,6 +169,20 @@ void arr_remove(Array *arr, char *element) {
   }
 }
 
+void clear(Array *arr){
+  for (int i=0; i<arr->count; i++){
+    arr->elements[i] = NULL;
+    free(arr->elements[i]);
+  }
+  arr->count = 0;  //reset count to zero
+}
+
+
+Array *copy(){
+  char *
+  return
+}
+
 
 /*****
  * Utility function to print an array.
@@ -193,25 +207,20 @@ int main(void)
 
   arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
-  // printf("count: %d\n", arr->count);
-  // printf("capacity: %d\n", arr->capacity);
-  // arr_print(arr);
 
   arr_insert(arr, "STRING2", 0);
-  // printf("count: %d\n", arr->count);
-  // printf("capacity: %d\n", arr->capacity);
-  // arr_print(arr);
 
   arr_insert(arr, "STRING3", 1);
-  // printf("count: %d\n", arr->count);
-  // printf("capacity: %d\n", arr->capacity);
+
   arr_print(arr);
   arr_remove(arr, "STRING3");
-  // printf("count: %d\n", arr->count);
-  // printf("capacity: %d\n", arr->capacity);
+
   arr_print(arr);
 
   arr_remove(arr, "STRING4");
+  arr_print(arr);
+
+  clear(arr);
   arr_print(arr);
 
   destroy_array(arr);
