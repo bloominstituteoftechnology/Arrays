@@ -78,7 +78,7 @@ char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
   if(index > (arr->count)) {
-    printf(stderr, "error");
+    fprintf(stderr, "error");
     exit(1);
   }
   // Otherwise, return the element at the given index
@@ -94,9 +94,12 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if(index > arr->count) {
+    fprintf(stderr, "error");
+    exit(1);
+  }
   // Resize the array if the number of elements is over capacity
-
+  
   // Move every element after the insert index to the right one position
 
   // Copy the element and add it to the array
@@ -112,13 +115,13 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-  if ((sizeof(arr->count + 1)) > (arr->capacity)) {
+  if ((arr->count) >= (arr->capacity)) {
     resize_array(arr);
   }
   // Copy the element and add it to the end of the array
   arr->elements[arr->count] = element;
   // Increment count by 1
-  arr->count = count + 1;
+  arr->count++;
 }
 
 /*****
@@ -128,14 +131,20 @@ void arr_append(Array *arr, char *element) {
  * Throw an error if the value is not found.
  *****/
 void arr_remove(Array *arr, char *element) {
-
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
-
-  // Shift over every element after the removed element to the left one position
-
-  // Decrement count by 1
-
+  int index = 0;
+  for(int i=0;i<arr->count;i++) {
+    if(arr->elements[i] == element) {
+      index = i;
+      arr->elements[i] = NULL;
+      free(arr->elements[i]);
+      for(int i = index; i < arr->count; i++) {
+	arr->elements[i] = arr->elements[i + 1];
+      }
+      arr->count--;
+    }
+  }
 }
 
 
