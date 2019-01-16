@@ -46,8 +46,8 @@ void destroy_array(Array *arr) {
     free(arr->elements[i]);
   }
 
-  free(arr->elements);
   // Free array
+  free(arr->elements);
   free(arr);
 
 }
