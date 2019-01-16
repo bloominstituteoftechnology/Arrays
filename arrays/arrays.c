@@ -20,8 +20,6 @@ typedef struct Array {
  * Allocate memory for a new array
  *****/
 Array *create_array (int capacity) {
-
-  // Allocate memory for the Array struct
   Array *newArray = malloc(sizeof(Array));
 
   // Set initial values for capacity and count
