@@ -152,12 +152,29 @@ void arr_append(Array *arr, char *element) {
  *****/
 void arr_remove(Array *arr, char *element) {
   // Search for the first occurence of the element and remove it.
-  // Don't forget to free its memory!
+  int found;
 
-  // Shift over every element after the removed element to the left one position
+  for (int i=0; i < arr->count; i++) { // loop over to find matching element
+    if (arr->elements[i] == element) { // if match occurs at index
+      found = i; // set temp variable to hold the index
+      arr->elements[i] = NULL; // WITHOUT -> ERROR: 0x1063a9fa8: pointer being freed was not allocated
+      // Don't forget to free its memory!
+      free(arr->elements[i]);
 
-  // Decrement count by 1
+      // Shift over every element after the removed element to the left one position
+      for (int j = found; j < arr->count; j++) {
+        arr->elements[j] = arr->elements[j+1];
+      }
 
+      // Decrement count by 1
+      arr->count--;
+      break;
+    }
+    else if (i == arr->count) { // if the index has reached the end of the array
+      fprintf(stderr, "Value is not found.");
+      exit(1);
+    }
+  }
 }
 
 
@@ -179,34 +196,35 @@ void arr_print(Array *arr) {
 #ifndef TESTING
 int main(void)
 {
-  // MY TESTS
+  // APPEND, RESIZE READ, INSERT, DESTORY
+  // Array *arr = create_array(3);
+  // arr_append(arr, "first");
+  // arr_append(arr, "second");
+  // arr_append(arr, "third");
+  // printf("%s \n", arr_read(arr, 1));
+  // arr_print(arr);
+  // arr_insert(arr, "fourth", 0);
+  // arr_print(arr);
+  // arr_insert(arr, "fifth", 2);
+  // arr_print(arr);
+  // arr_append(arr, "sixth");
+  // arr_append(arr, "seventh");
+  // arr_print(arr);
+  // arr_print(arr);
+  // destroy_array(arr);
+  
+  // REMOVE
   Array *arr = create_array(3);
   arr_append(arr, "first");
   arr_append(arr, "second");
   arr_append(arr, "third");
-  printf("%s \n", arr_read(arr, 1));
   arr_print(arr);
-  arr_insert(arr, "fourth", 0);
+  arr_insert(arr, "insertion", 2);
+  arr_append(arr, "last");
   arr_print(arr);
-  arr_insert(arr, "fifth", 2);
-  arr_print(arr);
-  arr_append(arr, "sixth");
-  arr_append(arr, "seventh");
+  arr_remove(arr, "insertion");
   arr_print(arr);
   destroy_array(arr);
-
-  // PRESET TESTS
-  // Array *arr = create_array(1);
-
-  // arr_insert(arr, "STRING1", 0);
-  // arr_append(arr, "STRING4");
-  // arr_insert(arr, "STRING2", 0);
-  // arr_insert(arr, "STRING3", 1);
-  // arr_print(arr);
-  // arr_remove(arr, "STRING3");
-  // arr_print(arr);
-
-  // destroy_array(arr);
 
   return 0;
 }

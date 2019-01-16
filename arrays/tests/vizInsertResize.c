@@ -105,6 +105,33 @@ void arr_insert(Array *arr, char *element, int index) {
     arr->count += 1;
 }
 
+void arr_remove(Array *arr, char *element) {
+  // Search for the first occurence of the element and remove it.
+  int found;
+
+  for (int i=0; i < arr->count; i++) { // loop over to find matching element
+    if (arr->elements[i] == element) { // if match occurs at index
+      found = i; // set temp variable to hold the index
+      arr->elements[i] = NULL; // WITHOUT -> ERROR: 0x1063a9fa8: pointer being freed was not allocated
+      // Don't forget to free its memory!
+      free(arr->elements[i]);
+
+      // Shift over every element after the removed element to the left one position
+      for (int j = found; j < arr->count; j++) {
+        arr->elements[j] = arr->elements[j+1];
+      }
+
+      // Decrement count by 1
+      arr->count--;
+      break;
+    }
+    else if (i == arr->count) { // if the index has reached the end of the array
+      fprintf(stderr, "Value is not found.");
+      exit(1);
+    }
+  }
+}
+
 void arr_print(Array *arr) {
   printf("[");
   for (int i = 0 ; i < arr->count ; i++) {
@@ -117,18 +144,35 @@ void arr_print(Array *arr) {
 }
 
 int main() {
+  // APPEND, RESIZE READ, INSERT, DESTORY
+  // Array *arr = create_array(3);
+  // arr_append(arr, "first");
+  // arr_append(arr, "second");
+  // arr_append(arr, "third");
+  // printf("%s \n", arr_read(arr, 1));
+  // arr_print(arr);
+  // arr_insert(arr, "fourth", 0);
+  // arr_print(arr);
+  // arr_insert(arr, "fifth", 2);
+  // arr_print(arr);
+  // arr_append(arr, "sixth");
+  // arr_append(arr, "seventh");
+  // arr_print(arr);
+  // arr_print(arr);
+  // destroy_array(arr);
+  
+  // REMOVE
   Array *arr = create_array(3);
   arr_append(arr, "first");
   arr_append(arr, "second");
   arr_append(arr, "third");
-  printf("%s \n", arr_read(arr, 1));
   arr_print(arr);
-  arr_insert(arr, "fourth", 0);
+  arr_insert(arr, "insertion", 2);
+  arr_append(arr, "last");
   arr_print(arr);
-  arr_insert(arr, "fifth", 2);
-  arr_print(arr);
-  arr_append(arr, "sixth");
-  arr_append(arr, "seventh");
+  arr_remove(arr, "insertion");
   arr_print(arr);
   destroy_array(arr);
+
+  return 0;
 }
