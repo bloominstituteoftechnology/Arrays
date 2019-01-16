@@ -10,15 +10,6 @@ typedef struct Array
   char **elements; // The string elements contained in the array
 } Array;
 
-/************************************
- *
- *   CREATE, DESTROY, RESIZE FUNCTIONS
- *
- ************************************/
-
-/*****
- * Allocate memory for a new array
- *****/
 Array *create_array(int capacity)
 {
   // Allocate memory for the Array struct
@@ -28,7 +19,7 @@ Array *create_array(int capacity)
   arr->capacity = capacity;
   arr->count = 0;
   // Allocate memory for elements
-  arr->elements = calloc(capacity, sizeof(char *));
+  arr->elements = malloc(capacity * sizeof(char *));
 
   return arr;
 }
@@ -57,30 +48,30 @@ void resize_array(Array *arr)
 {
 
   // Create a new element storage with double capacity
-
+  char **storage = malloc((2 * arr->capacity) * sizeof(char *));
   // Copy elements into the new storage
-
+  for (int i = 0; i < arr->count; i++)
+  {
+    storage[i] = arr->elements[i];
+  }
   // Free the old elements array (but NOT the strings they point to)
+  for (int i = 0; i < arr->count; i++)
+  {
+    arr->elements[i] = NULL;
+    free(arr->elements[i]);
+  }
 
+  free(arr->elements);
   // Update the elements and capacity to new values
+  arr->elements = storage;
+  arr->capacity = arr->capacity * 2;
 }
 
-/************************************
- *
- *   ARRAY FUNCTIONS
- *
- ************************************/
-
-/*****
- * Return the element in the array at the given index.
- *
- * Throw an error if the index is out of range.
- *****/
 char *arr_read(Array *arr, int index)
 {
-  if (index > (arr->count))
+  if (arr->capacity <= arr->count)
   {
-    exit(1);
+    return NULL;
   }
   else
   {
@@ -88,21 +79,29 @@ char *arr_read(Array *arr, int index)
   }
 }
 
-/*****
- * Insert an element to the array at the given index
- *****/
 void arr_insert(Array *arr, char *element, int index)
 {
 
   // Throw an error if the index is greater than the current count
-
+  if (index > arr->count)
+  {
+    printf("Index is too high.");
+    return NULL;
+  }
   // Resize the array if the number of elements is over capacity
-
+  if (arr->count + 1 > arr->capacity)
+  {
+    resize_array(arr);
+  }
   // Move every element after the insert index to the right one position
-
+  for (int i = index; i < arr->count; i++)
+  {
+    arr->elements[i + 1] = arr->elements[i];
+  }
   // Copy the element and add it to the array
-
+  arr->elements[index] = element;
   // Increment count by 1
+  arr->count++;
 }
 
 /*****
@@ -122,30 +121,30 @@ void arr_append(Array *arr, char *element)
   // Increment count by 1
 
   arr->count++;
-
-  // Resize the array if the number of elements is over capacity
-  // or throw an error if resize isn't implemented yet.
-
-  // Copy the element and add it to the end of the array
-
-  // Increment count by 1
 }
 
-/*****
- * Remove the first occurence of the given element from the array,
- * then shift every element after that occurence to the left one slot.
- *
- * Throw an error if the value is not found.
- *****/
 void arr_remove(Array *arr, char *element)
 {
+  int new;
 
   // Search for the first occurence of the element and remove it.
-  // Don't forget to free its memory!
+  for (int i = 0; i < arr->count; i++)
+  {
+    if (arr->elements[i] == element)
+    {
+      new = i;
+      arr->elements[i] = NULL;
+      // Don't forget to free its memory!
+      free(arr->elements[i]);
+    }
+  }
 
-  // Shift over every element after the removed element to the left one position
+  for (int i = new; i < arr->count; i++)
+  {
+    arr->elements[i] = arr->elements[i + 1];
+  }
 
-  // Decrement count by 1
+  arr->count--;
 }
 
 /*****
