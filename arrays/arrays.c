@@ -77,7 +77,6 @@ void destroy_array(Array *arr) {
   }
     free(arr->elements);
     free(arr);
-
   // Free all elements
 
   // Free array
@@ -94,10 +93,6 @@ void resize_array(Array *arr) {
   for (int i=0;  i < arr->count; i++)
   {
     arr_storage[i] = arr->elements[i];
-  }
-  for(int i = 0; i < arr->count; i++){
-    arr->elements[i] = NULL;
-    free(arr->elements[i]);
   }
   free(arr->elements);
   arr->elements=arr_storage;
@@ -189,15 +184,15 @@ void arr_insert(Array *arr, char *element, int index) {
  *****/
 void arr_append(Array *arr, char *element) {
     
-    if (arr->count +1 > arr->capacity)
-    {
-      resize_array(arr); //call func resize from above 
-    }
+    // if (arr->count +1 > arr->capacity)
+    // {
+    //   resize_array(arr); //call func resize from above 
+    // }
 
     //char *el_end =strdup(element);//duplicate
-    arr->elements[arr->count] = element;
+    arr_insert(arr, element, arr->count);
 
-    arr->count++;
+}
 
 
     //arr->elements[sizeof(arr)++];
@@ -210,7 +205,7 @@ void arr_append(Array *arr, char *element) {
 
   // Increment count by 1
 
-}
+
 
 /*****
  * Remove the first occurence of the given element from the array,
@@ -224,8 +219,14 @@ void arr_remove(Array *arr, char *element) {
   //while (strcmp(element, arr->elements[key]!=0)
   for(int i= 0; i<arr->count; i++)
   {
+    if (key >= arr->count)
+  {
+    fprintf( stderr, "element %s\n is not in array", element);
+    return;
+  }
     if (arr->elements[i]==element){
       key=i;
+      
       arr->elements[i] = NULL;
       free(arr->elements[i]);
     }
@@ -234,7 +235,8 @@ void arr_remove(Array *arr, char *element) {
     arr->elements[i] = arr->elements[i+1];
   }
   arr->count--;
-}    
+}
+
 
 
     // if(key >= arr->count) {
