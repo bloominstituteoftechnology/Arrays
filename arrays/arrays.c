@@ -54,11 +54,13 @@ void destroy_array(Array *arr) {
   {
     if (arr->elements[i] != NULL) free(arr->elements[i]);
   }
-
     if (arr->elements != NULL) free(arr->elements); 
-
     if (arr != NULL) free(arr);
 }
+
+// ["hello"]
+// ["h","e","l","l","o"]
+// 
 
 /*****
  * Create a new elements array with double capacity and copy elements
@@ -71,14 +73,13 @@ void resize_array(Array *arr) {
   // Update the elements and capacity to new values.
   int new_size = 2 * arr->capacity;
   char **new_elements = calloc(new_size, sizeof(char *));
-
-  for (int i = 0; i < arr->capacity; i++) new_elements[i] = arr->elements[i];
+  // strdup = string duplicate 
+  for (int i = 0; i < arr->capacity; i++) new_elements[i] = strdup (arr->elements[i]);
 
   if (arr->elements != NULL) free(arr->elements);
 
   arr->elements = new_elements;
   arr->capacity = new_size;
-
 }
 
 
@@ -162,29 +163,35 @@ void arr_append(Array *arr, char *element) {
 
 // do this later
 
-// void arr_remove(Array *arr, char *element) {
+void arr_remove(Array *arr, char *element) {
 
-//   // Search for the first occurence of the element and remove it.
-//   // Don't forget to free its memory!
-//   // Shift over every element after the removed element to the left one position
-//   // Decrement count by 1
+  // Search for the first occurence of the element and remove it.
+  // Don't forget to free its memory!
+  // Shift over every element after the removed element to the left one position
+  // Decrement count by 1
 
-// }
+ for (int i = arr->count - 1; i = index; i--)
+  {
+    arr->elements[i -  1] = arr->elements[i];
+  }
+
+arr->count--;
+}
 
 
 /*****
  * Utility function to print an array.
  *****/
-// void arr_print(Array *arr) {
-//   printf("[");
-//   for (int i = 0 ; i < arr->count ; i++) {
-//     printf("%s", arr->elements[i]);
-//     if (i != arr->count - 1) {
-//       printf(",");
-//     }
-//   }
-//   printf("]\n");
-// }
+void arr_print(Array *arr) {
+  printf("[");
+  for (int i = 0 ; i < arr->count ; i++) {
+    printf("%s", arr->elements[i]);
+    if (i != arr->count - 1) {
+      printf(",");
+    }
+  }
+  printf("]\n");
+}
 
 
 #ifndef TESTING
@@ -199,7 +206,7 @@ int main(void)
   arr_insert(arr, "STRING3", 1);
   arr_print(arr);
   // dont forget this
-  // arr_remove(arr, "STRING3");
+  arr_remove(arr, "STRING3");
   arr_print(arr);
 
   destroy_array(arr);
