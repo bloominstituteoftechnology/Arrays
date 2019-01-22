@@ -22,7 +22,7 @@ int main(void)
     // printf("p1: x = %d, y = %d, name = %s\n", p1.x, p1.y, p1.name);
 
 
-    double balance[5] = {10.0, 20.0, 30.0, 40.0, 50.0};
+    double balance[] = {10.0, 20.0, 30.0, 40.0};
     double *p;
     int i;
     p = balance;
@@ -36,7 +36,11 @@ int main(void)
     // printf("size of %zu\n", sizeof(Array));
 
     // printf("Balance %d size: %lu\n", &balance, sizeof(balance));
-    printf("Pointer %f size: %lu\n", *p, sizeof(*p));
+    // printf("pointer: %lu\n", sizeof(int));
 
+    int array[] = { 45, 67, 89 };
+    int *array_ptr = &array[0];
+    printf("%p\n", &array[1]);
+    // printf("%i\n", array_ptr[1]);
     return 0;
 }
