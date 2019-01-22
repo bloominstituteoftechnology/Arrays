@@ -27,7 +27,7 @@ Array *create_array (int capacity) {
   newArr->count = 0; // start at 0
   // Allocate memory for elements
   // diff. between malloc and calloc:
-  // malloc is memory.....calloc is number of items?
+  // malloc is memory (is the water).....calloc is number of items/elements? (is the bucket)
   newArr->elements = calloc(capacity, sizeof(char *));
 
   return newArr;
@@ -40,9 +40,14 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
+  if (arr->elements != NULL) { // if there's nothing there
+    free(arr->elements);       // then free that slot up
+  }
 
   // Free array
-
+  if (arr != NULL) { // if there's nothing there
+    free(arr);       // then free that slot up
+  }
 }
 
 /*****
