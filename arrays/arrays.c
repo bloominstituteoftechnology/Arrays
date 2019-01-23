@@ -169,10 +169,17 @@ void arr_remove(Array *arr, char *element) {
   // Don't forget to free its memory!
   // Shift over every element after the removed element to the left one position
   // Decrement count by 1
+  int i = 0;
+  // this is a flag to find the intrest of elements.
+  int found = -1; 
 
- for (int i = arr->count - 1; i = index; i--)
+
+  while (i < arr->count && found == -1)
   {
+    if(strcmp(arr = arr->elements[i])) {
+    }
     arr->elements[i -  1] = arr->elements[i];
+    if (arr->elements != NULL) free(arr->elements);
   }
 
 arr->count--;
