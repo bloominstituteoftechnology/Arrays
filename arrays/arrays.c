@@ -103,16 +103,16 @@ void arr_insert(Array *arr, char *element, int index) {
     fprintf(stderr, "INSERT error: %d", index);
   }
   // Resize the array if the number of elements is over capacity
-  if (arr->count + 1 > arr->capacity) { 
+  if (arr->count + 1 >= arr->capacity) { 
     resize_array(arr);
   }
   // Move every element after the insert index to the right one position
-  for(int i = index; i < arr->count; i++) {
+  for(int i = arr->count; i >= index; i--) {
     arr->elements[i+1] = arr->elements[i];
   }
   // Copy the element and add it to the array
   char *copy = strdup(element);
-  arr->elements[arr->count] = copy;
+  arr->elements[*element] = copy;
   // Increment count by 1
   arr->count++;
 
@@ -125,7 +125,7 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-  if (arr->count+1 > arr->capacity) { // if the count is greater than the capacity (need +1)
+  if (arr->count+1 >= arr->capacity) { // if the count is greater than the capacity (need +1)
     resize_array(arr);              // then bringing the resize from above
   } else {
     printf("RESIZE error\n");
