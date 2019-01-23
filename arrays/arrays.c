@@ -40,11 +40,14 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
+  for (int i = 0; i < arr->count; i++) {    // free elements individually 
+    free(arr->elements[i]);
+  }
+
   free(arr->elements);
 
   // Free array
   free(arr);
-
 }
 
 /*****
@@ -95,15 +98,27 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
+  if (index > arr->count) {
+    fprintf(stderr, "Index is greater than the current count\n");
+    exit(1);
+  }
 
   // Resize the array if the number of elements is over capacity
+  if (arr->count + 1 > arr->capacity) {
+    resize_array(arr);
+  }
 
   // Move every element after the insert index to the right one position
+  for (int i = index; i < arr->count; i++) {
+    arr->elements[i + 1] = arr->elements[i];
+  }
 
   // Copy the element and add it to the array
+  char *new_elem = strdup(element);
+  arr->elements[index] = new_elem;
 
   // Increment count by 1
-
+  arr->count++;
 }
 
 /*****
@@ -118,7 +133,8 @@ void arr_append(Array *arr, char *element) {
   }
 
   // Copy the element and add it to the end of the array
-  arr->elements[arr->count] = element;
+  char *new_elem = strdup(element);
+  arr->elements[arr->count] = new_elem;
 
   // Increment count by 1
   arr->count++;
@@ -178,4 +194,7 @@ int main(void)
 #endif
 
 
-// Theory of Computation - Day 1: https://www.youtube.com/watch?v=b8ZvTNam1dg
+// Theory of Computation Day 1 - Computation, Arrays: https://youtu.be/b8ZvTNam1dg
+// Theory of Computation Day 2 - von Neumann, Arrays: https://youtu.be/wdqdLlLgLMw
+
+// Asycnc Q&A: https://youtu.be/D0O_rcFbqCY
