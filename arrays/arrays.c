@@ -160,7 +160,7 @@ void arr_remove(Array *arr, char *element) {
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
   for (int i = 0; i < arr->count; i++) {
-    if (arr->elements[i] == element) {
+    if (strcmp(arr->elements[i], element) == 0) {
       index = i;
       arr->elements[i] = NULL;
       free(arr->elements[i]);
