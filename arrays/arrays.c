@@ -115,7 +115,6 @@ void arr_insert(Array *arr, char *element, int index) {
   arr->elements[*element] = copy;
   // Increment count by 1
   arr->count++;
-
 }
 
 /*****
@@ -178,7 +177,6 @@ void arr_print(Array *arr) {
   printf("]\n");
 }
 
-
 #ifndef TESTING
 int main(void)
 {
@@ -186,9 +184,13 @@ int main(void)
   Array *arr = create_array(1);
 
   arr_insert(arr, "STRING1", 0);
+  arr_print(arr);
   arr_append(arr, "STRING4");
+  arr_print(arr);
   arr_insert(arr, "STRING2", 0);
+  arr_print(arr);
   arr_insert(arr, "STRING3", 1);
+  arr_print(arr);
   arr_print(arr);
   arr_remove(arr, "STRING3");
   arr_print(arr);
