@@ -65,7 +65,7 @@ void resize_array(Array *arr) {
   // Realloc will do the next 4 steps for us!
 //  arr->elements = realloc(elements, arr->capacity * sizeof(char *));   
   
-  char **elements = malloc(capacity * sizeof(char *));
+  char **elements = malloc(arr->capacity * sizeof(char *));
 
   // Copy elements into the new storage
 //  for (int index = 0; index < arr->count; index++) {
@@ -77,7 +77,7 @@ void resize_array(Array *arr) {
   free(arr->elements);
 
   // Update the elements and capacity to new values
-  arr->elements = elements
+  arr->elements = elements;
 
 }
 
