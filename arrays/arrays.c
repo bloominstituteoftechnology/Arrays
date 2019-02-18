@@ -21,10 +21,10 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-  Array *array = malloc(sizeof(array));
+  Array *array = malloc(sizeof(Array));
   // Set initial values for capacity and count
   array->capacity = capacity;
-  array->count = capacity;
+  array->count = 0;// setting to 0 because it contains nothing
   // Allocate memory for elements
   int *a = malloc(capacity * sizeof(int));
 }
@@ -34,11 +34,10 @@ Array *create_array (int capacity) {
  * Free memory for an array and all of its stored elements
  *****/
 void destroy_array(Array *arr) {
-
   // Free all elements
-
+  free(arr->elements);
   // Free array
-
+  free(arr);
 }
 
 /*****
