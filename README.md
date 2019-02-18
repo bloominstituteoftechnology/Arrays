@@ -35,15 +35,17 @@ Resizing involves allocating a block of memory with double the storage, copying 
 
 ### Stretch Goals
 
-If you finish these goals, try implementing some of the other Python functions:
+1. How would we go about making our dynamic array be able to handle multiple types in a single instance? Hint: we'll probably want to make use of [C unions](https://www.tutorialspoint.com/cprogramming/c_unions.htm) for this. Think about how you might do this and then implement it!
 
-1. `clear()`
-2. `copy()`
-3. `extend()`
-4. `index()`
-5. `pop()`
-6. `reverse()`
-7. `sort()`
+2. If you finish these goals, try implementing some of the other Python functions:
+
+- `clear()`
+- `copy()`
+- `extend()`
+- `index()`
+- `pop()`
+- `reverse()`
+- `sort()`
 
 Check the official documentation or use Python's `help()` method for implementation details.
 
