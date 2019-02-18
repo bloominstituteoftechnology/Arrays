@@ -182,18 +182,39 @@ void arr_append(Array *arr, char *element)
  *
  * Throw an error if the value is not found.
  *****/
-/*
+
 void arr_remove(Array *arr, char *element)
 {
+  int index = -1;
 
   // Search for the first occurence of the element and remove it.
-  // Don't forget to free its memory!
+  for (int i = 0; i < arr->count; i++)
+  {
+    if (strcmp(arr->elements[i], element) == 0)
+    {
+      index = i;
+      // Don't forget to free its memory!
+      free(arr->elements[i]);
+    }
+  }
+
+  if (index == -1)
+  {
+    fprintf(stderr, "Value not found\n");
+    exit(3);
+  }
 
   // Shift over every element after the removed element to the left one position
+  for (int i = index; i < arr->count; i++)
+  {
+    arr->elements[i] = arr->elements[i + 1];
+    arr->elements[i + 1] = NULL;
+  }
 
   // Decrement count by 1
+  arr->count--;
 }
-*/
+
 /*****
  * Utility function to print an array.
  *****/
@@ -216,16 +237,16 @@ void arr_print(Array *arr)
 int main(void)
 {
 
-  Array *arr = create_array(3);
+  Array *arr = create_array(5);
 
   arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
   // arr_append(arr, "STRING1");
   arr_insert(arr, "STRING2", 0);
-  // arr_insert(arr, "STRING3", 1);
+  arr_insert(arr, "STRING3", 1);
   arr_print(arr);
-  // arr_remove(arr, "STRING3");
-  // arr_print(arr);
+  arr_remove(arr, "STRING3");
+  arr_print(arr);
 
   destroy_array(arr);
 
