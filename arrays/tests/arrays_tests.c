@@ -40,7 +40,7 @@ char *day_2_array_tests()
     mu_assert(strcmp(arr_read(arr, 0), "VALUE-1") == 0, "Insert value failed");
 
     arr_insert(arr, "VALUE-2", 0);
-
+    fprintf(stderr, "CHECK\n");
     mu_assert(arr->capacity == 2, "Resize array on insert failed");
     mu_assert(arr->count == 2, "Resize array on insert failed");
 

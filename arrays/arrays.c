@@ -52,19 +52,8 @@ void destroy_array(Array *arr) {
  * from old to new
  *****/
 void resize_array(Array *arr) {
-  /*
-  // Create a new element storage with double capacity
-  char **new_elements = malloc(arr->capacity * 2 + 1);
-  // Copy elements into the new storage
-  for(int i = 0; i < arr->capacity; i++) {
-    new_elements[i] = arr->elements[i];
-  }
-  // Free the old elements array (but NOT the strings they point to)
-  free(arr->elements);
-  // Update the elements and capacity to new values
-  arr->elements = new_elements;
-  arr->capacity = arr->capacity * 2;
-*/
+  arr->capacity *= 2;
+  arr->elements = realloc(arr->elements, arr->capacity * sizeof(char *));
 }
 
 
@@ -100,13 +89,27 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if(index > arr->count) {
+    fprintf(stderr, "Index greater than current count");
+  }
   // Resize the array if the number of elements is over capacity
+  if(arr->count > arr->capacity-1) {
+    resize_array(arr);
+  }
 
   // Move every element after the insert index to the right one position
-
+  char *temp;
+  
+  for(int i = index; i < arr->count; i++) {
+    temp = arr->elements[i+1];
+    arr->elements[i+1] = temp;
+  }
+  for (int i = 0 ; i < arr->count; i++) {
+    fprintf(stderr, "%s", arr->elements[i]);
+  }
   // Copy the element and add it to the array
-
+  arr->elements[index] = element;
+  arr->count += 1;
   // Increment count by 1
 
 }
@@ -117,9 +120,8 @@ void arr_insert(Array *arr, char *element, int index) {
 void arr_append(Array *arr, char *element) {
   
   // Resize the array if the number of elements is over capacity
-  if(arr->count == arr->capacity - 1) {
-    arr->capacity *= 2;
-    arr->elements = realloc(arr->elements, arr->capacity * sizeof(char *));
+  if(arr->count > arr->capacity - 1) {
+    resize_array(arr);
   }
   // or throw an error if resize isn't implemented yet.
 
