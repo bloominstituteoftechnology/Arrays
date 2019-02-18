@@ -40,10 +40,14 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
-    free(arr->elements);
+    if (!arr->elements) {
+        free(arr->elements);
+    }
     
   // Free array
-    free(arr);
+    if (!arr) {
+        free(arr);
+    }
 }
 
 /*****
@@ -78,8 +82,12 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-
+    if (index > arr->count) {
+        return 0;
+    }
+    
   // Otherwise, return the element at the given index
+    return arr->elements[index];
 }
 
 
