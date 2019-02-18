@@ -20,15 +20,16 @@ typedef struct Array {
  * Allocate memory for a new array
  *****/
 Array *create_array (int capacity) {
-    // Allocate memory for the Array struct
-    Array *arr = malloc(sizeof(Array));
+      // Allocate memory for the Array struct
+      Array *arr = malloc(sizeof(Array));
 
-    // Set initial values for capacity and count
-    arr->capacity = capacity;
-    arr->count = 0;
+      // Set initial values for capacity and count
+      arr->capacity = capacity;
+      arr->count = 0;
 
-    // Allocate memory for elements
-
+      // Allocate memory for elements
+      arr->elements = calloc(capacity, sizeof(char *));
+      return arr; //return type is Array struct...
 }
 
 
@@ -37,10 +38,13 @@ Array *create_array (int capacity) {
  *****/
 void destroy_array(Array *arr) {
 
-  // Free all elements
-
-  // Free array
-
+      // Free all elements-- first
+      for(int i = 0; i < arr->count; i++) {
+            arr->elements[i] = NULL;
+            free(arr->elements[i]);
+       }
+      // Free array -- second
+      free(arr);
 }
 
 /*****
@@ -49,14 +53,21 @@ void destroy_array(Array *arr) {
  *****/
 void resize_array(Array *arr) {
 
-  // Create a new element storage with double capacity
+      // Create a new element storage with double capacity
+      int capacity = 2 * arr->capacity;
+      Array *new_arr = create_array(capacity);
 
-  // Copy elements into the new storage
+      // Copy elements into the new storage
+      for(int i = 0; i < arr->count; i++) {
+            new_arr->elements[i] = arr->elements[i];
+      }
 
-  // Free the old elements array (but NOT the strings they point to)
+      // Free the old elements array (but NOT the strings they point to)
+      free(arr->elements);
 
-  // Update the elements and capacity to new values
-
+      // Update the elements and capacity to new values
+      arr->elements = new_arr->elements;
+      arr->capacity = new_arr->capacity;
 }
 
 
@@ -74,9 +85,14 @@ void resize_array(Array *arr) {
  *****/
 char *arr_read(Array *arr, int index) {
 
-  // Throw an error if the index is greater than the current count
-
-  // Otherwise, return the element at the given index
+      // Throw an error if the index is greater than the current count
+      if(index > arr->count) {
+            printf("Error : Index is greater than the current count");
+            exit(0);
+      } else {
+      // Otherwise, return the element at the given index
+            return (arr->elements[index]);
+      }
 }
 
 
@@ -84,16 +100,33 @@ char *arr_read(Array *arr, int index) {
  * Insert an element to the array at the given index
  *****/
 void arr_insert(Array *arr, char *element, int index) {
+     // printf("\n my function %s %d "  , element , index);
+      // Throw an error if the index is greater than the current count
+      if(index > arr->count) {
+            printf("Error : Index is greater than the current count");
+            exit(0);
+      }
+      // Resize the array if the number of elements is over capacity
+    if(arr->count == arr->capacity){
+      resize_array(arr);
+    }
+    // Move every element after the insert index to the right one position
+    char *temp  = arr->elements[index];
+    for( int i = index+1  ; i < arr->count+1 ; i++){
 
-  // Throw an error if the index is greater than the current count
+      char *temp2  =  arr->elements[i];     
+      arr->elements[i] = temp;
+      temp = temp2;
+     
+      
+     printf(" \n Temp %s",  temp);
+    }
 
-  // Resize the array if the number of elements is over capacity
+      // Copy the element and add it to the array
+      arr->elements[index] = element;
 
-  // Move every element after the insert index to the right one position
-
-  // Copy the element and add it to the array
-
-  // Increment count by 1
+      // Increment count by 1
+      arr->count++;
 
 }
 
@@ -151,11 +184,11 @@ int main(void)
   Array *arr = create_array(1);
 
   arr_insert(arr, "STRING1", 0);
-  arr_append(arr, "STRING4");
+ // arr_append(arr, "STRING4");
   arr_insert(arr, "STRING2", 0);
   arr_insert(arr, "STRING3", 1);
   arr_print(arr);
-  arr_remove(arr, "STRING3");
+ // arr_remove(arr, "STRING3");
   arr_print(arr);
 
   destroy_array(arr);
