@@ -41,6 +41,11 @@ void destroy_array(Array *arr)
 {
 
   // Free all elements
+  for (int i = 0; i < arr->count; i++)
+  {
+    free(arr->elements[i]);
+  }
+
   free(arr->elements);
   // Free array
   free(arr);
@@ -77,8 +82,14 @@ char *arr_read(Array *arr, int index)
 {
 
   // Throw an error if the index is greater than the current count
+  if (index > arr->count)
+  {
+    fprintf(stderr, "IndexError: Index is out of range");
+    return NULL;
+  }
 
   // Otherwise, return the element at the given index
+  return arr->elements[index];
 }
 
 /*****
@@ -160,22 +171,17 @@ void arr_print(Array *arr)
 int main(void)
 {
 
-  Array *arr = create_array(6);
-  printf("%d, %d\n", arr->capacity, arr->count);
-  // arr_insert(arr, "STRING1", 0);
-  arr_append(arr, "STRING4");
-  arr_append(arr, "STRING5");
-  arr_append(arr, "STRING6");
-  arr_append(arr, "STRING7");
-  arr_append(arr, "STRING8");
-  arr_append(arr, "STRING9");
-  // arr_insert(arr, "STRING2", 0);
-  // arr_insert(arr, "STRING3", 1);
-  arr_print(arr);
-  // arr_remove(arr, "STRING3");
-  // arr_print(arr);
+  Array *arr = create_array(1);
 
-  // destroy_array(arr);
+  arr_insert(arr, "STRING1", 0);
+  arr_append(arr, "STRING4");
+  arr_insert(arr, "STRING2", 0);
+  arr_insert(arr, "STRING3", 1);
+  arr_print(arr);
+  arr_remove(arr, "STRING3");
+  arr_print(arr);
+
+  destroy_array(arr);
 
   return 0;
 }
