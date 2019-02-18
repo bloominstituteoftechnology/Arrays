@@ -106,10 +106,20 @@ void arr_append(Array *arr, char *element)
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  if (arr->capacity <= arr->count)
+  {
+    fprintf(stderr, "IndexError: Index is out of range");
+    return;
+  }
 
-  // Copy the element and add it to the end of the array
+  // Copy the element
+  char *new_element = strdup(element);
+
+  // add it to the end of the array
+  arr->elements[arr->count] = new_element;
 
   // Increment count by 1
+  arr->count++;
 }
 
 /*****
@@ -150,17 +160,22 @@ void arr_print(Array *arr)
 int main(void)
 {
 
-  Array *arr = create_array(1);
-
-  arr_insert(arr, "STRING1", 0);
+  Array *arr = create_array(6);
+  printf("%d, %d\n", arr->capacity, arr->count);
+  // arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
-  arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
+  arr_append(arr, "STRING5");
+  arr_append(arr, "STRING6");
+  arr_append(arr, "STRING7");
+  arr_append(arr, "STRING8");
+  arr_append(arr, "STRING9");
+  // arr_insert(arr, "STRING2", 0);
+  // arr_insert(arr, "STRING3", 1);
   arr_print(arr);
-  arr_remove(arr, "STRING3");
-  arr_print(arr);
+  // arr_remove(arr, "STRING3");
+  // arr_print(arr);
 
-  destroy_array(arr);
+  // destroy_array(arr);
 
   return 0;
 }
