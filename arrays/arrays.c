@@ -15,8 +15,6 @@ typedef struct Array {
  *
  *   CREATE, DESTROY, RESIZE FUNCTIONS
  * DAY 1 
-    1. `create_array()`
-    2. `destroy_array()`
     3. `arr_append()`
     4. `arr_read()`
  ************************************/
@@ -90,8 +88,15 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
+  if (index > arr->count) {
+    fprintf(stderr, "index out of range");
+    exit(1);
+  }
 
   // Otherwise, return the element at the given index
+  return arr->elements[index];
+
+  
 }
 
 
@@ -109,6 +114,7 @@ void arr_insert(Array *arr, char *element, int index) {
   // Copy the element and add it to the array
 
   // Increment count by 1
+  
 
 }
 
@@ -117,12 +123,19 @@ void arr_insert(Array *arr, char *element, int index) {
  *****/
 void arr_append(Array *arr, char *element) {
 
-  // Resize the array if the number of elements is over capacity
+  // Resize the array if the number of elements(count) is over capacity
+  if (arr->count > arr->capacity) {
+    resize_array(arr); //STILL NEEDS TO BE DEFINED ABOVE 
+  } 
   // or throw an error if resize isn't implemented yet.
+  if (arr->count > arr->capacity) {
+    fprintf(stderr, "number of elements is over capacity");
+  }
 
   // Copy the element and add it to the end of the array
-
+  arr->elements[arr->count] = element; //the element at count (which will be empty - zero indexing)will equal element 
   // Increment count by 1
+  arr->count++;
 
 }
 
