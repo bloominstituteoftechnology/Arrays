@@ -37,8 +37,15 @@ void destroy_array(Array *arr)
 {
 
   // Free all elements
-
+  if (arr->elements != NULL)
+  {
+    free(arr->elements);
+  }
   // Free array
+  if (arr != NULL)
+  {
+    free(arr);
+  }
 }
 
 /*****
