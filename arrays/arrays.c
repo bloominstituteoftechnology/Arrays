@@ -27,8 +27,8 @@ Array *create_array (int capacity) {
   arr->capacity = capacity;
   arr->count = 0;// setting to 0 because it contains nothing
   // Allocate memory for elements
-  malloc(capacity * sizeof(char));
-  return 0;
+  arr->elements = malloc(capacity * sizeof(char *));
+  return arr;
 }
 
 
@@ -93,12 +93,11 @@ void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
   if(index > arr->count){
-    printf("What you doing man!\n That's out of scope\n");
-    exit(-1);
+    printf("What you doing man! That's out of scope\n");
+    exit(1);
   }
   // Resize the array if the number of elements is over capacity
-  else{
-    if(arr->count + 1 > arr->capacity){
+  if(arr->count + 1 > arr->capacity){
       resize_array(arr); //checks if count with another element will go over current capacity, if it is call resize
     }
     // Move every element after the insert index to the right one position
@@ -111,7 +110,7 @@ void arr_insert(Array *arr, char *element, int index) {
     arr->elements[index] = copy; //changed to index
     // Increment count by 1
     arr->count = arr->count + 1;
-  }
+  
 }
 
 /*****
@@ -178,14 +177,14 @@ int main(void)
   Array *arr = create_array(1);
 
   arr_insert(arr, "STRING1", 0);
-  arr_append(arr, "STRING4");
-  arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
-  arr_print(arr);
-  arr_remove(arr, "STRING3");
-  arr_print(arr);
+  // arr_append(arr, "STRING4");
+  // arr_insert(arr, "STRING2", 0);
+  // arr_insert(arr, "STRING3", 1);
+  // arr_print(arr);
+  // arr_remove(arr, "STRING3");
+  // arr_print(arr);
 
-  destroy_array(arr);
+  // destroy_array(arr);
 
   return 0;
 }
