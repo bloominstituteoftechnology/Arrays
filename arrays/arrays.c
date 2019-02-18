@@ -93,7 +93,7 @@ char *arr_read(Array *arr, int index)
   // Throw an error if the index is greater than the current count
   if (index >= arr->count)
   {
-    printf('index out of range');
+    printf("index out of range");
   }
 
   // Otherwise, return the element at the given index
@@ -112,7 +112,7 @@ void arr_insert(Array *arr, char *element, int index)
   // Throw an error if the index is greater than the current count
   if (index >= arr->count)
   {
-    printf('index out of range');
+    printf("index out of range");
   }
 
   else
