@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-extern int errno;
 
 typedef struct Array
 {
@@ -77,15 +76,11 @@ void resize_array(Array *arr)
  *****/
 char *arr_read(Array *arr, int index)
 {
-  int errnum;
   // Throw an error if the index is greater than the current count
   if (arr->count > index)
   {
-    errnum = errno;
-    fprintf(stderr, "Value of errno: %d\n", errno);
-    perror("Error printed by perror");
-    fprintf(stderr, "Given index is higher than the size of the array");
-    return -1;
+    printf("Given index is higher than the size of the array");
+    return NULL;
   }
   // Otherwise, return the element at the given index
   else
@@ -99,15 +94,11 @@ char *arr_read(Array *arr, int index)
  *****/
 void arr_insert(Array *arr, char *element, int index)
 {
-  int errnum;
   // Throw an error if the index is greater than the current count
   if (index > arr->count)
   {
-    errnum = errno;
-    fprintf(stderr, "Value of errno: %d\n", errno);
-    perror("Error printed by perror");
-    fprintf(stderr, "Given index is higher than the size of the array");
-    return -1;
+    printf("Given index is higher than the size of the array");
+    return;
   }
 
   // Resize the array if the number of elements is over capacity
@@ -158,15 +149,44 @@ void arr_append(Array *arr, char *element)
  *
  * Throw an error if the value is not found.
  *****/
+
+// adding an additional function to search
+// the array for the index of an element
+// to both use in arr_remove and to have
+// accessable in general
+int arr_find_index(Array *arr, char *element)
+{
+  for (int i = 0; i < arr->count; i++)
+  {
+    if (strcmp(arr->elements[i], element) == 0)
+    {
+      return i;
+    }
+  }
+  return -1;
+}
+
 void arr_remove(Array *arr, char *element)
 {
-
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
+  int index = arr_find_index(arr, element);
+  if (index == -1)
+  {
+    printf("The requested element was not found in the array");
+    return;
+  }
+  free(arr->elements[index]);
 
   // Shift over every element after the removed element to the left one position
+  for (int i = index; i < arr->count; i++)
+  {
+    arr->elements[i] = arr->elements[i + 1];
+  }
+  arr->elements[arr->count] = '\0';
 
   // Decrement count by 1
+  arr->count--;
 }
 
 /*****
