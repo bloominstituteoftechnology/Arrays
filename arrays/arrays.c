@@ -100,7 +100,7 @@ char *arr_read(Array *arr, int index)
   // Throw an error if the index is greater than the current count
   if (index >= arr->count)
   {
-    printf("index out of range");
+    printf("index out of range\n");
 
     return NULL;
   }
@@ -119,9 +119,9 @@ void arr_insert(Array *arr, char *element, int index)
 {
 
   // Throw an error if the index is greater than the current count
-  if (index >= arr->count)
+  if (index > arr->count)
   {
-    printf("index out of range");
+    printf("index out of range\n");
   }
 
   else
@@ -139,7 +139,10 @@ void arr_insert(Array *arr, char *element, int index)
     }
 
     // Copy the element and add it to the array
-    arr->elements[index] = element;
+    char *new_element = malloc(sizeof(char) * (strlen(element) + 1));
+    strcpy(new_element, element);
+
+    arr->elements[index] = new_element;
 
     // Increment count by 1
     arr->count++;
@@ -160,7 +163,10 @@ void arr_append(Array *arr, char *element)
   // or throw an error if resize isn't implemented yet.
 
   // Copy the element and add it to the end of the array
-  arr->elements[arr->count] = element;
+  char *new_element = malloc(sizeof(char) * (strlen(element) + 1));
+  strcpy(new_element, element);
+
+  arr->elements[arr->count] = new_element;
 
   // Increment count by 1
   arr->count++;
