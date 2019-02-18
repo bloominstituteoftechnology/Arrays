@@ -63,8 +63,6 @@ void resize_array(Array *arr) {
   arr->capacity = arr->capacity * 2; //multiplies old capacity by 2
 }
 
-
-
 /************************************
  *
  *   ARRAY FUNCTIONS
@@ -87,7 +85,6 @@ char *arr_read(Array *arr, int index) {
   }
   // Otherwise, return the element at the given index
 }
-
 
 /*****
  * Insert an element to the array at the given index
@@ -160,7 +157,6 @@ void arr_remove(Array *arr, char *element) {
   // Decrement count by 1
 }
 
-
 /*****
  * Utility function to print an array.
  *****/
@@ -174,7 +170,6 @@ void arr_print(Array *arr) {
   }
   printf("]\n");
 }
-
 
 #ifndef TESTING
 int main(void)
