@@ -34,19 +34,24 @@ Array *create_array (int capacity) {
 /*****
  * Free memory for an array and all of its stored elements
  *****/
-void destroy_array(Array *arr) {
-
+void destroy_array(Array *array) {
   // Free all elements
-
+  if (array->elements != NULL)
+  {    
+      free(array->elements);
+  }
   // Free array
-
+  if (array != NULL)
+  {
+      free(array);
+  }
 }
 
 /*****
  * Create a new elements array with double capacity and copy elements
  * from old to new
  *****/
-void resize_array(Array *arr) {
+void resize_array(Array *array) {
 
   // Create a new element storage with double capacity
 
@@ -71,11 +76,15 @@ void resize_array(Array *arr) {
  *
  * Throw an error if the index is out of range.
  *****/
-char *arr_read(Array *arr, int index) {
+char *arr_read(Array *array, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if (index > array->count)
+  {
+    return -1;
+  }
   // Otherwise, return the element at the given index
+  return array->elements[index];
 }
 
 
