@@ -40,11 +40,16 @@ Array *create_array (int capacity) {
  *****/
 void destroy_array(Array *arr) {
 
-  // Free all elements
-  free(array->elements);
+  for (int i = 0; i < arr->count; i++) {
+    // Free pointers inside the array
+    free(arr->elements[i]);
+  }
 
-  // Free array
-  free(array);
+  // Free the array
+  free(arr->elements);
+
+  // Free the struct Array
+  free(arr);
 
 }
 
