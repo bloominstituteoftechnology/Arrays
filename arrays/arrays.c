@@ -27,6 +27,8 @@ Array *create_array (int capacity) {
   array -> count = 0;
   // Allocate memory for elements
   array -> elements = malloc(capacity * sizeof(char));
+
+  return array;
 }
 
 
@@ -74,7 +76,7 @@ char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
   if(index >= arr -> count) {
-    fprintf(stderr, "IndexError: Index %d out of range\n", index);
+    printf("IndexError: Index %d out of range\n", index);
     return NULL;
   }
   // Otherwise, return the element at the given index
@@ -106,11 +108,17 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  if(arr -> capacity == arr -> count) {
+    printf("over capacity");
+    //resize_array(arr);
+  } else {
+    // Copy the element and add it to the end of the array
+    char *new_element = element;
+    arr -> elements[arr -> count] = new_element;
 
-  // Copy the element and add it to the end of the array
-
-  // Increment count by 1
-
+    // Increment count by 1
+    arr -> count++;
+  }
 }
 
 /*****
