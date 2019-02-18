@@ -154,6 +154,8 @@ void arr_insert(Array *arr, char *element, int index) {
  * Append an element to the end of the array
  *****/
 void arr_append(Array *arr, char *element) {
+  
+  arr_insert(arr, element, arr->count); // Inserting at position "count", which is at the end of the array
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
