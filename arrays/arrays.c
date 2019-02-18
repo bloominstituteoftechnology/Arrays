@@ -97,12 +97,13 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-  if (index > arr->count) {
+  if (index >= arr->count) {
     perror("Error getting value at index:");
   } else {
     // Otherwise, return the element at the given index
-    return arr[index];
+    return arr->elements[index];
   }
+  return NULL;
 }
 
 
