@@ -50,8 +50,3 @@ Resizing involves allocating a block of memory with double the storage, copying 
 - `sort()`
 
 Check the official documentation or use Python's `help()` method for implementation details.
-
-
-
-
-
