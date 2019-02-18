@@ -142,7 +142,7 @@ void arr_insert(Array *arr, char *element, int index)
     arr->elements[index] = element;
 
     // Increment count by 1
-    arr->count--;
+    arr->count++;
   }
 }
 
@@ -163,7 +163,7 @@ void arr_append(Array *arr, char *element)
   arr->elements[arr->count] = element;
 
   // Increment count by 1
-  arr->count--;
+  arr->count++;
 }
 
 /*****
