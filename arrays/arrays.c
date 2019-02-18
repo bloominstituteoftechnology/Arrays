@@ -14,23 +14,38 @@ typedef struct Array {
 /************************************
  *
  *   CREATE, DESTROY, RESIZE FUNCTIONS
- *
+ * DAY 1 
+    1. `create_array()`
+    2. `destroy_array()`
+    3. `arr_append()`
+    4. `arr_read()`
  ************************************/
 
 /*****
+ * DAY 1 ------------------------------
  * Allocate memory for a new array
  *****/
 Array *create_array (int capacity) {
+  
   // Allocate memory for the Array struct
+  Array *new_array = malloc(sizeof(Array));
 
   // Set initial values for capacity and count
+  new_array->capacity = capacity; //passed in parameter 
+  new_array->count = 0;
 
-  // Allocate memory for elements
+  // Allocate memory for elements 
+  // The calloc() function takes two arguments: the number of elements to allocate and the storage size of those elements
+  new_array->elements = calloc(capacity, sizeof(int));
+  
+
+  return new_array;
 
 }
 
 
 /*****
+ * DAY 1 ------------------------------
  * Free memory for an array and all of its stored elements
  *****/
 void destroy_array(Array *arr) {
@@ -65,7 +80,7 @@ void resize_array(Array *arr) {
  *
  ************************************/
 
-/*****
+/***** DAY 1 ------------------------------
  * Return the element in the array at the given index.
  *
  * Throw an error if the index is out of range.
@@ -95,7 +110,7 @@ void arr_insert(Array *arr, char *element, int index) {
 
 }
 
-/*****
+/***** DAY 1 ------------------------------
  * Append an element to the end of the array
  *****/
 void arr_append(Array *arr, char *element) {
