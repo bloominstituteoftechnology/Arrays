@@ -110,20 +110,13 @@ char *arr_read(Array *arr, int index)
 {
 
   // Throw an error if the index is greater than the current count
-  if (index > arr->count)
+  if (index >= arr->count)
   {
     return NULL;
   }
 
   // Otherwise, return the element at the given index
-  if (arr->elements[index])
-  {
-    return arr->elements[index];
-  }
-  else
-  {
-    return NULL;
-  }
+  return arr->elements[index];
 }
 
 /*****
@@ -218,6 +211,8 @@ int main(void)
 {
 
   Array *arr = create_array(1);
+
+  //it was giving me a segmentation error if i try to read before inserting any elements
   printf("%s", arr_read(arr, 0));
 
   arr_insert(arr, "STRING1", 0);
