@@ -28,7 +28,9 @@ Array *create_array (int capacity) {
     array->count = 0;
     
   // Allocate memory for elements
-    array->elements = malloc(capacity * sizeof(int));
+    array->elements = calloc(capacity, sizeof(char *));
+    
+    return array;
 }
 
 
@@ -38,9 +40,10 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
-
+    free(arr->elements);
+    
   // Free array
-
+    free(arr);
 }
 
 /*****
@@ -104,11 +107,15 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+    if (sizeof(arr->count + 1) > arr->capacity) {
+        resize_array(arr);
+    }
 
   // Copy the element and add it to the end of the array
-
+    arr->elements[arr->count] = element;
+    
   // Increment count by 1
-
+    arr->count++;
 }
 
 /*****
