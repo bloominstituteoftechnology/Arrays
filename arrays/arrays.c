@@ -177,10 +177,11 @@ int main(void)
   Array *arr = create_array(1);
 
   arr_insert(arr, "STRING1", 0);
-  // arr_append(arr, "STRING4");
+  printf("finished inserting");
+  arr_append(arr, "STRING4");
   // arr_insert(arr, "STRING2", 0);
   // arr_insert(arr, "STRING3", 1);
-  // arr_print(arr);
+  arr_print(arr);
   // arr_remove(arr, "STRING3");
   // arr_print(arr);
 
