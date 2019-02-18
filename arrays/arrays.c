@@ -27,12 +27,7 @@ Array *create_array(int capacity)
   arr->capacity = capacity;
   arr->count = 0;
   // Allocate memory for elements
-  arr->elements = malloc(capacity * sizeof(char *));
-
-  for (int i = 0; i < capacity; i++)
-  {
-    arr->elements[i] = NULL;
-  }
+  arr->elements = calloc(capacity, capacity * sizeof(char *));
 
   return arr;
 }
@@ -44,10 +39,13 @@ void destroy_array(Array *arr)
 {
 
   // Free all elements
-  // for (int i = 0; i < arr->count; i++)
-  // {
-  //   free(arr->elements[i]);
-  // }
+  for (int i = 0; i < arr->count; i++)
+  {
+    if (arr->elements[i] != NULL)
+    {
+      free(arr->elements[i]);
+    }
+  }
 
   free(arr->elements);
 
@@ -144,15 +142,16 @@ void arr_append(Array *arr, char *element)
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-  if (arr->capacity == arr->count)
+  if (arr->capacity <= arr->count)
   {
-    printf("Over capcity");
+    fprintf(stderr, "Over capacity");
+    exit(0);
     // resize_array(arr);
   }
   else
   {
     // Copy the element and add it to the end of the array
-    char *new_el = element;
+    char *new_el = strdup(element);
     arr->elements[arr->count] = new_el;
 
     // Increment count by 1
@@ -200,10 +199,11 @@ void arr_print(Array *arr)
 int main(void)
 {
 
-  Array *arr = create_array(1);
+  Array *arr = create_array(3);
 
   // arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
+  // arr_append(arr, "STRING1");
   // arr_insert(arr, "STRING2", 0);
   // arr_insert(arr, "STRING3", 1);
   arr_print(arr);
