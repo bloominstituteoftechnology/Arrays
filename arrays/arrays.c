@@ -185,7 +185,7 @@ void arr_remove(Array *arr, char *element)
   // Don't forget to free its memory!
   for (i = 0; i < arr->count; i++)
   {
-    if (arr->elements[i] == element)
+    if (!strcmp(arr->elements[i], element))
     {
       free(arr->elements[i]);
 
