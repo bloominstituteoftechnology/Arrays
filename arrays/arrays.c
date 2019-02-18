@@ -5,9 +5,9 @@
 
 typedef struct Array
 {
-  int capacity;    // How many elements can this array hold?
-  int count;       // How many states does the array currently hold?
-  char **elements; // The string elements contained in the array
+  unsigned int capacity; // How many elements can this array hold?
+  int count;             // How many states does the array currently hold?
+  char **elements;       // The string elements contained in the array
 } Array;
 
 /************************************
@@ -41,8 +41,13 @@ void destroy_array(Array *arr)
 {
 
   // Free all elements
-
+  for (int i = 0; i < arr->count; i++)
+  {
+    free(arr->elements[i]);
+  }
+  free(arr->elements);
   // Free array
+  free(arr);
 }
 
 /*****
