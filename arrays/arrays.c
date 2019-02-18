@@ -29,7 +29,6 @@ Array *create_array(int capacity)
     arr->count = 0;
 
     // Allocate memory for elements
-    // calloc
     arr->elements = calloc(capacity, sizeof(char *));
     return arr;
 }
@@ -39,10 +38,17 @@ Array *create_array(int capacity)
  *****/
 void destroy_array(Array *arr)
 {
-
     // Free all elements
+    if (arr->elements != NULL)
+    {    
+        free(arr->elements);
+    }
 
     // Free array
+    if (arr != NULL)
+    {
+        free(arr);
+    }
 }
 
 /*****
@@ -74,10 +80,13 @@ void resize_array(Array *arr)
  *****/
 char *arr_read(Array *arr, int index)
 {
-
     // Throw an error if the index is greater than the current count
-
+    if (index > arr->count)
+    {
+        return -1;
+    }
     // Otherwise, return the element at the given index
+    return arr->elements[index];
 }
 
 /*****
@@ -102,13 +111,13 @@ void arr_insert(Array *arr, char *element, int index)
  *****/
 void arr_append(Array *arr, char *element)
 {
-
     // Resize the array if the number of elements is over capacity
     // or throw an error if resize isn't implemented yet.
-
+    char *element_copy = (char *)element;
     // Copy the element and add it to the end of the array
-
+    arr->elements[arr->count] = element_copy;
     // Increment count by 1
+    arr->count++;
 }
 
 /*****
@@ -151,13 +160,13 @@ int main(void)
 
     Array *arr = create_array(1);
 
-    arr_insert(arr, "STRING1", 0);
-    arr_append(arr, "STRING4");
-    arr_insert(arr, "STRING2", 0);
-    arr_insert(arr, "STRING3", 1);
-    arr_print(arr);
-    arr_remove(arr, "STRING3");
-    arr_print(arr);
+    // arr_insert(arr, "STRING1", 0);
+    // arr_append(arr, "STRING4");
+    // arr_insert(arr, "STRING2", 0);
+    // arr_insert(arr, "STRING3", 1);
+    // arr_print(arr);
+    // arr_remove(arr, "STRING3");
+    // arr_print(arr);
 
     destroy_array(arr);
 
