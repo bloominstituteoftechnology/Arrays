@@ -58,7 +58,7 @@ void resize_array(Array *arr) {
   int new_size = 2 * arr -> capacity;
   char **new_elements = malloc(new_size * sizeof(char *));
   // Copy elements into the new storage
-  for(int i = o; i < arr->capacity; i++){
+  for(int i = 0; i < arr->capacity; i++){
     new_elements[i] = arr->elements[i];
   }
 
@@ -87,8 +87,12 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if(index > arr-> count){
+    fprintf(stderr, "index is out of range\n");
+    exit(1);
+  }
   // Otherwise, return the element at the given index
+  return arr -> elements[index];
 }
 
 
@@ -98,14 +102,25 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if(index > arr-> count){
+    fprintf(stderr, "index out of range\n");
+    exit(1);
+  }
   // Resize the array if the number of elements is over capacity
-
+  if(arr-> count == arr-> capacity){
+    resize_array(arr);
+  }
   // Move every element after the insert index to the right one position
+  for(int i = arr-> count - 1; i>= index; i--){
+    arr-> elements[i+1] = arr-> elements[i];
+  }
 
   // Copy the element and add it to the array
+  char * new_element = element;
+  arr-> elements[index] = new_element;
 
   // Increment count by 1
+  arr-> count++;
 
 }
 
