@@ -97,15 +97,26 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
+    if (index > arr->count) {
+        return 0;
+    }
 
   // Resize the array if the number of elements is over capacity
-
+    if (sizeof(arr->count + 1) > arr->capacity) {
+        resize_array(arr);
+    }
+    
   // Move every element after the insert index to the right one position
+    for (int i = 0; i < arr->count; i++) {
+        arr->elements[i+1] = arr->elements[i];
+    }
 
   // Copy the element and add it to the array
-
+    int *newElement = element;
+    arr->elements[index] = newElement;
+    
   // Increment count by 1
-
+    arr->count++;
 }
 
 /*****
@@ -120,7 +131,8 @@ void arr_append(Array *arr, char *element) {
     }
 
   // Copy the element and add it to the end of the array
-    arr->elements[arr->count] = element;
+    int *newElement = element;
+    arr->elements[arr->count] = newElement;
     
   // Increment count by 1
     arr->count++;
