@@ -21,12 +21,14 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-  Array *array = malloc(sizeof(Array));
+  Array *arr = malloc(sizeof(Array));
   // Set initial values for capacity and count
-  array->capacity = capacity;
-  array->count = 0;
+  arrarray->capacity = capacity;
+  arr->count = 0;
   // Allocate memory for elements
-  array->elements = malloc(capacity * sizeof(int));
+  arr->elements = malloc(capacity * sizeof(char *));
+
+  return arr;
 }
 
 
@@ -36,8 +38,13 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
+  while(int i = 0; i < count; i++) {
+    free(arr->selements[i]);
+  }
 
+  free(arr->elements);
   // Free array
+  free(arr);
 
 }
 
