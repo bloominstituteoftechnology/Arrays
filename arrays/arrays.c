@@ -88,35 +88,32 @@ char *arr_read(Array *arr, int index)
   // Otherwise, return the element at the given index
   return arr->elements[index];
 }
-}
 
 /*****
  * Insert an element to the array at the given index
  *****/
 void arr_insert(Array *arr, char *element, int index)
 {
-
   // Throw an error if the index is greater than the current count
   if (index > arr->count)
   {
-    fprintf(stderr, "IndexError: Index %d out of range", index);
-    return;
+    fprintf(stderr, "Index greater than count of array (insert)\n");
+    exit(1);
   }
   // Resize the array if the number of elements is over capacity
-  if (arr->capacity <= arr->count)
+  if (arr->capacity < arr->count + 1)
   {
     resize_array(arr);
   }
   // Move every element after the insert index to the right one position
-  for (int i = arr->count; i > index; i--)
+  for (int i = index; i < arr->count; i++)
   {
-    arr->elements[i] = arr->elements[i - 1];
+    arr->elements[i + 1] = arr->elements[i]; // --> Free up a space for new insert
   }
   // Copy the element and add it to the array
-  char *new_element = strdup(element);
-  arr->elements[index] = new_element;
+  arr->elements[index] = element; // --> Given an index, we insert the element given here
   // Increment count by 1
-  arr->count++;
+  arr->count = arr->count + 1;
 }
 
 /*****
@@ -131,17 +128,10 @@ void arr_insert(Array *arr, char *element, int index)
 }
 
 /*****
- * Append an element to the end of the array
+Append an element to the end of the array
  *****/
 void arr_append(Array *arr, char *element)
 {
-
-  // Resize the array if the number of elements is over capacity
-  // or throw an error if resize isn't implemented yet.
-
-  // Copy the element and add it to the end of the array
-
-  // Increment count by 1
   arr_insert(arr, element, arr->count);
 }
 
@@ -153,13 +143,33 @@ void arr_append(Array *arr, char *element)
  *****/
 void arr_remove(Array *arr, char *element)
 {
-
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
+  for (int i = 0; i < arr->count; i++)
+  {
 
-  // Shift over every element after the removed element to the left one position
+    if (arr->elements[i] == element)
+    {
+      int index_found = 0;
+      index_found = i;
+      arr->elements[i] = NULL;
+      free(arr->elements[i]);
 
-  // Decrement count by 1
+      // Shift over every element after the removed element to the left one position
+      for (int i = index_found; i < arr->count; i++)
+      {
+        arr->elements[i] = arr->elements[i + 1];
+      }
+
+      // Decrement count by 1
+      arr->count = arr->count - 1;
+    }
+    else if (i == arr->count)
+    {
+      fprintf(stderr, "Could not find element (remove)\n");
+      exit(1);
+    }
+  }
 }
 
 /*****
