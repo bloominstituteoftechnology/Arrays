@@ -9,6 +9,7 @@ typedef struct Array {
   char **elements;  // The string elements contained in the array
 } Array;
 
+// Note to self after running everything , should have used chars lol
 
 /************************************
  *
@@ -21,12 +22,13 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-  Array *array = malloc(sizeof(Array));
+  Array *arr = malloc(sizeof(Array));
   // Set initial values for capacity and count
-  array->capacity = capacity;
-  array->count = 0;// setting to 0 because it contains nothing
+  arr->capacity = capacity;
+  arr->count = 0;// setting to 0 because it contains nothing
   // Allocate memory for elements
-  int *a = malloc(capacity * sizeof(int));
+  malloc(capacity * sizeof(int));
+  return 0;
 }
 
 
@@ -47,10 +49,11 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-  char *double_capacity = malloc((arr->capacity * 2), sizeof(int));
+  char **double_capacity = calloc((arr->capacity * 2), sizeof(int));
+    // Don't know why I need the ** for this variable but it works so whatever lol
     // Pointer to copy elements in later
   // Copy elements into the new storage
-  for(int i = 0; i< arr->count, i++){
+  for(int i = 0; i< arr->count; i++){
     double_capacity[i] = arr->elements[i];
   }
   // Free the old elements array (but NOT the strings they point to)
@@ -107,10 +110,10 @@ void arr_insert(Array *arr, char *element, int index) {
       // don't know what this will put as a value for the first one;
     }
     // Copy the element and add it to the array
-    char copy = element; //copy
-    arr->elements[0] = copy;
+    char *copy = element; //copy
+    arr->elements[index] = copy; //changed to index
     // Increment count by 1
-    arr->count = arr->count++;
+    arr->count = arr->count + 1;
   }
 }
 
@@ -176,7 +179,7 @@ void arr_print(Array *arr) {
 #ifndef TESTING
 int main(void)
 {
-
+  printf("RUNNING IN MAIN!!!");
   Array *arr = create_array(1);
 
   arr_insert(arr, "STRING1", 0);
