@@ -85,6 +85,7 @@ char *arr_read(Array *arr, int index)
     fprintf(stderr, "Value of errno: %d\n", errno);
     perror("Error printed by perror");
     fprintf(stderr, "Given index is higher than the size of the array");
+    return -1;
   }
   // Otherwise, return the element at the given index
   else
@@ -98,16 +99,36 @@ char *arr_read(Array *arr, int index)
  *****/
 void arr_insert(Array *arr, char *element, int index)
 {
-
+  int errnum;
   // Throw an error if the index is greater than the current count
+  if (index > arr->count)
+  {
+    errnum = errno;
+    fprintf(stderr, "Value of errno: %d\n", errno);
+    perror("Error printed by perror");
+    fprintf(stderr, "Given index is higher than the size of the array");
+    return -1;
+  }
 
   // Resize the array if the number of elements is over capacity
+  if (arr->capacity == arr->count)
+  {
+    resize_array(arr);
+  }
 
   // Move every element after the insert index to the right one position
+  for (int i = arr->count; i >= index; i--)
+  {
+    arr->elements[i + 1] = arr->elements[i];
+  }
 
   // Copy the element and add it to the array
+  char *copy = malloc(strlen(element) + 1);
+  strcpy(copy, element);
+  arr->elements[index] = copy;
 
   // Increment count by 1
+  arr->count++;
 }
 
 /*****
@@ -117,7 +138,7 @@ void arr_append(Array *arr, char *element)
 {
 
   // Resize the array if the number of elements is over capacity
-  if (arr->count = arr->capacity)
+  if (arr->count == arr->capacity)
   {
     resize_array(arr);
   }
