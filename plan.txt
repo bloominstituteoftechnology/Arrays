@@ -1,0 +1,11 @@
+'make', './arrays', 'make tests'
+
+Search:
+
+How structs work
+
+Initializing array and Allocating memory
+Freeing memory
+
+
+
