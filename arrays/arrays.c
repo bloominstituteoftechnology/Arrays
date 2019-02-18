@@ -21,13 +21,13 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-  int *a = malloc(capacity);
-  
-
+  Array *Array = malloc(sizeof(struct Array));  
   // Set initial values for capacity and count
-
+  Array->capacity = capacity;
+  Array->count = -1;
   // Allocate memory for elements
-
+  Array->elements = malloc(capacity);
+  return Array;
 }
 
 
@@ -37,6 +37,9 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
+
+  free(arr->elements);
+  free(arr);
 
   // Free array
 
@@ -49,8 +52,12 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
+  arr->capacity *= 2;
 
   // Copy elements into the new storage
+  arr->elements = realloc(arr->elements, arr->capacity);
+
+  return;
 
   // Free the old elements array (but NOT the strings they point to)
 
