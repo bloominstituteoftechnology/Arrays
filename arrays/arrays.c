@@ -21,6 +21,8 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
+  int *a = malloc(capacity);
+  
 
   // Set initial values for capacity and count
 
