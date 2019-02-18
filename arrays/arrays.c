@@ -29,7 +29,7 @@ Array *create_array(int capacity)
   array->count = 0;
 
   // Allocate memory for elements
-  array->elements = malloc(capacity * sizeof(char));
+  array->elements = malloc(capacity * sizeof(char *));
 }
 
 /*****
@@ -39,8 +39,10 @@ void destroy_array(Array *arr)
 {
 
   // Free all elements
+  free(arr->elements);
 
   // Free array
+  free(arr);
 }
 
 /*****
@@ -51,8 +53,11 @@ void resize_array(Array *arr)
 {
 
   // Create a new element storage with double capacity
+  arr->capacity *= 2;
+  arr->elements = realloc(arr->elements, 2 * arr->capacity * sizeof(char *));
 
   // Copy elements into the new storage
+  // handled in the realloc call
 
   // Free the old elements array (but NOT the strings they point to)
 
