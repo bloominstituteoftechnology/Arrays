@@ -30,6 +30,8 @@ Array *create_array(int capacity)
 
   // Allocate memory for elements
   arr->elements = malloc(sizeof(char *) * capacity);
+
+  return arr;
 }
 
 /*****
@@ -94,6 +96,8 @@ char *arr_read(Array *arr, int index)
   if (index >= arr->count)
   {
     printf("index out of range");
+
+    return NULL;
   }
 
   // Otherwise, return the element at the given index
@@ -165,13 +169,36 @@ void arr_append(Array *arr, char *element)
  *****/
 void arr_remove(Array *arr, char *element)
 {
-
+  int i;
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
+  for (i = 0; i < arr->count; i++)
+  {
+    if (arr->elements[i] == element)
+    {
+      free(arr->elements[i]);
 
-  // Shift over every element after the removed element to the left one position
+      // Shift over every element after the removed element to the left one position
+      for (int j = i; j < arr->count - 1; j++)
+      {
+        arr->elements[j] = arr->elements[j + 1];
+      }
 
-  // Decrement count by 1
+      arr->elements[arr->count - 1] = NULL;
+
+      break;
+    }
+  }
+
+  if (i < arr->count)
+  {
+    // Decrement count by 1
+    arr->count--;
+  }
+  else
+  {
+    printf("value not in array");
+  }
 }
 
 /*****
