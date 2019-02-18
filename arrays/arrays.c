@@ -92,15 +92,26 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if(index > arr->count){
+    printf("What you doing man!\n That's out of scope\n");
+    exit(-1);
+  }
   // Resize the array if the number of elements is over capacity
-
-  // Move every element after the insert index to the right one position
-
-  // Copy the element and add it to the array
-
-  // Increment count by 1
-
+  else{
+    if(arr->count + 1 > arr->capacity){
+      resize_array(arr); //checks if count with another element will go over current capacity, if it is call resize
+    }
+    // Move every element after the insert index to the right one position
+    for(int i = 0; i < arr->count; i++){
+      arr->elements[i] = arr->elements[i-1];
+      // don't know what this will put as a value for the first one;
+    }
+    // Copy the element and add it to the array
+    char copy = element; //copy
+    arr->elements[0] = copy;
+    // Increment count by 1
+    arr->count = arr->count++;
+  }
 }
 
 /*****
