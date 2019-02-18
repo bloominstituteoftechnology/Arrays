@@ -27,7 +27,7 @@ Array *create_array (int capacity) {
   arr->capacity = capacity;
   arr->count = 0;// setting to 0 because it contains nothing
   // Allocate memory for elements
-  malloc(capacity * sizeof(int));
+  malloc(capacity * sizeof(char));
   return 0;
 }
 
@@ -49,7 +49,7 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-  char **double_capacity = calloc((arr->capacity * 2), sizeof(int));
+  char **double_capacity = calloc((arr->capacity * 2), sizeof(char));
     // Don't know why I need the ** for this variable but it works so whatever lol
     // Pointer to copy elements in later
   // Copy elements into the new storage
