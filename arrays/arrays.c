@@ -69,7 +69,7 @@ void resize_array(Array *arr) {
 
   // Update the elements and capacity to new values
     arr->elements = newStorage;
-    arr->capacity = arr->capacity * 2;
+    arr->capacity *= 2;
     
 }
 
@@ -109,7 +109,7 @@ void arr_insert(Array *arr, char *element, int index) {
     }
 
   // Resize the array if the number of elements is over capacity
-    if (arr->count > arr->capacity) {
+    if (arr->count >= arr->capacity) {
         resize_array(arr);
     }
     
@@ -133,7 +133,7 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-    if (sizeof(arr->count + 1) > arr->capacity) {
+    if (arr->count + 1 > arr->capacity) {
         resize_array(arr);
     }
 
@@ -152,14 +152,23 @@ void arr_append(Array *arr, char *element) {
  * Throw an error if the value is not found.
  *****/
 void arr_remove(Array *arr, char *element) {
+    int index;
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
+    for (int i = 0; i < arr->count; i++) {
+        if (!strcmp(arr->elements[i], element)) {
+            index = i;
+        }
+    }
 
   // Shift over every element after the removed element to the left one position
+    for (int i = 0; i < arr->count - index; i++) {
+        arr->elements[index + i] = arr->elements[index + i + 1];
+    }
 
   // Decrement count by 1
-
+    arr->count--;
 }
 
 
