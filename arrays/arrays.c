@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+extern int errno;
 
 typedef struct Array
 {
@@ -51,10 +52,9 @@ void destroy_array(Array *arr)
  *****/
 void resize_array(Array *arr)
 {
-
   // Create a new element storage with double capacity
   arr->capacity *= 2;
-  arr->elements = realloc(arr->elements, 2 * arr->capacity * sizeof(char *));
+  arr->elements = realloc(arr->elements, arr->capacity * sizeof(char *));
 
   // Copy elements into the new storage
   // handled in the realloc call
@@ -77,10 +77,20 @@ void resize_array(Array *arr)
  *****/
 char *arr_read(Array *arr, int index)
 {
-
+  int errnum;
   // Throw an error if the index is greater than the current count
-
+  if (arr->count > index)
+  {
+    errnum = errno;
+    fprintf(stderr, "Value of errno: %d\n", errno);
+    perror("Error printed by perror");
+    fprintf(stderr, "Given index is higher than the size of the array");
+  }
   // Otherwise, return the element at the given index
+  else
+  {
+    return arr->elements[index];
+  }
 }
 
 /*****
@@ -107,11 +117,18 @@ void arr_append(Array *arr, char *element)
 {
 
   // Resize the array if the number of elements is over capacity
-  // or throw an error if resize isn't implemented yet.
+  if (arr->count = arr->capacity)
+  {
+    resize_array(arr);
+  }
 
   // Copy the element and add it to the end of the array
+  char *copy = malloc(strlen(element) + 1);
+  strcpy(copy, element);
+  arr->elements[arr->count] = copy;
 
   // Increment count by 1
+  arr->count++;
 }
 
 /*****
