@@ -10,6 +10,23 @@ typedef struct Array
   char **elements; // The string elements contained in the array
 } Array;
 
+/*****
+ * Utility function to print an array.
+ *****/
+void arr_print(Array *arr)
+{
+  printf("[");
+  for (int i = 0; i < arr->count; i++)
+  {
+    printf("%s", arr->elements[i]);
+    if (i != arr->count - 1)
+    {
+      printf(",");
+    }
+  }
+  printf("]\n");
+}
+
 /************************************
  *
  *   CREATE, DESTROY, RESIZE FUNCTIONS
@@ -99,7 +116,14 @@ char *arr_read(Array *arr, int index)
   }
 
   // Otherwise, return the element at the given index
-  return arr->elements[index];
+  if (arr->elements[index])
+  {
+    return arr->elements[index];
+  }
+  else
+  {
+    return NULL;
+  }
 }
 
 /*****
@@ -163,27 +187,30 @@ void arr_remove(Array *arr, char *element)
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
-
-  // Shift over every element after the removed element to the left one position
-
-  // Decrement count by 1
-}
-
-/*****
- * Utility function to print an array.
- *****/
-void arr_print(Array *arr)
-{
-  printf("[");
+  //arr_print(arr);
+  int foundIndex;
   for (int i = 0; i < arr->count; i++)
   {
-    printf("%s", arr->elements[i]);
-    if (i != arr->count - 1)
+    //char *item = *arr->elements[i];
+    if (strcmp(arr->elements[i], element) == 0)
     {
-      printf(",");
+
+      foundIndex = i;
+
+      //free(arr->elements[i]);
+
+      //can i shift elements in this same loop (?)
     }
   }
-  printf("]\n");
+
+  // Shift over every element after the removed element to the left one position
+  for (int i = foundIndex + 1; i < arr->count; i++)
+  {
+    arr->elements[i - 1] = arr->elements[i];
+  }
+
+  // Decrement count by 1
+  arr->count--;
 }
 
 #ifndef TESTING
@@ -191,6 +218,7 @@ int main(void)
 {
 
   Array *arr = create_array(1);
+  printf("%s", arr_read(arr, 0));
 
   arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
