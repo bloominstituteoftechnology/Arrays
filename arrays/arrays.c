@@ -84,8 +84,15 @@ char *arr_read(Array *arr, int index)
 {
 
   // Throw an error if the index is greater than the current count
-
+if (index >= arr->count){
+  fprintf(stderr, "Index is greater than or equal to the current count\n");
+  //exit(1) indicates unsuccesful termination
+  exit(1);
+}
   // Otherwise, return the element at the given index
+  else {
+    return arr->elements[index];
+  }
 }
 
 /*****
