@@ -57,7 +57,6 @@ void resize_array(Array *arr)
   for (int i = 0; i < arr->count; i++)
   {
     element[i] = arr->elements[i];
-    printf("element: %s\n", element[i]);
   }
 
   // Free the old elements array (but NOT the strings they point to)
@@ -97,14 +96,28 @@ void arr_insert(Array *arr, char *element, int index)
 {
 
   // Throw an error if the index is greater than the current count
+  if (index > arr->count)
+  {
+    printf("Index is greater than the last index");
+    return;
+  }
 
   // Resize the array if the number of elements is over capacity
+  if (arr->count == arr->capacity)
+  {
+    resize_array(arr);
+  }
 
   // Move every element after the insert index to the right one position
+  for (int i = arr->count; i > index; i--)
+  {
+    arr->elements[i] = arr->elements[i - 1];
+  }
 
   // Copy the element and add it to the array
-
+  arr->elements[index] = element;
   // Increment count by 1
+  arr->count++;
 }
 
 /*****
@@ -166,18 +179,12 @@ int main(void)
 {
 
   Array *arr = create_array(1);
-  arr_print(arr);
 
-  // arr_insert(arr, "STRING1", 0);
+  arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
-  printf("%s\n", arr_read(arr, 0));
-  arr_append(arr, "STRING5");
-  arr_append(arr, "STRING6");
-
-  // arr_insert(arr, "STRING2", 0);
-  // arr_insert(arr, "STRING3", 1);
+  arr_insert(arr, "STRING2", 0);
+  arr_insert(arr, "STRING3", 1);
   arr_print(arr);
-  printf("%d\n", arr->capacity);
   // arr_remove(arr, "STRING3");
   arr_print(arr);
 
