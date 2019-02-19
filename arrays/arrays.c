@@ -35,10 +35,7 @@ Array *create_array (int capacity) {
   // Allocate memory for elements 
   // The calloc() function takes two arguments: the number of elements to allocate and the storage size of those elements
   new_array->elements = calloc(capacity, sizeof(int));
-  
-
   return new_array;
-
 }
 
 
@@ -107,8 +104,6 @@ char *arr_read(Array *arr, int index) {
 
   // Otherwise, return the element at the given index
   return arr->elements[index];
-
-  
 }
 
 
@@ -173,13 +168,30 @@ void arr_append(Array *arr, char *element) {
  *****/
 void arr_remove(Array *arr, char *element) {
 
-  // Search for the first occurrence of the element and remove it.
+  // Search for the first occurrence of the element...
+  int remove_index = 0;
 
-  // Don't forget to free its memory!
+  for (int i=0; i < arr->count; i++) {
+    
+    if (arr->elements[i] == element) {
+      remove_index = i; //to be used below
+      // Don't forget to free its memory!
+      free(arr->elements[i]);
+    }
 
-  // Shift over every element after the removed element to the left one position
+  }
+  //...and remove it / Shift over every element after the removed element to the left one position
+  for(int i = remove_index; i < arr->count; i++) {
+    arr->elements[i] = arr->elements[i + 1];
+  }
+  /* NOTE "Arrays in C are allocated as a fixed number of contiguous elements. 
+  There is no way to actually remove the memory used by an individual element in the 
+  array but the elements can be shifted to fill the hole made by removing an element." 
+  - source stackoverflow */
 
   // Decrement count by 1
+  arr->count --;
+
 
 }
 
