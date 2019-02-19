@@ -50,7 +50,7 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-  arr -> new_capacity = arr -> capacity * 2
+  int new_capacity = arr -> capacity * 2;
   char **new_elements = calloc(new_capacity, sizeof(char *));
   // Copy elements into the new storage
   for(int i = 0; i < arr -> count; i++) {
@@ -96,18 +96,17 @@ void arr_insert(Array *arr, char *element, int index) {
   // Throw an error if the index is greater than the current count
   if(index >= arr -> count) {
     printf("IndexError: Index %d out of range\n", index);
-    return NULL;
   }
   // Resize the array if the number of elements is over capacity
   if(arr -> capacity <= arr -> count) {
     resize_array(arr);
   }
   // Move every element after the insert index to the right one position
-  for(int i = arr -> count; i > index; i --) {
+  for(int i = arr -> count; i > index; i--) {
     arr -> elements[i] = arr -> elements[i - 1];
   }
   // Copy the element and add it to the array
-  char *new_element = strdup(elements);
+  char *new_element = strdup(element);
   arr -> elements[index] = new_element;
   // Increment count by 1
   arr -> count++;
@@ -120,9 +119,9 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-  if(arr -> capacity == arr -> count) {
+  if(arr -> capacity <= arr -> count) {
     printf("over capacity");
-    //resize_array(arr);
+    resize_array(arr);
   } else {
     // Copy the element and add it to the end of the array
     char *new_element = element;
@@ -143,11 +142,23 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
-
+  int index = -1;
+  for( int i = 0; i < arr -> count; i++) {
+    if(strcmp(arr -> elements[i], element) == 0) {
+      index = i;
+      free(arr -> elements[i]);
+    }
+  }
+  if( index == -1) {
+    printf("ValueError: %s not in array", element);
+  }
   // Shift over every element after the removed element to the left one position
-
+  for(int i = index; i < arr -> count; i++) {
+    arr -> elements[i] = arr -> elements[i + 1];
+    arr -> elements[arr -> count] = NULL;
+  }
   // Decrement count by 1
-  
+  arr -> count--;
 }
 
 
