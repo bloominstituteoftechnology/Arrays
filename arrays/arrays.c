@@ -172,6 +172,21 @@ void arr_remove(Array *arr, char *element)
 }
 
 /*****
+* Clear all elements from array
+ *****/
+void arr_clear(Array *arr)
+{
+  char **newelements = calloc(arr->capacity, sizeof(char *));
+  free(arr->elements);
+  arr->elements = newelements;
+  // memset(arr->elements, 0, sizeof(arr->elements) * arr->count);
+}
+
+/*****
+* Copy
+ *****/
+
+/*****
  * Utility function to print an array.
  *****/
 void arr_print(Array *arr)
@@ -194,6 +209,7 @@ int main(void)
 
   Array *arr = create_array(1);
 
+  arr_print(arr);
   arr_insert(arr, "STRING1", 0);
   arr_print(arr);
   arr_append(arr, "STRING4");
@@ -203,6 +219,9 @@ int main(void)
   arr_insert(arr, "STRING3", 1);
   arr_print(arr);
   arr_remove(arr, "STRING3");
+  arr_print(arr);
+  arr_clear(arr);
+  printf("after clear\n");
   arr_print(arr);
 
   destroy_array(arr);
