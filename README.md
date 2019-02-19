@@ -29,9 +29,9 @@ Insertion and deletion should work like the Python `insert()` and `remove()` lis
 
 Resizing involves allocating a block of memory with double the storage, copying elements from the old block to the new, and freeing the old block. You should automatically resize when an insert or append takes your array past the allocated capacity.
 
-1. [] `arr_insert()`
-2. [] `arr_remove()`
-3. [] `resize_array()`
+1. [x] `arr_insert()`
+2. [x] `arr_remove()`
+3. [x] `resize_array()`
 
 ### Stretch Goals
 
