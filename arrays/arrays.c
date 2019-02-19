@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 200809L // POSIX extension for strdup()
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -40,7 +41,14 @@ void destroy_array(Array *arr)
 {
     // Free all elements
     if (arr->elements != NULL)
-    {    
+    {
+        for (int i = 0; i < arr->count; i++)
+        {
+            if (arr->elements[i] != NULL)
+            {
+                free(arr->elements[i]);
+            }
+        }
         free(arr->elements);
     }
 
@@ -57,14 +65,18 @@ void destroy_array(Array *arr)
  *****/
 void resize_array(Array *arr)
 {
-
     // Create a new element storage with double capacity
-
+    char **new_storage = calloc(arr->capacity * 2, sizeof(char *));
     // Copy elements into the new storage
-
+    for (int i = 0; i < arr->count; i++)
+    {
+        new_storage[i] = arr->elements[i];
+    }
     // Free the old elements array (but NOT the strings they point to)
-
+    free(arr->elements);
     // Update the elements and capacity to new values
+    arr->elements = new_storage;
+    arr->capacity = arr->capacity * 2;
 }
 
 /************************************
@@ -81,9 +93,9 @@ void resize_array(Array *arr)
 char *arr_read(Array *arr, int index)
 {
     // Throw an error if the index is greater than the current count
-    if (index > arr->count)
+    if (index >= arr->count)
     {
-        return -1;
+        return NULL;
     }
     // Otherwise, return the element at the given index
     return arr->elements[index];
@@ -94,16 +106,27 @@ char *arr_read(Array *arr, int index)
  *****/
 void arr_insert(Array *arr, char *element, int index)
 {
-
     // Throw an error if the index is greater than the current count
-
+    if (index > arr->count)
+    {
+        fprintf(stderr, "Attempted to insert but index out of range");
+        exit(1);
+    }
     // Resize the array if the number of elements is over capacity
-
+    if (arr->capacity <= arr->count)
+    {
+        resize_array(arr);
+    }
     // Move every element after the insert index to the right one position
-
+    for (int i = arr->count; i >= 0; i--)
+    {
+        arr->elements[i + 1] = arr->elements[i];
+    }
     // Copy the element and add it to the array
-
+    char *element_copy = strdup(element);
+    arr->elements[index] = element_copy;
     // Increment count by 1
+    arr->count++;
 }
 
 /*****
@@ -113,7 +136,12 @@ void arr_append(Array *arr, char *element)
 {
     // Resize the array if the number of elements is over capacity
     // or throw an error if resize isn't implemented yet.
-    char *element_copy = (char *)element;
+    if (arr->capacity <= arr->count)
+    {
+        resize_array(arr);
+    }
+
+    char *element_copy = strdup(element);
     // Copy the element and add it to the end of the array
     arr->elements[arr->count] = element_copy;
     // Increment count by 1
@@ -128,13 +156,21 @@ void arr_append(Array *arr, char *element)
  *****/
 void arr_remove(Array *arr, char *element)
 {
-
     // Search for the first occurence of the element and remove it.
-    // Don't forget to free its memory!
-
-    // Shift over every element after the removed element to the left one position
-
+    for (int i = 0; i < arr->count; i++)
+    {
+        if (strcmp(arr->elements[i], element) == 0)
+        {
+            free(arr->elements[i]);
+            for (int x = i; x < arr->count - i; x++)
+            {
+                // Shift over every element after the removed element to the left one position
+                arr->elements[x] = arr->elements[x + 1];
+            }
+        }
+    }
     // Decrement count by 1
+    arr->count--;
 }
 
 /*****
@@ -160,13 +196,13 @@ int main(void)
 
     Array *arr = create_array(1);
 
-    // arr_insert(arr, "STRING1", 0);
-    // arr_append(arr, "STRING4");
-    // arr_insert(arr, "STRING2", 0);
-    // arr_insert(arr, "STRING3", 1);
-    // arr_print(arr);
-    // arr_remove(arr, "STRING3");
-    // arr_print(arr);
+    arr_insert(arr, "STRING1", 0);
+    arr_append(arr, "STRING4");
+    arr_insert(arr, "STRING2", 0);
+    arr_insert(arr, "STRING3", 1);
+    arr_print(arr);
+    arr_remove(arr, "STRING3");
+    arr_print(arr);
 
     destroy_array(arr);
 
