@@ -160,20 +160,33 @@ void arr_append(Array *arr, char *element)
 }
 
 /*****
- * Remove the first occurence of the given element from the array,
- * then shift every element after that occurence to the left one slot.
+ * Remove the first occurrence of the given element from the array,
+ * then shift every element after that occurrence to the left one slot.
  *
  * Throw an error if the value is not found.
  *****/
 void arr_remove(Array *arr, char *element)
 {
 
-  // Search for the first occurence of the element and remove it.
-  // Don't forget to free its memory!
+  // Search for the first occurrence of the element and remove it.
+  int deleted_idx;
+  for (int i = 0; i < arr->count; i++)
+  {
+    if (strcmp(element, arr->elements[i]) == 0)
+    {
+      deleted_idx = i;
+      // Don't forget to free its memory!
+      free(arr->elements[i]);
+    }
+  }
 
   // Shift over every element after the removed element to the left one position
-
+  for (deleted_idx; deleted_idx <= arr->count; deleted_idx++)
+  {
+    arr->elements[deleted_idx] = arr->elements[deleted_idx + 1];
+  }
   // Decrement count by 1
+  arr->count--;
 }
 
 /*****
@@ -207,8 +220,8 @@ int main(void)
   arr_print(arr);
   arr_insert(arr, "STRING3", 1);
   arr_print(arr);
-  // arr_remove(arr, "STRING3");
-  // arr_print(arr);
+  arr_remove(arr, "STRING3");
+  arr_print(arr);
 
   // destroy_array(arr);
 
