@@ -99,24 +99,33 @@ char *arr_read(Array *array, int index) {
 /*****
  * Insert an element to the array at the given index
  *****/
-void arr_insert(Array *arr, char *element, int index) {
+void arr_insert(Array *array, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if (index > array->count)
+  {
+    return -1;
+  }
   // Resize the array if the number of elements is over capacity
-
+  if (array->count > array->capacity)
+  {
+    resize_array(array);
+  }
   // Move every element after the insert index to the right one position
-
+  for (int i = array->count - 1; i >= index; i--)
+  {
+    array->elements[i + 1] = array->elements[i];
+  }
   // Copy the element and add it to the array
-
+  array->elements[index] = element;
   // Increment count by 1
-
+  array->count++;
 }
 
 /*****
  * Append an element to the end of the array
  *****/
-void arr_append(Array *arr, char *element) {
+void arr_append(Array *array, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
@@ -133,7 +142,7 @@ void arr_append(Array *arr, char *element) {
  *
  * Throw an error if the value is not found.
  *****/
-void arr_remove(Array *arr, char *element) {
+void arr_remove(Array *array, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
