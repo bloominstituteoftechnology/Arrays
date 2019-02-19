@@ -99,14 +99,14 @@ void arr_insert(Array *arr, char *element, int index) {
     exit(1);
   }
   // Resize the array if the number of elements is over capacity
-  if(arr->count + 1 > arr->capacity){
+  if(arr->count >= arr->capacity){
       resize_array(arr); //checks if count with another element will go over current capacity, if it is call resize
     }
     // Move every element after the insert index to the right one position
-    for(int i = 0; i < arr->count; i++){
+    for (int i=arr->count; i > index; i--) {
       arr->elements[i] = arr->elements[i-1];
-      // don't know what this will put as a value for the first one;
     }
+
     // Copy the element and add it to the array
     char *copy = element; //copy
     arr->elements[index] = copy; //changed to index
@@ -175,27 +175,16 @@ void arr_print(Array *arr) {
 #ifndef TESTING
 int main(void)
 {
-  // printf("RUNNING IN MAIN!!!\n");
-  // Array *arr = create_array(1);
-  // arr_insert(arr, "STRING1", 0);
-  // arr_append(arr, "STRING4");
-  // arr_insert(arr, "STRING2", 0);
-  // arr_insert(arr, "STRING3", 1);
-  // arr_print(arr);
-  // arr_remove(arr, "STRING3");
-  // arr_print(arr);
+  printf("RUNNING IN MAIN!!!\n");
+  Array *arr = create_array(1);
+  arr_insert(arr, "STRING1", 0);
+  arr_append(arr, "STRING4");
+  arr_insert(arr, "STRING2", 0);
+  arr_insert(arr, "STRING3", 1);
+  arr_print(arr);
+  arr_remove(arr, "STRING3");
+  arr_print(arr);
 
-  // destroy_array(arr);
-  Array *arr = create_array(3);
-  arr_append(arr, "first");
-  arr_append(arr, "second");
-  arr_append(arr, "third");
-  arr_print(arr);
-  // arr_insert(arr, "insertion", 2);
-  arr_append(arr, "last");
-  arr_print(arr);
-  arr_remove(arr, "insertion");
-  arr_print(arr);
   destroy_array(arr);
 
   return 0;
