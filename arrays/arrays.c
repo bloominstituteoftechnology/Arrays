@@ -55,6 +55,7 @@ void resize_array(Array *arr)
   // Create a new element storage with double capacity
   arr->capacity *= 2;
   arr->elements = realloc(arr->elements, arr->capacity * sizeof(char *));
+  // printf("resize_array complete\n"); // <--debugging
 
   // Copy elements into the new storage
   // handled in the realloc call
@@ -105,7 +106,10 @@ void arr_insert(Array *arr, char *element, int index)
   // Resize the array if the number of elements is over capacity
   if (arr->capacity >= arr->count)
   {
+    // printf("array capacity %d\n", arr->capacity); // // <--debugging
+    // printf("resize_array initiated\n");           // <--debugging
     resize_array(arr);
+    // printf("array capacity %d\n", arr->capacity); // // <--debugging
   }
 
   // Move every element after the insert index to the right one position
@@ -116,6 +120,8 @@ void arr_insert(Array *arr, char *element, int index)
 
   // Copy the element and add it to the array
   char *copy = strdup(element);
+  // printf("copy %s\n", copy); // <--debugging
+  arr->elements[index] = copy;
 
   // Increment count by 1
   arr->count++;
