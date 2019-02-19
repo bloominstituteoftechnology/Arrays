@@ -94,15 +94,23 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if(index >= arr -> count) {
+    printf("IndexError: Index %d out of range\n", index);
+    return NULL;
+  }
   // Resize the array if the number of elements is over capacity
-
+  if(arr -> capacity <= arr -> count) {
+    resize_array(arr);
+  }
   // Move every element after the insert index to the right one position
-
+  for(int i = arr -> count; i > index; i --) {
+    arr -> elements[i] = arr -> elements[i - 1];
+  }
   // Copy the element and add it to the array
-
+  char *new_element = strdup(elements);
+  arr -> elements[index] = new_element;
   // Increment count by 1
-
+  arr -> count++;
 }
 
 /*****
@@ -139,7 +147,7 @@ void arr_remove(Array *arr, char *element) {
   // Shift over every element after the removed element to the left one position
 
   // Decrement count by 1
-
+  
 }
 
 
