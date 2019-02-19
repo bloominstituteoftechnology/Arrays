@@ -29,7 +29,7 @@ Array *create_array(int capacity)
   arr->count = 0;
 
   // Allocate memory for elements
-  arr->elements = malloc(sizeof(char *) * capacity);
+  arr->elements = calloc(capacity, sizeof(char *));
 
   return arr;
 }
@@ -67,7 +67,7 @@ void resize_array(Array *arr)
 {
 
   // Create a new element storage with double capacity
-  char **new_arr = malloc(sizeof(char *) * arr->capacity * 2);
+  char **new_arr = calloc(arr->capacity * 2, sizeof(char *));
 
   // Copy elements into the new storage
   for (int i = 0; i < arr->capacity; i++)
@@ -139,8 +139,7 @@ void arr_insert(Array *arr, char *element, int index)
     }
 
     // Copy the element and add it to the array
-    char *new_element = malloc(sizeof(char) * (strlen(element) + 1));
-    strcpy(new_element, element);
+    char *new_element = strdup(element);
 
     arr->elements[index] = new_element;
 
@@ -163,8 +162,7 @@ void arr_append(Array *arr, char *element)
   // or throw an error if resize isn't implemented yet.
 
   // Copy the element and add it to the end of the array
-  char *new_element = malloc(sizeof(char) * (strlen(element) + 1));
-  strcpy(new_element, element);
+  char *new_element = strdup(element);
 
   arr->elements[arr->count] = new_element;
 
