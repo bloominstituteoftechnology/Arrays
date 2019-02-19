@@ -49,15 +49,17 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-  char **double_capacity = calloc((arr->capacity * 2), sizeof(char));
+  char **double_capacity = calloc((arr->capacity * 2), sizeof(char *));
     // Don't know why I need the ** for this variable but it works so whatever lol
     // Pointer to copy elements in later
   // Copy elements into the new storage
-  for(int i = 0; i< arr->count; i++){
+  for(int i = 0; i < arr->count; i++){
     double_capacity[i] = arr->elements[i];
   }
   // Free the old elements array (but NOT the strings they point to)
-  free(arr->elements);
+  if(arr -> elements != NULL){
+    free(arr->elements);
+  }
   // Update the elements and capacity to new values
   arr->elements = double_capacity;   // Sets elements to the new double capacity pointer
   arr->capacity = arr->capacity * 2; //multiplies old capacity by 2
@@ -120,14 +122,14 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-    if(arr->count + 1 > arr->capacity){
+    if(arr->count + 1 >= arr->capacity){
       resize_array(arr); //checks if count with another element will go over current capacity, if it is call resize
     }
-  // Copy the element and add it to the end of the array
-  char *copy = element;
-  arr->elements[arr->count] = copy;
-  // Increment count by 1
-  arr->count = arr->count + 1;
+    // Copy the element and add it to the end of the array
+    arr->elements[arr->count] = element;
+
+    // Increment count by 1
+    arr->count++;
 }
 
 /*****
@@ -173,19 +175,28 @@ void arr_print(Array *arr) {
 #ifndef TESTING
 int main(void)
 {
-  printf("RUNNING IN MAIN!!!");
-  Array *arr = create_array(1);
-
-  arr_insert(arr, "STRING1", 0);
-  printf("finished inserting");
-  arr_append(arr, "STRING4");
+  // printf("RUNNING IN MAIN!!!\n");
+  // Array *arr = create_array(1);
+  // arr_insert(arr, "STRING1", 0);
+  // arr_append(arr, "STRING4");
   // arr_insert(arr, "STRING2", 0);
   // arr_insert(arr, "STRING3", 1);
-  arr_print(arr);
+  // arr_print(arr);
   // arr_remove(arr, "STRING3");
   // arr_print(arr);
 
   // destroy_array(arr);
+  Array *arr = create_array(3);
+  arr_append(arr, "first");
+  arr_append(arr, "second");
+  arr_append(arr, "third");
+  arr_print(arr);
+  // arr_insert(arr, "insertion", 2);
+  arr_append(arr, "last");
+  arr_print(arr);
+  arr_remove(arr, "insertion");
+  arr_print(arr);
+  destroy_array(arr);
 
   return 0;
 }
