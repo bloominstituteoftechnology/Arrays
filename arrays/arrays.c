@@ -103,9 +103,9 @@ void arr_insert(Array *arr, char *element, int index)
     resize_array(arr);
   }
   // Move every element after the insert index to the right one position
-  for (int i = index; i < arr->count; i++)
+  for (int i = arr->count; i > index; i--)
   {
-    arr->elements[i + 1] = arr->elements[i];
+    arr->elements[i] = arr->elements[i - 1];
   }
   // Copy the element and add it to the array
   arr->elements[index] = element;
@@ -145,7 +145,7 @@ void arr_remove(Array *arr, char *element)
   {
     // Search for the first occurence of the element and remove it.
     // Don't forget to free its memory!
-    if (elementfound == 0 && arr->elements[i] == element)
+    if (elementfound == 0 && !strcmp(arr->elements[i], element))
     {
       arr->elements[i] = NULL;
       free(arr->elements[i]);
@@ -195,8 +195,11 @@ int main(void)
   Array *arr = create_array(1);
 
   arr_insert(arr, "STRING1", 0);
+  arr_print(arr);
   arr_append(arr, "STRING4");
+  arr_print(arr);
   arr_insert(arr, "STRING2", 0);
+  arr_print(arr);
   arr_insert(arr, "STRING3", 1);
   arr_print(arr);
   arr_remove(arr, "STRING3");
