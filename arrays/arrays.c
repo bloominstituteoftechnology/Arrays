@@ -15,7 +15,6 @@ typedef struct Array {
  *
  *   CREATE, DESTROY, RESIZE FUNCTIONS
  * DAY 2
-    1. `arr_insert()`
     2. `arr_remove()`
 
  ************************************/
@@ -120,14 +119,26 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if (index > arr->count) {
+    fprintf(stderr, "index out of range");
+    exit(1);
+  }
   // Resize the array if the number of elements is over capacity
+  if (arr->count > arr->capacity) {
+    resize_array(arr); 
+  } 
 
   // Move every element after the insert index to the right one position
+  for (int i=arr->count; i > index; i--) {
+    arr->elements[i+1] = arr->elements[i]; //shift the array values from the end to make space for the new element
+  }
 
   // Copy the element and add it to the array
+  char *new_element = element; // copy 
+  arr->elements[index] = new_element; //add
 
   // Increment count by 1
+  arr->count++;
   
 
 }
@@ -163,6 +174,7 @@ void arr_append(Array *arr, char *element) {
 void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurrence of the element and remove it.
+
   // Don't forget to free its memory!
 
   // Shift over every element after the removed element to the left one position
