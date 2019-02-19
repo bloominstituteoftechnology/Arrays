@@ -51,7 +51,4 @@ Resizing involves allocating a block of memory with double the storage, copying 
 
 Check the official documentation or use Python's `help()` method for implementation details.
 
-
-
-
-
+-read
