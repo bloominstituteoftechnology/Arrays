@@ -59,12 +59,21 @@ void resize_array(Array *arr)
 {
 
   // Create a new element storage with double capacity
+  int new_size = 2 * arr->capacity;
+  char **new_elements = malloc(new_size * sizeof(char *));
 
   // Copy elements into the new storage
+  for (int i = 0; i < arr->count; i++)
+  {
+    new_elements[i] = arr->elements[i];
+  }
 
   // Free the old elements array (but NOT the strings they point to)
+  free(arr->elements);
 
   // Update the elements and capacity to new values
+  arr->capacity = new_size;
+  arr->elements = new_elements;
 }
 
 /************************************
@@ -99,14 +108,32 @@ void arr_insert(Array *arr, char *element, int index)
 {
 
   // Throw an error if the index is greater than the current count
+  if (index > arr->count)
+  {
+    fprintf(stderr, "IndexError: Index is out of range");
+    return;
+  }
 
   // Resize the array if the number of elements is over capacity
+  if (arr->capacity < arr->count)
+  {
+    resize_array(arr);
+  }
 
   // Move every element after the insert index to the right one position
+  char *temp = arr->elements[index];
+  char *temp2;
+  for (int i = index; i <= arr->count; i++)
+  {
+    temp2 = arr->elements[i + 1];
+    arr->elements[i + 1] = temp;
+    temp = temp2;
+  }
 
   // Copy the element and add it to the array
-
+  arr->elements[index] = element;
   // Increment count by 1
+  arr->count++;
 }
 
 /*****
@@ -119,8 +146,7 @@ void arr_append(Array *arr, char *element)
   // or throw an error if resize isn't implemented yet.
   if (arr->capacity <= arr->count)
   {
-    fprintf(stderr, "IndexError: Index is out of range");
-    return;
+    resize_array(arr);
   }
 
   // Copy the element
@@ -174,14 +200,17 @@ int main(void)
   Array *arr = create_array(1);
 
   arr_insert(arr, "STRING1", 0);
+  arr_print(arr);
   arr_append(arr, "STRING4");
+  arr_print(arr);
   arr_insert(arr, "STRING2", 0);
+  arr_print(arr);
   arr_insert(arr, "STRING3", 1);
   arr_print(arr);
-  arr_remove(arr, "STRING3");
-  arr_print(arr);
+  // arr_remove(arr, "STRING3");
+  // arr_print(arr);
 
-  destroy_array(arr);
+  // destroy_array(arr);
 
   return 0;
 }
