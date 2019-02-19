@@ -36,7 +36,7 @@ char *day_2_array_tests()
     Array *arr = create_array(1);
 
     arr_insert(arr, "VALUE-1", 0);
-
+    fprintf(stderr, "CHECK\n");
     mu_assert(strcmp(arr_read(arr, 0), "VALUE-1") == 0, "Insert value failed");
 
     arr_insert(arr, "VALUE-2", 0);

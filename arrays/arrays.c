@@ -97,18 +97,29 @@ void arr_insert(Array *arr, char *element, int index) {
     resize_array(arr);
   }
 
+  fprintf(stderr, "Element %s\n", element);
   // Move every element after the insert index to the right one position
-  char *temp;
   
-  for(int i = index; i < arr->count; i++) {
-    temp = arr->elements[i+1];
-    arr->elements[i+1] = temp;
+  if(arr->count == 0) {
+    arr->elements[0] = element;
+    
+  } else {
+    char *temp = arr->elements[index];
+    char *temp2;
+    for(int i = index; i <= arr->count; i++) {
+      temp2 = arr->elements[i+1];
+      arr->elements[i+1] = temp;
+      temp = temp2;
+    
+    }
   }
-  for (int i = 0 ; i < arr->count; i++) {
-    fprintf(stderr, "%s", arr->elements[i]);
-  }
+  
+  
+  
   // Copy the element and add it to the array
   arr->elements[index] = element;
+  fprintf(stderr, "testing 0%s ", arr->elements[0]);
+  fprintf(stderr, "testing 1%s ]\n", arr->elements[1]);
   arr->count += 1;
   // Increment count by 1
 
