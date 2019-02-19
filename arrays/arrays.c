@@ -87,7 +87,7 @@ char *arr_read(Array *arr, int index)
   // Otherwise, return the element at the given index
   else
   {
-    printf("arr_read returning %s\n", arr->elements[index]); // <-debugging
+    // printf("arr_read returning %s\n", arr->elements[index]); // <-debugging
     return arr->elements[index];
   }
 }
@@ -105,7 +105,7 @@ void arr_insert(Array *arr, char *element, int index)
   }
 
   // Resize the array if the number of elements is over capacity
-  if (arr->capacity >= arr->count)
+  if (arr->capacity <= arr->count)
   {
     // printf("array capacity %d\n", arr->capacity); // // <--debugging
     // printf("resize_array initiated\n");           // <--debugging
@@ -219,7 +219,8 @@ int main(void)
 
   arr_insert(arr, "VALUE-1", 0);
   printf("%s added to arr\n", arr->elements[0]);
-  printf("%s", arr_read(arr, 0));
+  printf("%s\n", arr_read(arr, 0));
+  arr_insert(arr, "VALUE-2", 0);
   // arr_insert(arr, "STRING1", 0);
   // arr_append(arr, "STRING4");
   // arr_insert(arr, "STRING2", 0);
