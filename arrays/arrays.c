@@ -79,14 +79,15 @@ void resize_array(Array *arr)
 char *arr_read(Array *arr, int index)
 {
   // Throw an error if the index is greater than the current count
-  if (arr->count > index)
+  if (arr->count < index)
   {
-    printf("Given index is higher than the size of the array");
+    printf("Given index is higher than the size of the array\n");
     return NULL;
   }
   // Otherwise, return the element at the given index
   else
   {
+    printf("arr_read returning %s\n", arr->elements[index]); // <-debugging
     return arr->elements[index];
   }
 }
@@ -216,13 +217,16 @@ int main(void)
 
   Array *arr = create_array(1);
 
-  arr_insert(arr, "STRING1", 0);
-  arr_append(arr, "STRING4");
-  arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
-  arr_print(arr);
-  arr_remove(arr, "STRING3");
-  arr_print(arr);
+  arr_insert(arr, "VALUE-1", 0);
+  printf("%s added to arr\n", arr->elements[0]);
+  printf("%s", arr_read(arr, 0));
+  // arr_insert(arr, "STRING1", 0);
+  // arr_append(arr, "STRING4");
+  // arr_insert(arr, "STRING2", 0);
+  // arr_insert(arr, "STRING3", 1);
+  // arr_print(arr);
+  // arr_remove(arr, "STRING3");
+  // arr_print(arr);
 
   destroy_array(arr);
 
