@@ -14,9 +14,10 @@ typedef struct Array {
 /************************************
  *
  *   CREATE, DESTROY, RESIZE FUNCTIONS
- * DAY 1 
-    3. `arr_append()`
-    4. `arr_read()`
+ * DAY 2
+    1. `arr_insert()`
+    2. `arr_remove()`
+
  ************************************/
 
 /*****
@@ -57,18 +58,30 @@ void destroy_array(Array *arr) {
 }
 
 /*****
+ * DAY 2 ------------------------------
  * Create a new elements array with double capacity and copy elements
  * from old to new
  *****/
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
+  char **double_capacity = calloc((arr->capacity * 2), sizeof(char *)); //** = a pointer to a pointer
 
   // Copy elements into the new storage
+  for (int i=0; i< arr->count; i++) 
+  {
+    double_capacity[i] = arr->elements[i];
+  }
 
   // Free the old elements array (but NOT the strings they point to)
+  if (arr->elements != NULL) 
+  {
+    free(arr->elements);
+  }
 
   // Update the elements and capacity to new values
+  arr->elements = double_capacity; 
+  arr->capacity *= 2; //*= multiplication syntax 
 
 }
 
@@ -101,6 +114,7 @@ char *arr_read(Array *arr, int index) {
 
 
 /*****
+ * DAY 2 ------------------------------
  * Insert an element to the array at the given index
  *****/
 void arr_insert(Array *arr, char *element, int index) {
@@ -125,7 +139,7 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements(count) is over capacity
   if (arr->count > arr->capacity) {
-    resize_array(arr); //STILL NEEDS TO BE DEFINED ABOVE 
+    resize_array(arr); 
   } 
   // or throw an error if resize isn't implemented yet.
   if (arr->count > arr->capacity) {
@@ -140,14 +154,15 @@ void arr_append(Array *arr, char *element) {
 }
 
 /*****
- * Remove the first occurence of the given element from the array,
- * then shift every element after that occurence to the left one slot.
+ * DAY 2 ------------------------------
+ * Remove the first occurrence of the given element from the array,
+ * then shift every element after that occurrence to the left one slot.
  *
  * Throw an error if the value is not found.
  *****/
 void arr_remove(Array *arr, char *element) {
 
-  // Search for the first occurence of the element and remove it.
+  // Search for the first occurrence of the element and remove it.
   // Don't forget to free its memory!
 
   // Shift over every element after the removed element to the left one position
