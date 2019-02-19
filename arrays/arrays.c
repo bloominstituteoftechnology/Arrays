@@ -81,25 +81,38 @@ char *arr_read(Array *arr, int index)
 {
 
   // Throw an error if the index is greater than the current count
+  if (index > arr->count)
+  {
+    // throw an error
+    return "Index out of range";
+  }
 
   // Otherwise, return the element at the given index
+  return arr->elements[index];
 }
 
 /*****
  * Insert an element to the array at the given index
  *****/
-void arr_insert(Array *arr, char *element, int index)
+void arr_append(Array *arr, char *element)
 {
 
-  // Throw an error if the index is greater than the current count
-
   // Resize the array if the number of elements is over capacity
+  // or throw an error if resize isn't implemented yet.
+  if (arr->capacity == arr->count)
+  {
+    printf("Not enough mem allocated");
+    // resize_array(arr);
+  }
+  else
+  {
+    // Copy the element and add it to the end of the array
+    char *new = element;
+    arr->elements[arr->count] = new;
 
-  // Move every element after the insert index to the right one position
-
-  // Copy the element and add it to the array
-
-  // Increment count by 1
+    // Increment count by 1
+    arr->count++;
+  }
 }
 
 /*****
