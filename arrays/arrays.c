@@ -65,7 +65,8 @@ void resize_array(Array *arr)
 {
 
   // Create a new element storage with double capacity
-  char **new_elements = realloc(arr->elements, arr->capacity * sizeof(char) * 2);
+  arr->capacity = arr->capacity * 2;
+  char **new_elements = calloc(arr->capacity, arr->capacity * sizeof(char *));
 
   // Copy elements into the new storage
   for (int i = 0; i < arr->count; i++)
@@ -73,7 +74,6 @@ void resize_array(Array *arr)
     new_elements[i] = arr->elements[i];
   }
 
-  // new_elements[arr->count] = '\0';
   // Free the old elements array (but NOT the strings they point to)
   free(arr->elements);
 
@@ -122,7 +122,7 @@ void arr_insert(Array *arr, char *element, int index)
     exit(2);
   }
   // Resize the array if the number of elements is over capacity
-  if (arr->capacity == arr->count)
+  if (arr->capacity <= arr->count)
   {
     resize_array(arr);
   }
@@ -161,9 +161,7 @@ void arr_append(Array *arr, char *element)
   // or throw an error if resize isn't implemented yet.
   if (arr->capacity <= arr->count)
   {
-    fprintf(stderr, "Over capacity");
-    exit(0);
-    // resize_array(arr);
+    resize_array(arr);
   }
   else
   {
@@ -237,15 +235,15 @@ void arr_print(Array *arr)
 int main(void)
 {
 
-  Array *arr = create_array(5);
+  Array *arr = create_array(1);
 
   arr_insert(arr, "STRING1", 0);
-  arr_append(arr, "STRING4");
+  // arr_append(arr, "STRING4");
   // arr_append(arr, "STRING1");
   arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
-  arr_print(arr);
-  arr_remove(arr, "STRING3");
+  // arr_insert(arr, "STRING3", 1);
+  // arr_print(arr);
+  // arr_remove(arr, "STRING3");
   arr_print(arr);
 
   destroy_array(arr);
