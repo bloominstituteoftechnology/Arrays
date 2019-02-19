@@ -29,7 +29,8 @@ Array *create_array(int capacity)
   array->count = 0;
 
   // Allocate memory for elements
-  array->elements = malloc(capacity * sizeof(char *));
+  array->elements = calloc(capacity, sizeof(char *));
+  return array;
 }
 
 /*****
@@ -102,7 +103,7 @@ void arr_insert(Array *arr, char *element, int index)
   }
 
   // Resize the array if the number of elements is over capacity
-  if (arr->capacity == arr->count)
+  if (arr->capacity >= arr->count)
   {
     resize_array(arr);
   }
@@ -114,9 +115,7 @@ void arr_insert(Array *arr, char *element, int index)
   }
 
   // Copy the element and add it to the array
-  char *copy = malloc(strlen(element) + 1);
-  strcpy(copy, element);
-  arr->elements[index] = copy;
+  char *copy = strdup(element);
 
   // Increment count by 1
   arr->count++;
@@ -135,8 +134,7 @@ void arr_append(Array *arr, char *element)
   }
 
   // Copy the element and add it to the end of the array
-  char *copy = malloc(strlen(element) + 1);
-  strcpy(copy, element);
+  char *copy = strdup(element);
   arr->elements[arr->count] = copy;
 
   // Increment count by 1
@@ -183,7 +181,7 @@ void arr_remove(Array *arr, char *element)
   {
     arr->elements[i] = arr->elements[i + 1];
   }
-  arr->elements[arr->count] = '\0';
+  arr->elements[arr->count] = NULL;
 
   // Decrement count by 1
   arr->count--;
