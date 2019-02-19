@@ -118,6 +118,11 @@ void arr_insert(Array *arr, char *element, int index) {
  * Append an element to the end of the array
  *****/
 void arr_append(Array *arr, char *element) {
+  if(arr->count + 1 > arr->capacity){
+    resize_array(arr);
+  }
+
+  arr->elements[++arr->count] = element;
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
@@ -138,6 +143,18 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
+  int index;
+  for(int i = 0; i < arr->count; i++){
+    if(arr->elements[i] == element){
+      index = i;
+      arr->elements[i] = NULL;
+      free(arr->elements[i]);
+    }    
+  }
+  for(int i = index; i < arr->count; i++){
+      arr->elements[i] = arr->elements[i+1];
+    }
+  --arr->count;
 
   // Shift over every element after the removed element to the left one position
 
