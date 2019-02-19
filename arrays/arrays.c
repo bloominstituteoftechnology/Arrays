@@ -131,10 +131,16 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  if(arr->count == arr->capacity){
+    resize_array(arr);
+  }
 
   // Copy the element and add it to the end of the array
+  char *new_element = element;
+  arr->elements[arr->count] = new_element;
 
   // Increment count by 1
+  arr->count++;
 
 }
 
@@ -148,10 +154,23 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
+  int i = 0;
+  while(i<arr->count){
+    if(arr->elements[i] == element){
+      arr->elements[i] = NULL;
+      free(arr->elements[i]);
+      break;
+    }
+    i++;
+  }
 
   // Shift over every element after the removed element to the left one position
-
+  while(i< arr-> count){
+    arr->elements[i] = arr->[i+1];
+    i++;
+  }
   // Decrement count by 1
+  arr->count--;
 
 }
 
