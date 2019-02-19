@@ -23,10 +23,10 @@ Array *create_array (int capacity) {
   // Allocate memory for the Array struct
   Array *array = malloc(sizeof(Array));
   // Set initial values for capacity and count
-  array->capacity = cap;
+  array->capacity = capacity;
   array->count = 0;
   // Allocate memory for elements
-  array->elements = calloc(cap, sizeof(char *));
+  array->elements = calloc(capacity, sizeof(char *));
   return array;
 }
 
@@ -146,10 +146,20 @@ void arr_remove(Array *array, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
-
+      for (int i = 0; i < array->count; i++)
+    {
+        if (strcmp(array->elements[i], element) == 0)
+        {
+            free(array->elements[i]);
+            for (int x = i; x < array->count - i; x++)
+            {
+                array->elements[x] = array->elements[x + 1];
+            }
+        }
+    }
   // Shift over every element after the removed element to the left one position
-
   // Decrement count by 1
+  array->count--;
 
 }
 
