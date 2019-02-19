@@ -52,12 +52,19 @@ void resize_array(Array *arr)
 {
 
   // Create a new element storage with double capacity
-
+  char **element = malloc(2 * arr->capacity * sizeof(char *));
   // Copy elements into the new storage
+  for (int i = 0; i < arr->count; i++)
+  {
+    element[i] = arr->elements[i];
+    printf("element: %s\n", element[i]);
+  }
 
   // Free the old elements array (but NOT the strings they point to)
-
+  free(arr->elements);
   // Update the elements and capacity to new values
+  arr->capacity *= 2;
+  arr->elements = element;
 }
 
 /************************************
@@ -110,9 +117,9 @@ void arr_append(Array *arr, char *element)
   // or throw an error if resize isn't implemented yet.
   if (arr->count == arr->capacity)
   {
-    // resize_array(arr);
-    printf("Over capacity\n");
-    return;
+    resize_array(arr);
+    // printf("Over capacity\n");
+    // return;
   }
   // Copy the element and add it to the end of the array
   arr->elements[arr->count] = element;
@@ -170,6 +177,7 @@ int main(void)
   // arr_insert(arr, "STRING2", 0);
   // arr_insert(arr, "STRING3", 1);
   arr_print(arr);
+  printf("%d\n", arr->capacity);
   // arr_remove(arr, "STRING3");
   arr_print(arr);
 
