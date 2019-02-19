@@ -57,6 +57,7 @@ void resize_array(Array *arr) {
   // Copy elements into the new storage
   arr->elements = realloc(arr->elements, arr->capacity);
 
+  free(*arr->elements);
   return;
 
   // Free the old elements array (but NOT the strings they point to)
@@ -83,6 +84,7 @@ char *arr_read(Array *arr, int index) {
   // Throw an error if the index is greater than the current count
 
   // Otherwise, return the element at the given index
+  return arr->elements[index];
 }
 
 
@@ -94,6 +96,15 @@ void arr_insert(Array *arr, char *element, int index) {
   // Throw an error if the index is greater than the current count
 
   // Resize the array if the number of elements is over capacity
+  if(arr->count + 1 > arr->capacity){
+    resize_array(arr);
+  }
+  
+  for(int i = index; i < arr->count; i++){  
+    arr->elements[i+1] = arr->elements[i];
+  }
+  arr->elements[index] = element;
+  ++arr->count;
 
   // Move every element after the insert index to the right one position
 
