@@ -156,7 +156,7 @@ void arr_remove(Array *arr, char *element)
   // Decrement count by 1
         arr->count = arr->count - 1;
     } else if (i == arr->count) { 
-      fprintf(stderr, "Remove: Could not find element\n");
+      fprintf(stderr, "\nRemove: Could not find element\n");
       exit(1);
     }
   }  
