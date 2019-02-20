@@ -176,15 +176,18 @@ void arr_print(Array *arr) {
  * Stretch Goals
  *****/
 void reverse_arr(Array *arr){//prints array in reverse
-  printf("reveresed array here \n");
-  printf("[");
-  for(int i = arr->count; i > 0; i--){
-    // reversed[count] = arr->elements[i];
-    // count++;
-    printf("%s, ", arr->elements[i-1]);
-  }
-  printf("]");
-}
+    char *temp;
+    int start = 0;
+    int end = arr->count - 1; 
+    while (start < end) 
+    { 
+        temp = arr->elements[start];    
+        arr->elements[start] = arr->elements[end]; 
+        arr->elements[end] = temp; 
+        start++; 
+        end--; 
+    }    
+}  
 
 #ifndef TESTING
 int main(void)
@@ -199,6 +202,7 @@ int main(void)
   arr_remove(arr, "STRING3");
   arr_print(arr);
   reverse_arr(arr);
+  arr_print(arr);
   destroy_array(arr);
 
   return 0;
