@@ -36,7 +36,6 @@ Array *create_array (int capacity) {
  *****/
 void destroy_array(Array *arr) {
     // Free all elements
-    // for loop needed since we malloc'ed each "string"
     for (int i = 0; i < arr->count; i++)
     {
         free(arr->elements[i]);
@@ -51,12 +50,8 @@ void destroy_array(Array *arr) {
  * from old to new
  *****/
 void resize_array(Array *arr) {
-    // Create a new element storage with double capacity
-    // Copy elements into the new storage
-    // Free the old elements array (but NOT the strings they point to)
-    // Update the elements and capacity to new values
     arr->capacity *= 2;
-    arr->elements = realloc(arr->elements, arr->capacity * 4);
+    arr->elements = realloc(arr->elements, arr->capacity * sizeof(char *));
 }
 
 
@@ -76,7 +71,7 @@ char *arr_read(Array *arr, int index) {
     // Throw an error if the index is greater than the current count
     if (index >= arr->count)
     {
-        fprintf(stderr, "Index out of range");
+        fprintf(stderr, "Index out of range\n");
         return NULL;
     }
     // Otherwise, return the element at the given index
@@ -91,7 +86,7 @@ void arr_insert(Array *arr, char *element, int index) {
     // Throw an error if the index is greater than the current count
     if (index > arr->count)
     {
-        fprintf(stderr, "Index out of range");
+        fprintf(stderr, "Index out of range\n");
         return;
     }
     // Resize the array if the number of elements is over capacity
@@ -151,7 +146,7 @@ void arr_remove(Array *arr, char *element) {
     }
     if (index == -1)
     {
-        fprintf(stderr, "Element not found");
+        fprintf(stderr, "Element not found\n");
         return;
     }
     // Shift over every element after the removed element to the left one position
