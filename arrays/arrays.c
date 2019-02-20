@@ -171,7 +171,7 @@ int arr_find_index(Array *arr, char *element)
   return -1;
 }
 
-void arr_remove(Array *arr, char *element)
+void arr_remove_item(Array *arr, char *element)
 {
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
@@ -192,6 +192,71 @@ void arr_remove(Array *arr, char *element)
 
   // Decrement count by 1
   arr->count--;
+}
+
+void arr_remove_index(Array *arr, int index)
+{
+  // Search for the first occurence of the element and remove it.
+  // Don't forget to free its memory!
+  if (index <= arr->count)
+  {
+    printf("The index you requested does not exist");
+    return;
+  }
+  free(arr->elements[index]);
+
+  // Shift over every element after the removed element to the left one position
+  for (int i = index; i < arr->count; i++)
+  {
+    arr->elements[i] = arr->elements[i + 1];
+  }
+  arr->elements[arr->count] = NULL;
+
+  // Decrement count by 1
+  arr->count--;
+}
+
+// utility functions to match more intuitive array
+// expectations
+
+void arr_push(Array *arr, char *element)
+{
+  arr_append(arr, element);
+}
+
+char *arr_pop(Array *arr)
+{
+  char *retval = arr->elements[arr->count - 1];
+  arr_remove_index(arr, arr->count - 1);
+  return retval;
+}
+
+void arr_shift(Array *arr, char *element)
+{
+  arr_insert(arr, element, 0);
+}
+
+char *arr_unshift(Array *arr)
+{
+  char *retval = arr->elements[0];
+  arr_remove_index(arr, 0);
+}
+
+int arr_length(Array *arr)
+{
+  return arr->count;
+}
+
+void arr_sort()
+{
+}
+
+void arr_reverse()
+{
+}
+
+char **arr_copy()
+{
 }
 
 /*****
@@ -221,13 +286,13 @@ int main(void)
   printf("%s added to arr\n", arr->elements[0]);
   printf("%s\n", arr_read(arr, 0));
   arr_insert(arr, "VALUE-2", 0);
-  // arr_insert(arr, "STRING1", 0);
-  // arr_append(arr, "STRING4");
-  // arr_insert(arr, "STRING2", 0);
-  // arr_insert(arr, "STRING3", 1);
-  // arr_print(arr);
-  // arr_remove(arr, "STRING3");
-  // arr_print(arr);
+  arr_insert(arr, "STRING1", 0);
+  arr_append(arr, "STRING4");
+  arr_insert(arr, "STRING2", 0);
+  arr_insert(arr, "STRING3", 1);
+  arr_print(arr);
+  arr_remove_item(arr, "STRING3");
+  arr_print(arr);
 
   destroy_array(arr);
 
