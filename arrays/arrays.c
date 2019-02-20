@@ -112,7 +112,7 @@ void arr_insert(Array *arr, char *element, int index)
   // Copy the element and add it to the array
   arr->elements[index] = element;
   // Increment count by 1
-  arr->count = arr->count + 1
+  arr->count = arr->count + 1;
 }
 
 /*****
