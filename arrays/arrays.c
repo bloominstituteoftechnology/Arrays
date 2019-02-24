@@ -247,16 +247,30 @@ int arr_length(Array *arr)
   return arr->count;
 }
 
-void arr_sort()
+void arr_sort(Array *arr)
 {
+  // timsort?
 }
 
-void arr_reverse()
+void arr_reverse(Array *arr)
 {
+  // in place
+  char *temp;
+  int length = arr->count - 1;
+  int mid = (arr->count / 2);
+  printf("length: %d midpoint: %d\n", length, mid);
+  while (mid >= 0)
+  {
+    temp = arr->elements[mid];
+    arr->elements[mid] = arr->elements[length - mid];
+    arr->elements[length - mid] = temp;
+    mid--;
+  }
 }
 
-char **arr_copy()
+char **arr_copy(Array *arr)
 {
+  return realloc(arr->elements, arr->capacity * sizeof(char *));
 }
 
 /*****
@@ -282,17 +296,33 @@ int main(void)
 
   Array *arr = create_array(1);
 
-  arr_insert(arr, "VALUE-1", 0);
-  printf("%s added to arr\n", arr->elements[0]);
-  printf("%s\n", arr_read(arr, 0));
-  arr_insert(arr, "VALUE-2", 0);
-  arr_insert(arr, "STRING1", 0);
-  arr_append(arr, "STRING4");
-  arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
+  // arr_insert(arr, "VALUE-1", 0);
+  // printf("%s added to arr\n", arr->elements[0]);
+  // printf("%s\n", arr_read(arr, 0));
+  // arr_insert(arr, "VALUE-2", 0);
+  // arr_insert(arr, "STRING1", 0);
+  // arr_append(arr, "STRING4");
+  // arr_insert(arr, "STRING2", 0);
+  // arr_insert(arr, "STRING3", 1);
+  // arr_print(arr);
+  // arr_remove_item(arr, "STRING3");
+  // arr_print(arr);
+  arr_append(arr, "zero");
+  arr_append(arr, "one");
+  arr_append(arr, "two");
+  arr_append(arr, "three");
+  arr_append(arr, "four");
+  arr_append(arr, "five");
+  arr_append(arr, "six");
+  arr_append(arr, "seven");
+  arr_append(arr, "eight");
+  arr_append(arr, "nine");
+  arr_append(arr, "ten");
   arr_print(arr);
-  arr_remove_item(arr, "STRING3");
+  arr_reverse(arr);
   arr_print(arr);
+
+  // printf("is \'a\' = %d in c \n", 'a');
 
   destroy_array(arr);
 
