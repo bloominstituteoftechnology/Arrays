@@ -138,11 +138,22 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
-
+  for (int i = 0; i < arr->count; i++)
+  {
+    if (arr->elements[i] == element)
+    {
+      arr->elements[i] = NULL;
+      free(arr->elements[i]);
+      for (int j = i; j < arr->count; j++)
+      {
+        arr->elements[j] = arr->elements[j + 1];
+      }
+    }
+  }
   // Shift over every element after the removed element to the left one position
 
   // Decrement count by 1
-
+  arr->count--;
 }
 
 
@@ -164,7 +175,6 @@ void arr_print(Array *arr) {
 #ifndef TESTING
 int main(void)
 {
-  printf("test");
   Array *arr = create_array(1);
 
   arr_insert(arr, "STRING1", 0);
