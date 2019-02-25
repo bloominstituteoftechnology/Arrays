@@ -83,7 +83,7 @@ char *arr_read(Array *arr, int index) {
   }
   // Otherwise, return the element at the given index
   else {
-    return arr->elements[index]; /* not sure this else is necessary, can probably just do return outside of any inner block
+    return arr->elements[index]; /* not sure this else is necessary, can probably just do return outside of any inner block */
   }
 }
 
