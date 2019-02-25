@@ -49,7 +49,7 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-  
+
   // Copy elements into the new storage
 
   // Free the old elements array (but NOT the strings they point to)
@@ -74,8 +74,13 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if (index > arr->count)
+  {
+    fprintf(stderr, "IndexError: Index %d out of range\n", index);
+    exit(0);
+  }
   // Otherwise, return the element at the given index
+  return arr->elements[index];
 }
 
 
@@ -103,11 +108,15 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
+  if (arr->capacity == arr->count)
+  {
+    fprintf(stderr, "The array is currently full\n");
+    exit(1);
+  }
   // Copy the element and add it to the end of the array
-
+  arr->elements[arr->count] = element;
   // Increment count by 1
-
+  arr->count++;
 }
 
 /*****
