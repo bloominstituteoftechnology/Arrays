@@ -9,6 +9,7 @@ typedef struct Array {
   char **elements;  // The string elements contained in the array
 } Array;
 
+/* initial commit, re-watching first part of video due to this morning's power outage */
 
 /************************************
  *
