@@ -40,17 +40,13 @@ Array *create_array(int capacity)
 void destroy_array(Array *arr)
 {
   // Free all elements
-  // the line below gives a segmentation fault error
-  // free(arr->capacity);
-  if (arr->count != NULL)
+  for (int i = 0; i < arr->count; i++)
   {
-    free(arr->count);
+    free(arr->elements[i]);
   }
 
-  if (arr->elements != NULL)
-  {
-    free(arr->elements);
-  }
+  free(arr->count);
+  free(arr->elements);
 
   // Free array
   free(arr);
