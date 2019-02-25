@@ -13,7 +13,7 @@ typedef struct Array {
 /************************************
  *
  *   CREATE, DESTROY, RESIZE FUNCTIONS
- *
+ * 
  ************************************/
 
 /*****
