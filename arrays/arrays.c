@@ -113,12 +113,23 @@ void arr_insert(Array *arr, char *element, int index)
  *****/
 void arr_append(Array *arr, char *element)
 {
-
   // Resize the array if the number of elements is over capacity
+  if (arr->elements > arr->capacity)
+  {
+    arr->capacity++;
+    arr->elements = malloc(arr->capacity * sizeof(char *));
+  }
+
+  // or throw an error if resize isn't implemented yet.
+  else if (resize_array)
+  {
+    printf("resize_array() not yet implemented");
+  }
 
   // Copy the element and add it to the end of the array
-
+  arr->elements[arr->capacity] = element;
   // Increment count by 1
+  arr->count++;
 }
 
 /*****
