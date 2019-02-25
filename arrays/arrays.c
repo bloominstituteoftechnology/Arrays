@@ -21,11 +21,13 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-
+  Array *arr = malloc(sizeof(Array));
   // Set initial values for capacity and count
-
+  arr->capacity = capacity; 
+  arr->count = 0;
   // Allocate memory for elements
-
+  arr->elements = calloc(capacity,sizeof(char *)); //Why char * not char?
+  return arr;
 }
 
 
@@ -35,26 +37,37 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
-
+  for(int i =0; i<arr->count; i++) {
+    free(arr->elements[i]);
+  };
   // Free array
-
+free(arr);
 }
 
 /*****
  * Create a new elements array with double capacity and copy elements
  * from old to new
  *****/
-void resize_array(Array *arr) {
+// void resize_array(Array *arr) {
 
-  // Create a new element storage with double capacity
+//   // Create a new element storage with double capacity
+//   Array *newarr = calloc(capacity, sizeof(Array)*2);
+//   int capacity = arr->capacity;
+//   newarr->elements =  malloc((capacity*sizeof(char))*2); 
 
-  // Copy elements into the new storage
+//   // Copy elements into the new storage 
+//   for(int i=0; i<arr->count; i++){
+//     newarr[i] = arr->elements[i];
+//   }
 
-  // Free the old elements array (but NOT the strings they point to)
+//   // Free the old elements array (but NOT the strings they point to)
+// free(arr->elements);
 
-  // Update the elements and capacity to new values
-
-}
+//   // Update the elements and capacity to new values
+// newarr->elements = sizeof(newarr)/sizeof(char);
+// newarr->capacity = capacity*2;
+ 
+// }
 
 
 
@@ -72,9 +85,13 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-
-  // Otherwise, return the element at the given index
+if(index > arr->count){
+   exit(1);
+} else { 
+  return arr->elements[index];
+  } 
 }
+ 
 
 
 /*****
@@ -101,10 +118,16 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
+    if((arr->count+1) > arr->capacity){
+      int newsize = arr->count+1;
+      malloc(newsize*sizeof(char *));
+    }
   // Copy the element and add it to the end of the array
-
+   
+    arr->elements[arr->count] = element;
   // Increment count by 1
+  arr->count = arr->count+1;
+
 
 }
 
