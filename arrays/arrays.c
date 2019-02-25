@@ -21,10 +21,19 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
+  Array *arr = malloc(sizeof(Array));
 
   // Set initial values for capacity and count
+  arr->capacity = capacity;
+  arr->count = 0;
 
   // Allocate memory for elements
+  arr->elements = malloc(capacity * sizeof(char *));
+  for (int i = 0; i < arr->capacity; i++) {
+    arr->elements[i] = NULL;
+  }
+
+  return arr;
 
 }
 
