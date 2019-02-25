@@ -40,9 +40,17 @@ Array *create_array(int capacity)
 void destroy_array(Array *arr)
 {
   // Free all elements
-  free(arr->capacity);
-  free(arr->count);
-  free(arr->elements);
+  // the line below gives a segmentation fault error
+  // free(arr->capacity);
+  if (arr->count != NULL)
+  {
+    free(arr->count);
+  }
+
+  if (arr->elements != NULL)
+  {
+    free(arr->elements);
+  }
 
   // Free array
   free(arr);
@@ -107,7 +115,6 @@ void arr_append(Array *arr, char *element)
 {
 
   // Resize the array if the number of elements is over capacity
-  // or throw an error if resize isn't implemented yet.
 
   // Copy the element and add it to the end of the array
 
