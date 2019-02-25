@@ -22,11 +22,15 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-
+  Array *arr = malloc(sizeof(Array));
   // Set initial values for capacity and count
-
+  /* using arrow to retrieve the structure member as per last week's questions */
+  arr->capacity = capacity;
+  arr->count = 0; /* initialize counter to 0 as normal */
   // Allocate memory for elements
+  arr->elements = malloc(capacity * sizeof(char *));
 
+  return arr;
 }
 
 
