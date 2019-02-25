@@ -128,14 +128,11 @@ void arr_append(Array *arr, char *element) {
   }
   else
   {
-    arr->capacity = realloc();
-  }
-  
-
-  // Copy the element and add it to the end of the array
-
+     // Copy the element and add it to the end of the array
+    arr->elements[arr->capacity] = element;
   // Increment count by 1
-
+    arr->count++;
+  }
 }
 
 /*****
