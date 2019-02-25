@@ -28,8 +28,10 @@
     arr->count = 0;
 
     // Allocate memory for elements
+    //we can malloc dynamically for newly added elements
     arr->elements = malloc(capacity * sizeof(char *)); //storing pointers not actual chars so need size of pointer
-    //want to initialize to null can use calloc
+    //want to initialize to null. can use calloc. null until we update it to something.
+    //arr->elements = calloc(capacity, sizeof(char *));
 
     return arr;
   }
@@ -39,23 +41,27 @@
  * Free memory for an array and all of its stored elements
  *****/
 void destroy_array(Array *arr) {
-
+//need to free up elements that are dynamically created also
+for (int i = 0; i < arr->count; i++)
+  {
+    free(arr->elements[i]);
+  }
   // Free all elements
-
   free(arr->elements);
 
   // Free array
   free(arr);
-
 }
 
 /*****
  * Create a new elements array with double capacity and copy elements
  * from old to new
  *****/
-void resize_array(Array *arr) {
+// void resize_array(Array *arr) {
 
-  // Create a new element storage with double capacity
+//   // Create a new element storage with double capacity
+//   //arr->capacity
+//   arr->elements = realloc(ptr, size);
 
   // Copy elements into the new storage
 
@@ -63,7 +69,7 @@ void resize_array(Array *arr) {
 
   // Update the elements and capacity to new values
 
-}
+// }
 
 
 
@@ -79,10 +85,16 @@ void resize_array(Array *arr) {
  * Throw an error if the index is out of range.
  *****/
 char *arr_read(Array *arr, int index) {
-
   // Throw an error if the index is greater than the current count
-
   // Otherwise, return the element at the given index
+  if (index > arr->count) 
+  {
+    fprintf(stderr, "index can not be greater than count");
+  }
+  else
+  {
+    return arr->elements[index];
+  }
 }
 
 
@@ -104,12 +116,21 @@ void arr_insert(Array *arr, char *element, int index) {
 }
 
 /*****
- * Append an element to the end of the array
- *****/
+//  * Append an element to the end of the array
+//  *****/
 void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  if (arr->capacity <= arr->count) 
+  {
+    fprintf(stderr, "not enough capacity");
+  }
+  else
+  {
+    arr->capacity = realloc();
+  }
+  
 
   // Copy the element and add it to the end of the array
 
