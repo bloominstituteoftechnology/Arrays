@@ -23,13 +23,14 @@ typedef struct Array
 // gcc -o arrays arrays.c
 Array *create_array(int capacity)
 {
-  // Allocate memory for the Array struct
+  // Allocate memory (malloc) for the Array struct
   Array *arr = malloc(sizeof(Array));
   // Set initial values for capacity and count
   arr->capacity = capacity;
   arr->count = 0;
   // Allocate memory for elements
-  arr->elements = malloc(capacity + sizeof(char *));
+  arr->elements = malloc(capacity * sizeof(char *));
+  // arr->elements = calloc(capacity, sizeof(char *));
 
   return arr;
 }
@@ -41,8 +42,15 @@ void destroy_array(Array *arr)
 {
 
   // Free all elements
+  for (int i = 0; i < arr->count; i++)
+  {
+    arr->elements[i] = NULL;
+    free(arr->elements[i]);
+  }
 
   // Free array
+  free(arr->elements);
+  free(arr);
 }
 
 /*****
@@ -76,8 +84,14 @@ char *arr_read(Array *arr, int index)
 {
 
   // Throw an error if the index is greater than the current count
+  if (arr->count < index)
+  {
+    printf("Index is higher that current count.");
+    exit(1);
+  }
 
   // Otherwise, return the element at the given index
+  return arr->elements[index];
 }
 
 /*****
@@ -105,10 +119,15 @@ void arr_append(Array *arr, char *element)
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
+  if (arr->capacity < arr->count + 1)
+  {
+    resize_array(arr);
+  }
   // Copy the element and add it to the end of the array
+  arr->elements[arr->count] = element;
 
   // Increment count by 1
+  arr->count++;
 }
 
 /*****
