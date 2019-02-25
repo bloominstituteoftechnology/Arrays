@@ -37,9 +37,9 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
   
   // Free all elements
-  
+  free(arr->elements);
   // Free array
-  
+  free(arr);
 }
 
 /*****
@@ -49,7 +49,7 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-
+  
   // Copy elements into the new storage
 
   // Free the old elements array (but NOT the strings they point to)
