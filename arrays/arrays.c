@@ -21,10 +21,16 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
+  Array *arr = malloc(sizeof(Array));
 
   // Set initial values for capacity and count
+  (*arr).capacity = capacity;
+  (*arr).count = 0;
 
   // Allocate memory for elements
+  (*arr).elements = malloc(capacity * sizeof(char *));
+
+  return arr;
 
 }
 
@@ -35,8 +41,10 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
+  free((*arr).elements);
 
   // Free array
+  free(arr);
 
 }
 
@@ -72,8 +80,19 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
+  if(index > (*arr).count) {
+    printf("Index of of range.");
+  }
 
   // Otherwise, return the element at the given index
+  int i;
+
+  while((*arr).elements[i] != (*arr).elements[index]) {
+    i++;
+  }
+
+  return ((*arr).elements[i]);
+
 }
 
 
@@ -101,6 +120,7 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  
 
   // Copy the element and add it to the end of the array
 
