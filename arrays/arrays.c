@@ -30,6 +30,7 @@ Array *create_array(int capacity)
 
   // Allocate memory for elements
   arr->elements = malloc(capacity * sizeof(char));
+  return arr;
 }
 
 /*****
@@ -53,12 +54,20 @@ void resize_array(Array *arr)
 {
 
   // Create a new element storage with double capacity
+  char *doub_arr = malloc((arr->capacity * 2));
 
   // Copy elements into the new storage
+  for (int i = 0; i < arr->count; i++)
+  {
+    doub_arr[i] = arr->elements[i];
+  }
 
   // Free the old elements array (but NOT the strings they point to)
+  free(arr->elements);
 
   // Update the elements and capacity to new values
+  arr->elements = doub_arr;
+  arr->capacity = arr->capacity * 2;
 }
 
 /************************************
