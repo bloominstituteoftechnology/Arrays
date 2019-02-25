@@ -1,40 +1,38 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <errno.h>
 
-typedef struct Array {
-  int capacity;  // How many elements can this array hold?
-  int count;  // How many states does the array currently hold?
-  char **elements;  // The string elements contained in the array
-} Array;
+  typedef struct Array {
+    int capacity;  // How many elements can this array hold?
+    int count;  // How many states does the array currently hold?
+    char **elements;  // The string elements contained in the array
+  } Array;
 
 
-/************************************
- *
- *   CREATE, DESTROY, RESIZE FUNCTIONS
- *
- ************************************/
+  /************************************
+   *
+   *   CREATE, DESTROY, RESIZE FUNCTIONS
+   *
+   ************************************/
 
-/*****
- * Allocate memory for a new array
- *****/
-Array *create_array (int capacity) {
-  // Allocate memory for the Array struct
-  Array *arr = malloc(sizeof(Array));
+  /*****
+   * Allocate memory for a new array
+   *****/
+  Array *create_array (int capacity) {
+    // Allocate memory for the Array struct
+    Array *arr = malloc(sizeof(Array));
 
-  // Set initial values for capacity and count
-  arr->capacity = capacity;
-  arr->count = 0;
+    // Set initial values for capacity and count
+    arr->capacity = capacity;
+    arr->count = 0;
 
-  // Allocate memory for elements
-  arr->elements = malloc(capacity * sizeof(char *)); //storing pointers not actual chars so need size of pointer
-  //want to initialize to null
-  //for ()
-  //or use calloc
+    // Allocate memory for elements
+    arr->elements = malloc(capacity * sizeof(char *)); //storing pointers not actual chars so need size of pointer
+    //want to initialize to null can use calloc
 
-  return arr;
-}
+    return arr;
+  }
 
 
 /*****
@@ -44,7 +42,10 @@ void destroy_array(Array *arr) {
 
   // Free all elements
 
+  free(arr->elements);
+
   // Free array
+  free(arr);
 
 }
 
