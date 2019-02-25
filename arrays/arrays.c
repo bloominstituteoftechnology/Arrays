@@ -45,9 +45,6 @@ void destroy_array(Array *arr)
     free(arr->elements[i]);
   }
 
-  free(arr->count);
-  free(arr->elements);
-
   // Free array
   free(arr);
 }
@@ -86,6 +83,7 @@ char *arr_read(Array *arr, int index)
   if (index > arr->count)
   {
     printf("Index (%d) is greater than the current count (%d).", index, arr->count);
+    return 0;
   }
   // Otherwise, return the element at the given index
   else
@@ -117,17 +115,12 @@ char *arr_read(Array *arr, int index)
 void arr_append(Array *arr, char *element)
 {
   // Resize the array if the number of elements is over capacity
-  if (arr->elements > arr->capacity)
-  {
-    arr->capacity++;
-    arr->elements = malloc(arr->capacity * sizeof(char *));
-  }
+  // if (arr->count > arr->capacity)
+  // {
+  // }
 
   // or throw an error if resize isn't implemented yet.
-  else
-  {
-    printf("resize_array() not yet implemented");
-  }
+  printf("resize_array() not yet implemented\n");
 
   // Copy the element and add it to the end of the array
   arr->elements[arr->capacity] = element;
