@@ -81,7 +81,7 @@ char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
   if(index > (*arr).count) {
-    printf("Index of of range.");
+    return NULL;
   }
 
   // Otherwise, return the element at the given index
@@ -120,11 +120,25 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-  
+  if( ((*arr).count + 1) > (*arr).capacity ) {
+
+    fprintf(stderr, "Index out of range.");
+
+  }
+
 
   // Copy the element and add it to the end of the array
+  int i;
+  while((*arr).elements[i] != NULL) {
+
+    i++;
+
+  }
+
+  (*arr).elements[i] = element;
 
   // Increment count by 1
+  (*arr).count++;
 
 }
 
