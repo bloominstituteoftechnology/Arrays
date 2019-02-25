@@ -49,13 +49,13 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-
+  arr->capacity *= 2;
   // Copy elements into the new storage
 
   // Free the old elements array (but NOT the strings they point to)
 
   // Update the elements and capacity to new values
-
+  realloc(arr->elements, arr->capacity * sizeof(char *));
 }
 
 
@@ -110,8 +110,7 @@ void arr_append(Array *arr, char *element) {
   // or throw an error if resize isn't implemented yet.
   if (arr->capacity == arr->count)
   {
-    fprintf(stderr, "The array is currently full\n");
-    exit(1);
+    resize_array(arr);
   }
   // Copy the element and add it to the end of the array
   arr->elements[arr->count] = element;
