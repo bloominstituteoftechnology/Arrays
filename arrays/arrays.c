@@ -39,10 +39,13 @@ Array *create_array(int capacity)
  *****/
 void destroy_array(Array *arr)
 {
-
   // Free all elements
+  free(arr->capacity);
+  free(arr->count);
+  free(arr->elements);
 
   // Free array
+  free(arr);
 }
 
 /*****
@@ -151,12 +154,12 @@ int main(void)
 
   Array *arr = create_array(1);
 
-  arr_insert(arr, "STRING1", 0);
+  // arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
-  arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
+  // arr_insert(arr, "STRING2", 0);
+  // arr_insert(arr, "STRING3", 1);
   arr_print(arr);
-  arr_remove(arr, "STRING3");
+  // arr_remove(arr, "STRING3");
   arr_print(arr);
 
   destroy_array(arr);
