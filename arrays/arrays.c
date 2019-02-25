@@ -41,7 +41,10 @@ void destroy_array(Array *arr) {
 
   // Free all elements
   // Free array
-  free(arr->elements);
+  // free(arr->elements);
+  for(int i = 0; i < arr->count; i++) {
+    free(arr->elements[i]);
+  }
   free(arr);
 }
 
@@ -88,10 +91,14 @@ char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
   // Otherwise, return the element at the given index
+
   if (index > arr->count) {
-    return errno;
+    fprintf(stderr, "IndexError: Index %d out of range\n", index);
+    exit(1);
+    return NULL;
   }
-  return arr[index]
+
+  return arr->elements[index];
 }
 
 
@@ -101,15 +108,25 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
   // Resize the array if the number of elements is over capacity
-
   // Move every element after the insert index to the right one position
-
   // Copy the element and add it to the array
-
   // Increment count by 1
+  if (index > arr->count) {
+    errno;
+    fprintf(stderr, "IndexError: Index %d out of range\n", index);
+  }
 
+  if (arr->capacity - arr->count < 0) {
+    arr_read(arr, index);
+  }
+
+  
+  for (int i = index + 1; i < arr->count + 1; i++) {
+    arr[i] = arr[i-1];
+  }
+  arr->elements[index] = element;
+  arr->count++;
 }
 
 /*****
@@ -119,11 +136,13 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
   // Copy the element and add it to the end of the array
-
   // Increment count by 1
-
+  if (arr->capacity - arr->count < 1) {
+    arr_read(arr, arr->count);
+  }
+  arr->elements[arr->count] = element;
+  arr->count++;
 }
 
 /*****
@@ -136,11 +155,19 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
-
   // Shift over every element after the removed element to the left one position
-
   // Decrement count by 1
-
+  int m = -1;
+  for (int i = 0; i < arr->count; i++) {
+    if (element == arr->elements[i]) {
+      m = i;
+    }
+    if (m > -1) {
+      arr[i-1] = arr[i];
+    }
+  }
+  // free(arr->elements[arr->count]);
+  arr->count--;
 }
 
 
@@ -162,7 +189,7 @@ void arr_print(Array *arr) {
 #ifndef TESTING
 int main(void)
 {
-
+  printf("*********\n");
   Array *arr = create_array(1);
 
   resize_array(arr);
