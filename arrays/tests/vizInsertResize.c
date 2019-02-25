@@ -1,3 +1,5 @@
+// http://pythontutor.com/visualize.html#mode=edit
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,21 +11,9 @@ typedef struct Array {
   char **elements;  // The string elements contained in the array
 } Array;
 
-
-/************************************
- *
- *   CREATE, DESTROY, RESIZE FUNCTIONS
- *
- ************************************/
-
-/*****
- * Allocate memory for a new array
- *****/
-// Use malloc() if you are going to set everything that you use in the allocated space.
-// Use calloc() if you're going to leave parts of the data uninitialized - and it would be beneficial to have the unset parts zeroed.
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-  Array *newArr = malloc(sizeof(Array)); // allocates memory for a size of 1 struct Array
+  Array *newArr = malloc(sizeof(Array));
   
   // Set initial values for capacity and count
   newArr->capacity = capacity;
@@ -36,22 +26,41 @@ Array *create_array (int capacity) {
   return newArr;
 }
 
-
-/*****
- * Free memory for an array and all of its stored elements
- *****/
 void destroy_array(Array *arr) {
   // Free all elements
+  // for(int i=0; i < arr->capacity; i++) {
+  //   free(arr->elements[i]);
+  // }
   free(arr->elements);
-
+  
   // Free array
     free(arr); 
 }
+char *arr_read(Array *arr, int index) {
+  // Throw an error if the index is greater than the current count
+  if (index > arr->count) {
+    fprintf(stderr, "Index is out of range.");
+    exit(1);
+  }
 
-/*****
- * Create a new elements array with double capacity and copy elements
- * from old to new
- *****/
+  // Otherwise, return the element at the given index
+  return arr->elements[index];
+}
+
+void arr_append(Array *arr, char *element) {
+  // Resize the array if the number of elements is equal to or over capacity
+  // or throw an error if resize isn't implemented yet.
+  if (arr->count >= arr->capacity) {
+    resize_array(arr);
+  }
+
+  // Copy the element and add it to the end of the array
+  arr->elements[arr->count] = element;
+
+  // Increment count by 1
+  arr->count++;
+}
+
 void resize_array(Array *arr) {
   // Create a new element storage with double capacity
   char **doubleCapacity = calloc((arr->capacity * 2), sizeof(char *));
@@ -71,37 +80,6 @@ void resize_array(Array *arr) {
   arr->capacity *= 2; // set the new capacity by 2
 }
 
-
-/************************************
- *
- *   ARRAY FUNCTIONS
- *
- ************************************/
-
-/*****
- * Return the element in the array at the given index.
- *
- * Throw an error if the index is out of range.
- *****/
-// fprintf writes formatted text to the output stream you specify.
-// printf is equivalent to writing fprintf(stdout, ...) and
-// writes formatted text to wherever the standard output stream is currently pointing.
-// sprintf writes formatted text to an array of char, as opposed to a stream.
-char *arr_read(Array *arr, int index) {
-  // Throw an error if the index is greater than the current count
-  if (index > arr->count) {
-    fprintf(stderr, "Index is out of range.");
-    exit(1);
-  }
-
-  // Otherwise, return the element at the given index
-  return arr->elements[index];
-}
-
-
-/*****
- * Insert an element to the array at the given index
- *****/
 void arr_insert(Array *arr, char *element, int index) {
   // Throw an error if the index is greater than the current count
   if (index > arr->count) {
@@ -127,29 +105,6 @@ void arr_insert(Array *arr, char *element, int index) {
     arr->count += 1;
 }
 
-/*****
- * Append an element to the end of the array
- *****/
-void arr_append(Array *arr, char *element) {
-  // Resize the array if the number of elements is equal to or over capacity
-  // or throw an error if resize isn't implemented yet.
-  if (arr->count >= arr->capacity) {
-    resize_array(arr);
-  }
-
-  // Copy the element and add it to the end of the array
-  arr->elements[arr->count] = element;
-
-  // Increment count by 1
-  arr->count++;
-}
-
-/*****
- * Remove the first occurence of the given element from the array,
- * then shift every element after that occurence to the left one slot.
- *
- * Throw an error if the value is not found.
- *****/
 void arr_remove(Array *arr, char *element) {
   // Search for the first occurence of the element and remove it.
   int found;
@@ -177,10 +132,6 @@ void arr_remove(Array *arr, char *element) {
   }
 }
 
-
-/*****
- * Utility function to print an array.
- *****/
 void arr_print(Array *arr) {
   printf("[");
   for (int i = 0 ; i < arr->count ; i++) {
@@ -192,10 +143,7 @@ void arr_print(Array *arr) {
   printf("]\n");
 }
 
-
-#ifndef TESTING
-int main(void)
-{
+int main() {
   // APPEND, RESIZE READ, INSERT, DESTORY
   // Array *arr = create_array(3);
   // arr_append(arr, "first");
@@ -228,4 +176,3 @@ int main(void)
 
   return 0;
 }
-#endif
