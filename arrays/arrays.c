@@ -84,7 +84,6 @@ char *arr_read(Array *arr, int index)
   // Throw an error if the index is greater than the current count
   if (index > arr->count)
   {
-
     fprintf(stderr, "IndexError: Index %d out of range.", index);
     return NULL;
   }
@@ -98,18 +97,23 @@ char *arr_read(Array *arr, int index)
 /*****
  * Insert an element to the array at the given index
 *****/
-// void arr_insert(Array *arr, char *element, int index)
-// {
-//   // Throw an error if the index is greater than the current count
+void arr_insert(Array *arr, char *element, int index)
+{
+  // Throw an error if the index is greater than the current count
+  if (index > arr->count)
+  {
+    fprintf(stderr, "IndexError: Index %d out of range.", index);
+    return NULL;
+  }
 
-//   // Resize the array if the number of elements is over capacity
+  // Resize the array if the number of elements is over capacity
 
-//   // Move every element after the insert index to the right one position
+  // Move every element after the insert index to the right one position
 
-//   // Copy the element and add it to the array
+  // Copy the element and add it to the array
 
-//   // Increment count by 1
-// }
+  // Increment count by 1
+}
 
 /*****
  * Append an element to the end of the array
