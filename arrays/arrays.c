@@ -1,43 +1,57 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <errno.h>
 
-typedef struct Array {
-  int capacity;  // How many elements can this array hold?
-  int count;  // How many states does the array currently hold?
-  char **elements;  // The string elements contained in the array
-} Array;
+  typedef struct Array {
+    int capacity;  // How many elements can this array hold?
+    int count;  // How many states does the array currently hold?
+    char **elements;  // The string elements contained in the array
+  } Array;
 
 
-/************************************
- *
- *   CREATE, DESTROY, RESIZE FUNCTIONS
- *
- ************************************/
+  /************************************
+   *
+   *   CREATE, DESTROY, RESIZE FUNCTIONS
+   *
+   ************************************/
 
-/*****
- * Allocate memory for a new array
- *****/
-Array *create_array (int capacity) {
-  // Allocate memory for the Array struct
+  /*****
+   * Allocate memory for a new array
+   *****/
+  Array *create_array (int capacity) {
+    // Allocate memory for the Array struct
+    Array *arr = malloc(sizeof(Array));
 
-  // Set initial values for capacity and count
+    // Set initial values for capacity and count
+    arr->capacity = capacity;  //dont need malloc these bc not dynamically adding these
+    arr->count = 0;
 
-  // Allocate memory for elements
+    // Allocate memory for elements
+    //we can malloc dynamically for newly added elements
+    arr->elements = malloc(capacity * sizeof(char *)); //storing pointers not actual chars so need size of pointer
+    //want to initialize to null. can use calloc. null until we update it to something.
+    //arr->elements = calloc(capacity, sizeof(char *));
 
-}
+    return arr;
+  }
 
 
 /*****
  * Free memory for an array and all of its stored elements
  *****/
-void destroy_array(Array *arr) {
-
+  //anytime malloc ALWAYS have to free to prevent memory leaks
+  void destroy_array(Array *arr) {
+  //need to free up elements that are dynamically created also
+  for (int i = 0; i < arr->count; i++)
+    {
+      free(arr->elements[i]);
+    }
   // Free all elements
+  free(arr->elements); //once we free this we lose the point so had to loop thru above to free other elements
 
   // Free array
-
+  free(arr);
 }
 
 /*****
@@ -47,11 +61,12 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
+  arr->capacity *= 2;
 
   // Copy elements into the new storage
+  arr->elements = realloc(arr->elements, arr->capacity * sizeof(char *));  //int v char?
 
   // Free the old elements array (but NOT the strings they point to)
-
   // Update the elements and capacity to new values
 
 }
@@ -70,10 +85,16 @@ void resize_array(Array *arr) {
  * Throw an error if the index is out of range.
  *****/
 char *arr_read(Array *arr, int index) {
-
   // Throw an error if the index is greater than the current count
-
   // Otherwise, return the element at the given index
+  if (index > arr->count) 
+  {
+    fprintf(stderr, "index can not be greater than count");
+  }
+  else
+  {
+    return arr->elements[index];
+  }
 }
 
 
@@ -83,29 +104,55 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if (index > arr->count)
+  {
+    fprintf(stderr, "index can not be greather than count");
+  }
+  else
   // Resize the array if the number of elements is over capacity
-
+  {
+    if (arr->elements > arr->capacity)
+    {
+      resize_array(arr);
+    }
+  }
   // Move every element after the insert index to the right one position
-
+  for (int i = arr->count; i >= index; i--)
+  {
+   arr->elements[i+1] = arr->elements[i]; 
+  }
   // Copy the element and add it to the array
+  char *copy = strdup(element);
+  arr->elements[index] = copy;
 
   // Increment count by 1
-
+  arr->count++;
 }
 
 /*****
- * Append an element to the end of the array
- *****/
+//  * Append an element to the end of the array
+//  *****/
 void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
+  if (arr->capacity <= arr->count) 
+  {
+    fprintf(stderr, "not enough capacity");
+    return;
+  }
+  else
+  {
   // Copy the element and add it to the end of the array
+    //arr->elements[arr->capacity] = element; //this passes but is not really correct. it cant be freed bc not allocated. something about immutability of static strings.
+    //want to copy so dont get leaks
+    //could also use strcpy and strdup(has hidden malloc in it)
+    char *new_str = strdup(element);
+    arr->elements[arr->count] = new_str;
 
-  // Increment count by 1
-
+    // Increment count by 1
+    arr->count++;
+  }
 }
 
 /*****
@@ -118,11 +165,31 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
-
-  // Shift over every element after the removed element to the left one position
-
-  // Decrement count by 1
-
+  int found = 0;
+  for (int i = 0; i < arr->count; i++)
+  {
+    if (found)
+    {
+      // Shift over every element after the removed element to the left one position
+      arr->elements[i-1] = arr->elements[i];
+    }
+    else if (strcmp(arr->elements[i], element))
+    {
+      found = 1;
+      free(arr->elements[i]);
+      // Decrement count by 1
+      arr->count--;
+    }
+    
+    if (found) 
+    {
+      arr->elements[arr->count] = NULL;
+    }
+    else
+    {
+      fprintf(stderr, "%s not found", element);
+    }
+  }
 }
 
 
