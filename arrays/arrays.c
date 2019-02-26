@@ -54,7 +54,7 @@ void resize_array(Array *arr)
 {
 
   // Create a new element storage with double capacity
-  char *doub_arr = malloc((arr->capacity * 2));
+  char **doub_arr = calloc((arr->capacity * 2), sizeof(char *));
 
   // Copy elements into the new storage
   for (int i = 0; i < arr->count; i++)
@@ -119,7 +119,7 @@ void arr_insert(Array *arr, char *element, int index)
   }
 
   // Copy the element and add it to the array
-  int new_element = element;
+  int *new_element = element;
   arr->elements[index] = new_element;
 
   // Increment count by 1
@@ -140,7 +140,7 @@ void arr_append(Array *arr, char *element)
   }
 
   // Copy the element and add it to the end of the array
-  int new_element = element;
+  int *new_element = element;
   arr->elements[arr->count] = new_element;
 
   // Increment count by 1
