@@ -135,23 +135,24 @@ void arr_append(Array *arr, char *element) {
  * Throw an error if the value is not found.
  *****/
 void arr_remove(Array *arr, char *element) {
-
+  int occurence;
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
   for (int i = 0; i < arr->count; i++)
   {
-    if (arr->elements[i] == element)
+    if (strcmp(arr->elements[i], element) == 0)
     {
       arr->elements[i] = NULL;
       free(arr->elements[i]);
-      for (int j = i; j < arr->count; j++)
-      {
-        arr->elements[j] = arr->elements[j + 1];
-      }
+      occurence = i;
     }
   }
   // Shift over every element after the removed element to the left one position
-
+  
+    for (int j = occurence; j < arr->count; j++)
+    {
+      arr->elements[j] = arr->elements[j + 1];
+    }
   // Decrement count by 1
   arr->count--;
 }
