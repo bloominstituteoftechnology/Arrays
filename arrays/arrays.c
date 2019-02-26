@@ -52,14 +52,24 @@ void destroy_array(Array *arr)
  *****/
 void resize_array(Array *arr)
 {
-
   // Create a new element storage with double capacity
+  char **doubleCapacity = calloc((arr->capacity * 2), sizeof(char *));
 
   // Copy elements into the new storage
+  for (int i = 0; i < arr->count; i++)
+  {
+    doubleCapacity[i] = arr->elements[i];
+  }
 
   // Free the old elements array (but NOT the strings they point to)
+  if (arr->elements != NULL)
+  {
+    free(arr->elements);
+  }
 
   // Update the elements and capacity to new values
+  arr->elements = doubleCapacity; // set elements array with newly, expanded array
+  arr->capacity *= 2;             // set the new capacity by 2
 }
 
 /************************************
@@ -132,7 +142,11 @@ void arr_append(Array *arr, char *element)
   }
 
   // Copy the element and add it to the end of the array
-  arr->elements[arr->count] = element;
+  char *new_element = strdup(element);
+  //strdup is malloc and strcpy combined together
+  //allocates memory for the size of the string and then copy's the string
+
+  arr->elements[arr->count] = new_element;
 
   // Increment count by 1
   arr->count++;
