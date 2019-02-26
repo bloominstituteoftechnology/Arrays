@@ -45,7 +45,7 @@ void destroy_array(Array *arr)
   for (int i = 0; i < arr->count; i++)
   {
     arr->elements[i] = NULL;
-    free(arr->elements[i]);
+    free(arr->elements[i]); //marks memory ready to be reused by something else
   }
 
   // Free array
@@ -61,12 +61,25 @@ void resize_array(Array *arr)
 {
 
   // Create a new element storage with double capacity
+  char **storage = calloc((2 * arr->capacity), sizeof(char *));
 
   // Copy elements into the new storage
+  for (int i = 0; i < arr->count; i++)
+  {
+    storage[i] = arr->elements[i];
+  }
 
   // Free the old elements array (but NOT the strings they point to)
+  for (int i = 0; i < arr->count; i++)
+  {
+    arr->elements[i] = NULL;
+    free(arr->elements[i]);
+  }
 
+  free(arr->elements);
   // Update the elements and capacity to new values
+  arr->elements = storage;
+  arr->capacity = arr->capacity * 2;
 }
 
 /************************************
@@ -101,14 +114,28 @@ void arr_insert(Array *arr, char *element, int index)
 {
 
   // Throw an error if the index is greater than the current count
+  if (index > arr->count)
+  {
+    printf("Index is greater than current count.");
+    exit(1);
+  }
 
   // Resize the array if the number of elements is over capacity
+  if (arr->count + 1 > arr->capacity)
+  {
+    resize_array(arr);
+  }
 
   // Move every element after the insert index to the right one position
-
+  for (int i = index; i < arr->count; i++)
+  {
+    arr->elements[i + 1] = arr->elements[i];
+  }
   // Copy the element and add it to the array
+  arr->elements[index] = element;
 
   // Increment count by 1
+  arr->count++;
 }
 
 /*****
@@ -140,11 +167,26 @@ void arr_remove(Array *arr, char *element)
 {
 
   // Search for the first occurence of the element and remove it.
-  // Don't forget to free its memory!
+  int position = 0;
+  for (int i = 0; i < arr->count; i++)
+  {
+    if (arr->elements[i] == element)
+    {
+      position = i;
+      arr->elements[i] = NULL;
+      // Don't forget to free its memory!
+      free(arr->elements[i]);
+    }
+  }
 
   // Shift over every element after the removed element to the left one position
+  for (int i = position; i < arr->count; i++)
+  {
+    arr->elements[i] = arr->elements[i + 1];
+  }
 
   // Decrement count by 1
+  arr->count--;
 }
 
 /*****
