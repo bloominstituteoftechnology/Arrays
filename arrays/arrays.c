@@ -38,7 +38,7 @@ void destroy_array(Array *arr) {
 
   // Free all elements
   // Free array
-  // for(int i = 0; i < arr->count; i++) {
+  // for (int i = 0; i < arr->count; ++i) {
   //   free(arr->elements[i]);
   // }
   free(arr->elements);
@@ -64,8 +64,6 @@ void resize_array(Array *arr) {
   free(arr->elements);
   arr->capacity = doubled;
   arr->elements = new_storage;
-  // arr->capacity *= 2;
-  // arr->elements = realloc(arr->elements, arr->capacity * sizeof(arr->elements[0]));
 }
 
 
@@ -87,12 +85,12 @@ char *arr_read(Array *arr, int index) {
   // Throw an error if the index is greater than the current count
   // Otherwise, return the element at the given index
 
-  if (index > arr->count) {
+  if (index >= arr->count) {
     fprintf(stderr, "IndexError: Index %d out of range\n", index);
-    exit(1);
+    // exit(1);
+    return NULL;
   }
-
-  return arr->elements[index];
+    return arr->elements[index];
 }
 
 
@@ -109,10 +107,9 @@ void arr_insert(Array *arr, char *element, int index) {
   if (index > arr->count) {
     fprintf(stderr, "IndexError: Index %d out of range\n", index);
     exit(1);
-    // fprintf(stderr, "IndexError: Index %d out of range\n", index);
   }
 
-  if (arr->capacity <= arr->count + 1) {
+  if (arr->capacity <= arr->count) {
     resize_array(arr);
   }
 
@@ -158,13 +155,12 @@ void arr_remove(Array *arr, char *element) {
   for (int i = 0; i < arr->count; i++) {
     if (element == arr->elements[i]) {
       m = i;
-      // free(arr->elements[i]);
     }
     if (m > -1) {
       arr->elements[i] = arr->elements[i+1];
     }
   }
-  // free(arr->elements[arr->count]);
+  free(arr->elements[arr->count]);
   arr->count--;
 }
 
@@ -180,7 +176,7 @@ void arr_print(Array *arr) {
       printf(",");
     }
   }
-  // printf("(%d/%d)", arr->count, arr->capacity);
+  printf("(%d/%d)", arr->count, arr->capacity);
   printf("]\n");
 }
 
@@ -205,7 +201,7 @@ int main(void)
   arr_print(arr);
 
   destroy_array(arr);
-  arr_print(arr);
+  // arr_print(arr);
 
   return 0;
 }
