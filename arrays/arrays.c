@@ -143,15 +143,14 @@ void arr_append(Array *arr, char *element) {
   }
   else
   {
-    // Copy the element and add it to the end of the array
+  // Copy the element and add it to the end of the array
     //arr->elements[arr->capacity] = element; //this passes but is not really correct. it cant be freed bc not allocated. something about immutability of static strings.
     //want to copy so dont get leaks
     //could also use strcpy and strdup(has hidden malloc in it)
     char *new_str = strdup(element);
     arr->elements[arr->count] = new_str;
 
-
-  // Increment count by 1
+    // Increment count by 1
     arr->count++;
   }
 }
@@ -166,11 +165,20 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
-
-  // Shift over every element after the removed element to the left one position
-
+  for (int i = 0; i < arr->count; i++)
+  {
+    if (strcmp(arr->elements[i], element))
+    {
+      free(arr->elements[i]);
+    }
+    // Shift over every element after the removed element to the left one position
+    for()
+    {
+      
+    }
+  }
   // Decrement count by 1
-
+  count--;
 }
 
 
