@@ -79,4 +79,4 @@ char *all_tests()
     return NULL;
 }
 
-RUN_TESTS(day_1_array_tests);
+RUN_TESTS(day_2_array_tests);
