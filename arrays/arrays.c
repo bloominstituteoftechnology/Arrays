@@ -104,15 +104,29 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-
+  if (index > arr->count)
+  {
+    fprintf(stderr, "index can not be greather than count");
+  }
+  else
   // Resize the array if the number of elements is over capacity
-
+  {
+    if (arr->elements > arr->capacity)
+    {
+      resize_array(arr);
+    }
+  }
   // Move every element after the insert index to the right one position
-
+  for (int i = arr->count; i >= index; i--)
+  {
+   arr->elements[i+1] = arr->elements[i]; 
+  }
   // Copy the element and add it to the array
+  char *copy = strdup(element);
+  arr->elements[index] = copy;
 
   // Increment count by 1
-
+  arr->count++;
 }
 
 /*****
@@ -129,7 +143,7 @@ void arr_append(Array *arr, char *element) {
   }
   else
   {
-     // Copy the element and add it to the end of the array
+    // Copy the element and add it to the end of the array
     //arr->elements[arr->capacity] = element; //this passes but is not really correct. it cant be freed bc not allocated. something about immutability of static strings.
     //want to copy so dont get leaks
     //could also use strcpy and strdup(has hidden malloc in it)
