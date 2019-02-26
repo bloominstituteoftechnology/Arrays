@@ -134,10 +134,17 @@ void arr_append(Array *arr, char *element)
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  if (sizeof(arr->count) > arr->capacity)
+  {
+    resize_array(arr);
+  }
 
   // Copy the element and add it to the end of the array
+  int new_element = element;
+  arr->elements[arr->count] = new_element;
 
   // Increment count by 1
+  arr->count++;
 }
 
 /*****
@@ -146,15 +153,36 @@ void arr_append(Array *arr, char *element)
  *
  * Throw an error if the value is not found.
  *****/
+
 void arr_remove(Array *arr, char *element)
 {
-
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
 
-  // Shift over every element after the removed element to the left one position
+  for (int i = 0; i < arr->count; i++)
+  {
+    if (arr->elements[i] == element)
+    {
+      int element_found = 0;
+      element_found = i;
+      arr->elements[i] = NULL;
+      free(arr->elements[i]);
 
-  // Decrement count by 1
+      // Shift over every element after the removed element to the left one position
+      for (int i = element_found; i < arr->count; i++)
+      {
+        arr->elements[i] = arr->elements[i + 1];
+      }
+
+      // Decrement count by 1
+      arr->count--;
+    }
+    else
+    {
+      printf("Element not found\n");
+      exit(1);
+    }
+  }
 }
 
 /*****
