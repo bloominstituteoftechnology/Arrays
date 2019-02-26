@@ -45,6 +45,8 @@ void destroy_array(Array *arr)
     free(arr->elements[i]);
   }
 
+  free(arr->elements);
+
   // Free array
   free(arr);
 }
@@ -82,8 +84,9 @@ char *arr_read(Array *arr, int index)
   // Throw an error if the index is greater than the current count
   if (index > arr->count)
   {
-    printf("Index (%d) is greater than the current count (%d).", index, arr->count);
-    return 0;
+
+    fprintf(stderr, "IndexError: Index %d out of range.", index);
+    return NULL;
   }
   // Otherwise, return the element at the given index
   else
@@ -97,16 +100,15 @@ char *arr_read(Array *arr, int index)
 *****/
 // void arr_insert(Array *arr, char *element, int index)
 // {
+//   // Throw an error if the index is greater than the current count
 
-// Throw an error if the index is greater than the current count
+//   // Resize the array if the number of elements is over capacity
 
-// Resize the array if the number of elements is over capacity
+//   // Move every element after the insert index to the right one position
 
-// Move every element after the insert index to the right one position
+//   // Copy the element and add it to the array
 
-// Copy the element and add it to the array
-
-// Increment count by 1
+//   // Increment count by 1
 // }
 
 /*****
@@ -115,15 +117,16 @@ char *arr_read(Array *arr, int index)
 void arr_append(Array *arr, char *element)
 {
   // Resize the array if the number of elements is over capacity
-  // if (arr->count > arr->capacity)
-  // {
-  // }
-
   // or throw an error if resize isn't implemented yet.
-  printf("resize_array() not yet implemented\n");
+  if (!(arr->count < arr->capacity))
+  {
+    printf("ERROR: resize_array() not yet implemented\n");
+  }
 
   // Copy the element and add it to the end of the array
-  arr->elements[arr->capacity] = element;
+  char *new_str = strdup(element);
+  arr->elements[arr->count] = new_str;
+
   // Increment count by 1
   arr->count++;
 }
@@ -170,9 +173,10 @@ int main(void)
 
   // arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
+  arr_append(arr, "STRING2");
   // arr_insert(arr, "STRING2", 0);
   // arr_insert(arr, "STRING3/", 1);
-  arr_print(arr);
+  // arr_print(arr);
   // arr_remove(arr, "STRING3");
   arr_print(arr);
 
