@@ -60,7 +60,8 @@ void resize_array(Array *arr) {
   // Free the old elements array (but NOT the strings they point to)
   free(arr->elements);
   // Update the elements and capacity to new values
-  realloc(arr->elements, arr->new_storage * sizeof(char *));
+  arr->elements = new_storage;
+  arr->capacity *= 2;
 }
 
 
@@ -142,7 +143,7 @@ void arr_append(Array *arr, char *element) {
 void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
-  for(int = 0; i < arr->count; i++) {
+  for(int i = 0; i < arr->count; i++) {
     if(arr->elements[i] == element) {
       arr->elements[i] = NULL;
       free(arr->elements[i]); /* when the desired element is found, null the value and free the memory block */
