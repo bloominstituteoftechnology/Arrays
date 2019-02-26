@@ -23,13 +23,10 @@ Array *create_array (int capacity) {
   // Allocate memory for the Array struct
   // Set initial values for capacity and count
   // Allocate memory for elements
-  Array* arr = malloc(sizeof(struct Array));
+  Array* arr = malloc(sizeof(Array));
   arr-> capacity = capacity;
   arr->count = 0;
-  arr->elements = malloc(capacity * sizeof(char*)); // or sizeof int or size char
-  // for (int i = 0; i < arr->capacity; i++) {
-  //   arr->elements
-  // }
+  arr->elements = malloc(capacity * sizeof(char*)); // or sizeof int or size 
   return arr;
 }
 
@@ -41,10 +38,10 @@ void destroy_array(Array *arr) {
 
   // Free all elements
   // Free array
-  // free(arr->elements);
-  for(int i = 0; i < arr->count; i++) {
-    free(arr->elements[i]);
-  }
+  // for(int i = 0; i < arr->count; i++) {
+  //   free(arr->elements[i]);
+  // }
+  free(arr->elements);
   free(arr);
 }
 
@@ -59,18 +56,16 @@ void resize_array(Array *arr) {
   // Free the old elements array (but NOT the strings they point to)
   // Update the elements and capacity to new values
   
-  // int storage = arr->capacity * 2;
-  // char *new_size = malloc(storage);
-  // printf("%s", new_size);  // []
-  // for (int i = 0; i < storage; i++) {
-  //   new_size[i] = arr->elements[i];
-  // }
-  // free(arr->elements);
-  // arr->capacity = storage;
-  // arr->elements = *new_size;
-  arr->capacity *= 2;
-  arr->elements = realloc(arr->elements, arr->capacity * sizeof(char *));
-
+  int doubled = 2 * arr->capacity;
+  char **new_storage = malloc(doubled * sizeof(char*));
+  for (int i = 0; i < arr->count; i++) {
+    new_storage[i] = arr->elements[i];
+  }
+  free(arr->elements);
+  arr->capacity = doubled;
+  arr->elements = new_storage;
+  // arr->capacity *= 2;
+  // arr->elements = realloc(arr->elements, arr->capacity * sizeof(arr->elements[0]));
 }
 
 
@@ -95,7 +90,6 @@ char *arr_read(Array *arr, int index) {
   if (index > arr->count) {
     fprintf(stderr, "IndexError: Index %d out of range\n", index);
     exit(1);
-    return NULL;
   }
 
   return arr->elements[index];
@@ -113,17 +107,18 @@ void arr_insert(Array *arr, char *element, int index) {
   // Copy the element and add it to the array
   // Increment count by 1
   if (index > arr->count) {
-    errno;
     fprintf(stderr, "IndexError: Index %d out of range\n", index);
+    exit(1);
+    // fprintf(stderr, "IndexError: Index %d out of range\n", index);
   }
 
-  if (arr->capacity - arr->count < 0) {
-    arr_read(arr, index);
+  if (arr->capacity <= arr->count + 1) {
+    resize_array(arr);
   }
 
   
-  for (int i = index + 1; i < arr->count + 1; i++) {
-    arr[i] = arr[i-1];
+  for (int i = arr->count - 1; i >= index; i--) {
+    arr->elements[i + 1] = arr->elements[i];
   }
   arr->elements[index] = element;
   arr->count++;
@@ -138,8 +133,10 @@ void arr_append(Array *arr, char *element) {
   // or throw an error if resize isn't implemented yet.
   // Copy the element and add it to the end of the array
   // Increment count by 1
-  if (arr->capacity - arr->count < 1) {
-    arr_read(arr, arr->count);
+
+
+  if (arr->capacity <= arr->count) {
+    resize_array(arr);
   }
   arr->elements[arr->count] = element;
   arr->count++;
@@ -161,9 +158,10 @@ void arr_remove(Array *arr, char *element) {
   for (int i = 0; i < arr->count; i++) {
     if (element == arr->elements[i]) {
       m = i;
+      // free(arr->elements[i]);
     }
     if (m > -1) {
-      arr[i-1] = arr[i];
+      arr->elements[i] = arr->elements[i+1];
     }
   }
   // free(arr->elements[arr->count]);
@@ -182,6 +180,7 @@ void arr_print(Array *arr) {
       printf(",");
     }
   }
+  // printf("(%d/%d)", arr->count, arr->capacity);
   printf("]\n");
 }
 
@@ -190,18 +189,23 @@ void arr_print(Array *arr) {
 int main(void)
 {
   printf("*********\n");
-  Array *arr = create_array(1);
-
-  resize_array(arr);
-  arr_insert(arr, "STRING1", 0);
-  arr_append(arr, "STRING4");
-  arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
+  Array *arr = create_array(1); // []
   arr_print(arr);
-  arr_remove(arr, "STRING3");
+  resize_array(arr);  // []
+  arr_print(arr);
+  arr_insert(arr, "STRING1", 0); // [STRING1]
+  arr_print(arr);
+  arr_append(arr, "STRING4"); // [STRING1,STRING4]
+  arr_print(arr);
+  arr_insert(arr, "STRING2", 0); // [STRING2,STRING1,STRING4]
+  arr_print(arr);
+  arr_insert(arr, "STRING3", 1); // [STRING2,STRING3,STRING1,STRING4]
+  arr_print(arr);
+  arr_remove(arr, "STRING3"); // [STRING2,STRING1,STRING4]
   arr_print(arr);
 
   destroy_array(arr);
+  arr_print(arr);
 
   return 0;
 }
