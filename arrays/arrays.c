@@ -35,14 +35,13 @@ Array *create_array (int capacity) {
  * Free memory for an array and all of its stored elements
  *****/
 void destroy_array(Array *arr) {
-
   // Free all elements 
   for (int i = 0; i < arr->count; i++){
     free(arr->elements[i]);
   }
   // Free array 
+  free(arr->elements);
   free(arr);
-
 }
 
 /*****
@@ -84,7 +83,7 @@ char *arr_read(Array *arr, int index) {
     printf("ERROR! index is greater than the current count");
   }else{
   // Otherwise, return the element at the given index
-  return arr->elements[index];
+  return (arr->elements[index]);
   }
 }
 
@@ -110,15 +109,19 @@ void arr_insert(Array *arr, char *element, int index) {
  * Append an element to the end of the array
  *****/
 void arr_append(Array *arr, char *element) {
-
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-  if (arr->count + 1 > arr->capacity){
-    resize_array(arr);
+
+  // if (arr->count + 1 > arr->capacity){
+  //   resize_array(arr);
+  // }
+  if (!(arr->count + 1 < arr->capacity)){
+    printf("Error!!!");
+    return;
   }
   // Copy the element and add it to the end of the array
-  int *newElement = element;
-  arr->elements[arr->count] = newElement;
+  // int *new_element = element;
+  arr->elements[arr->count] = strdup(element);
   // Increment count by 1
   arr->count++;
 
@@ -160,15 +163,15 @@ void arr_print(Array *arr) {
 int main(void)
 {
 
-  Array *arr = create_array(1);
+  Array *arr = create_array(4);
 
-  arr_insert(arr, "STRING1", 0);
+  // arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
-  arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
+  // arr_insert(arr, "STRING2", 0);
+  // arr_insert(arr, "STRING3", 1);
   arr_print(arr);
-  arr_remove(arr, "STRING3");
-  arr_print(arr);
+  // arr_remove(arr, "STRING3");
+  // arr_print(arr);
 
   destroy_array(arr);
 
