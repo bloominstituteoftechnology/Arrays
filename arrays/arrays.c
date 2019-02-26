@@ -85,7 +85,7 @@ char *arr_read(Array *arr, int index) {
   }
 
   // Otherwise, return the element at the given index
-  int i;
+  int i = 0;
 
   while((*arr).elements[i] != (*arr).elements[index]) {
     i++;
@@ -128,7 +128,7 @@ void arr_append(Array *arr, char *element) {
 
 
   // Copy the element and add it to the end of the array
-  int i;
+  int i = 0;
   while((*arr).elements[i] != NULL) {
 
     i++;
@@ -151,11 +151,27 @@ void arr_append(Array *arr, char *element) {
 void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
+  int i = 0;
+  while((*arr).elements[i] != element) {
+
+    i++;
+
+  }
+
   // Don't forget to free its memory!
+  free((*arr).elements[i]);
+
+  //(*arr).elements[i] = NULL;
 
   // Shift over every element after the removed element to the left one position
+  while((*arr).elements[i] != NULL) {
+
+    (*arr).elements[i] = (*arr).elements[i+1];
+
+  }
 
   // Decrement count by 1
+  (*arr).count--;
 
 }
 
