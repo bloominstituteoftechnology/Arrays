@@ -82,7 +82,7 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-  if (index > arr->count || index < 0) {
+  if (index >= arr->count) {
     fprintf(strerr, "index out of range\n\n\n");
   }
   // Otherwise, return the element at the given index
@@ -96,7 +96,7 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-  if (index > arr->count || index < 0) {
+  if (index > arr->count) {
     fprintf(strerr, "index out of range\n\n\n");
   }
 
@@ -118,7 +118,7 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-  if (arr->count + 1 >= arr->capacity) {
+  if (!(arr->count < arr->capacity)) {
     fprintf(strerr, "List at capacity"); // error
     return;
   }
