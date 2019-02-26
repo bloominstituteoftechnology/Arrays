@@ -9,7 +9,7 @@ typedef struct Array {
   char **elements;  // The string elements contained in the array
 } Array;
 
-/* initial commit, re-watching first part of video due to this morning's power outage */
+/* researching unions in C right now for stretch goal #2, looking at how the array could handle multiple data types */
 
 /************************************
  *
