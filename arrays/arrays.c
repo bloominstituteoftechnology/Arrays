@@ -55,12 +55,19 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
+  //char **new_arr = malloc( 2 * ((*arr).capacity * sizeof(char *)) );
+
+  Array *new_arr = create_array(2 * (*arr).capacity);
 
   // Copy elements into the new storage
+  (*new_arr).elements = (*arr).elements;
 
   // Free the old elements array (but NOT the strings they point to)
+  free((*arr).elements);
 
   // Update the elements and capacity to new values
+  (*arr).elements = (*new_arr).elements;
+  (*arr).capacity = (*new_arr).capacity;
 
 }
 
@@ -107,6 +114,11 @@ void arr_insert(Array *arr, char *element, int index) {
   }
 
   // Resize the array if the number of elements is over capacity
+  if( ((*arr).count + 1) > (*arr).capacity ) {
+
+    resize_array(arr);
+
+  }
 
   // Move every element after the insert index to the right one position
   int i = index;
