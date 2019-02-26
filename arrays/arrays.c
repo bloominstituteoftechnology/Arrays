@@ -106,8 +106,8 @@ void arr_insert(Array *arr, char *element, int index) {
     arr->elements[i + 1] = arr->elements[i];
   }
   // Copy the element and add it to the array
-  char *new_str = strdup(element);
-  arr->elements[arr->count] = new_str;
+  int *new_element = element;
+  arr->elements[index] = new_element;
   // Increment count by 1
   arr->count++;
 
@@ -119,13 +119,9 @@ void arr_insert(Array *arr, char *element, int index) {
 
 void arr_append(Array *arr, char *element) {
   // Resize the array if the number of elements is over capacity
-  
   // or throw an error if resize isn't implemented yet.
-
-  // if (arr->count + 1 > arr->capacity){
-  //   resize_array(arr);
-  // }
-  if (!(arr->count + 1 < arr->capacity)){
+  if (!(arr->count < arr->capacity)){
+    resize_array(arr);
     printf("Error!!!");
     return;
   }
@@ -183,8 +179,8 @@ int main(void)
   arr_insert(arr, "STRING2", 0);
   arr_insert(arr, "STRING3", 1);
   arr_print(arr);
-  arr_remove(arr, "STRING3");
-  arr_print(arr);
+  // arr_remove(arr, "STRING3");
+  // arr_print(arr);
 
   destroy_array(arr);
 
