@@ -28,13 +28,9 @@ Array *create_array (int capacity) {
   arr->count = 0;
 
   // Allocate memory for elements
-  arr->elements = malloc(capacity * sizeof(char *));
-  for (int i = 0; i < arr->capacity; i++) {
-    arr->elements[i] = NULL;
-  }
+  arr->elements = calloc(capacity, sizeof(char *));
 
   return arr;
-
 }
 
 
