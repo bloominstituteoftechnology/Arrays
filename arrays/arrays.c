@@ -107,7 +107,7 @@ void arr_insert(Array *arr, char *element, int index) {
   }
   // Move every element after the insert index to the right one position
   for(int i = arr->count; i >= index; i--) {
-    arr->elements[i+1] = arr-elements[i]; /* shifts each elements one position right */
+    arr->elements[i+1] = arr->elements[i]; /* shifts each elements one position right */
   }
   // Copy the element and add it to the array
   arr-elements[index] = element;
