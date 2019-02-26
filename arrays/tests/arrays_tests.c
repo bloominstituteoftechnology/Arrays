@@ -27,7 +27,7 @@ char *day_1_array_tests()
     return NULL;
 }
 
-/*
+
 char *day_2_array_tests()
 {
     Array *arr = create_array(1);
@@ -65,7 +65,7 @@ char *day_2_array_tests()
 
     return NULL;
 }
-*/
+
 
 
 
@@ -75,7 +75,7 @@ char *all_tests()
     mu_suite_start();
 
     mu_run_test(day_1_array_tests);
-    //mu_run_test(day_2_array_tests);
+    mu_run_test(day_2_array_tests);
 
     return NULL;
 }
