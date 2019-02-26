@@ -24,7 +24,7 @@
     Array *arr = malloc(sizeof(Array));
 
     // Set initial values for capacity and count
-    arr->capacity = capacity;
+    arr->capacity = capacity;  //dont need malloc these bc not dynamically adding these
     arr->count = 0;
 
     // Allocate memory for elements
@@ -40,14 +40,15 @@
 /*****
  * Free memory for an array and all of its stored elements
  *****/
-void destroy_array(Array *arr) {
-//need to free up elements that are dynamically created also
-for (int i = 0; i < arr->count; i++)
-  {
-    free(arr->elements[i]);
-  }
+  //anytime malloc ALWAYS have to free to prevent memory leaks
+  void destroy_array(Array *arr) {
+  //need to free up elements that are dynamically created also
+  for (int i = 0; i < arr->count; i++)
+    {
+      free(arr->elements[i]);
+    }
   // Free all elements
-  free(arr->elements);
+  free(arr->elements); //once we free this we lose the point so had to loop thru above to free other elements
 
   // Free array
   free(arr);
@@ -57,19 +58,18 @@ for (int i = 0; i < arr->count; i++)
  * Create a new elements array with double capacity and copy elements
  * from old to new
  *****/
-// void resize_array(Array *arr) {
+void resize_array(Array *arr) {
 
-//   // Create a new element storage with double capacity
-//   //arr->capacity
-//   arr->elements = realloc(ptr, size);
+  // Create a new element storage with double capacity
+  arr->capacity *= 2;
 
   // Copy elements into the new storage
+  arr->elements = realloc(arr->elements, arr->capacity * sizeof(char *));  //int v char?
 
   // Free the old elements array (but NOT the strings they point to)
-
   // Update the elements and capacity to new values
 
-// }
+}
 
 
 
@@ -125,11 +125,18 @@ void arr_append(Array *arr, char *element) {
   if (arr->capacity <= arr->count) 
   {
     fprintf(stderr, "not enough capacity");
+    return;
   }
   else
   {
      // Copy the element and add it to the end of the array
-    arr->elements[arr->capacity] = element;
+    //arr->elements[arr->capacity] = element; //this passes but is not really correct. it cant be freed bc not allocated. something about immutability of static strings.
+    //want to copy so dont get leaks
+    //could also use strcpy and strdup(has hidden malloc in it)
+    char *new_str = strdup(element);
+    arr->elements[arr->count] = new_str;
+
+
   // Increment count by 1
     arr->count++;
   }
