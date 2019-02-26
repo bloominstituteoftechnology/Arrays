@@ -99,10 +99,39 @@ realloc
 
 
 
+# Truth Tables
+
+A B A&&B  A || B !A || B  !(A && B) && !(!A || !B)
+--------------------------------------------------
+0 0  0      0        1         1 && 0 = 0
+0 1  0      1        1         1 && 0 = 0
+1 0  0      1        0         1 && 0 = 0
+1 1  1      1        1         0 && 1 = 0
+
+A     B     C     A || B) || ( (!A && C) && !(B || C) )
+------------------------------------------------------
+0     0     0       0  || 0 &&  1 =   0
+0     0     1       0  || 1 &&  0 =   0
+0     1     0       1  || 0 &&  0 =   1
+0     1     1       1  || 1 &&  0 =   1
+1     0     0       1  || 0 &&  1 =   1
+1     0     1       1  || 0 &&  0 =   1
+1     1     0       1  || 0 &&  0 =   1
+1     1     1       1  || 0 &&  0 =   1
 
 
+# P = NP Problem || P != NP
+Can a solution to a problem that can be verified in polynomial time be solved in polynomial time?
+- The P = NP Problem has not proven or unproven
+- Over time, it appears that the distance between P & NP will become closer, but P will never completely absorb NP in all problems.
+- Copernicus model vs Ptolemaic model
 
+P = Polynomial = 0(1), o(n), O(log n), 0(n^2)
 
+NP = Non-deterministric machine = Verify answer is true in polynomial times
 
+Exponential Problems = O(K^n)
 
+Example:
+Cracking a password takes exponential time, but a rainbow table polynomial time.
 
