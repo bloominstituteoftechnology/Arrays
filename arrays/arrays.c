@@ -52,13 +52,13 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-
+  arr->new_storage = arr->capacity * 2; /* trying it this way for now, can also reassign the size of the capacity element */
   // Copy elements into the new storage
 
   // Free the old elements array (but NOT the strings they point to)
-
+  free(arr->elements);
   // Update the elements and capacity to new values
-
+  realloc(arr->elements, arr->new_storage * sizeof(char *));
 }
 
 
