@@ -81,8 +81,8 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater than the current count
-  if (index > arr->capacity || index < 0) {
-    perror("index out of range\n\n\n");
+  if (index > arr->count || index < 0) {
+    fprintf(strerr, "index out of range\n\n\n");
   }
   // Otherwise, return the element at the given index
   return &arr->elements[index];
@@ -95,8 +95,12 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
+  if (index > arr->count || index < 0) {
+    fprintf(strerr, "index out of range\n\n\n");
+  }
 
   // Resize the array if the number of elements is over capacity
+
 
   // Move every element after the insert index to the right one position
 
@@ -113,10 +117,16 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
+  if (arr->count + 1 >= arr->capacity) {
+    // printf("error"); // error
+    // return;
+  }
   // Copy the element and add it to the end of the array
+  char *element_copy = strdup(element);
+  arr->elements[arr->count] = element_copy;
 
   // Increment count by 1
+  arr->count++;
 
 }
 
