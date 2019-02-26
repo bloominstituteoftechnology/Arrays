@@ -10,6 +10,19 @@ typedef struct Array {
 } Array;
 
 
+/*****
+ * Utility function to print an array.
+ *****/
+void arr_print(Array *arr) {
+  printf("[");
+  for (int i = 0 ; i < arr->count ; i++) {
+    printf("%s", arr->elements[i]);
+    if (i != arr->count - 1) {
+      printf(",");
+    }
+  }
+  printf("]\n");
+}
 /************************************
  *
  *   CREATE, DESTROY, RESIZE FUNCTIONS
@@ -50,12 +63,16 @@ void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
   arr->capacity *= 2;
+  char **new_storage = calloc(arr->capacity, sizeof(char *));
   // Copy elements into the new storage
-
+  for (int i = 0; i < arr->count; i++)
+  {
+    new_storage[i] = strdup(arr->elements[i]);
+  }
   // Free the old elements array (but NOT the strings they point to)
-
+  free(arr->elements);
   // Update the elements and capacity to new values
-  realloc(arr->elements, arr->capacity * sizeof(char *));
+  arr->elements = new_storage;
 }
 
 
@@ -106,7 +123,8 @@ void arr_insert(Array *arr, char *element, int index) {
     arr->elements[i+1] = arr->elements[i];
   }
   // Copy the element and add it to the array
-  arr->elements[index] = element;
+  char *new_element = strdup(element);
+  arr->elements[index] = new_element;
   // Increment count by 1
   arr->count++;
 }
@@ -123,7 +141,8 @@ void arr_append(Array *arr, char *element) {
     resize_array(arr);
   }
   // Copy the element and add it to the end of the array
-  arr->elements[arr->count] = element;
+  char *new_element = strdup(element);
+  arr->elements[arr->count] = new_element;
   // Increment count by 1
   arr->count++;
 }
@@ -158,19 +177,6 @@ void arr_remove(Array *arr, char *element) {
 }
 
 
-/*****
- * Utility function to print an array.
- *****/
-void arr_print(Array *arr) {
-  printf("[");
-  for (int i = 0 ; i < arr->count ; i++) {
-    printf("%s", arr->elements[i]);
-    if (i != arr->count - 1) {
-      printf(",");
-    }
-  }
-  printf("]\n");
-}
 
 
 #ifndef TESTING
