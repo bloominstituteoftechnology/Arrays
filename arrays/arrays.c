@@ -60,12 +60,23 @@ void resize_array(Array *arr)
 {
 
   // Create a new element storage with double capacity
+  char **doubleCapacity = calloc((arr->capacity * 2), sizeof(char *));
 
   // Copy elements into the new storage
+  for (int i = 0; i < arr->count; i++)
+  {
+    doubleCapacity[i] = arr->elements[i];
+  }
 
   // Free the old elements array (but NOT the strings they point to)
+  if (arr->elements != NULL)
+  {
+    free(arr->elements);
+  }
 
   // Update the elements and capacity to new values
+  arr->elements = doubleCapacity; // set elements array with newly, expanded array
+  arr->capacity *= 2;
 }
 
 /************************************
@@ -89,7 +100,7 @@ char *arr_read(Array *arr, int index)
     exit(1);
   }
   // Otherwise, return the element at the given index
-  return arr->elements[index]
+  return arr->elements[index];
 }
 
 /*****
@@ -137,7 +148,7 @@ void arr_append(Array *arr, char *element)
   {
     // resize_array(arr);
     fprintf(stderr, "Index, out of range");
-    exit(0)
+    exit(0);
   }
 
   // Copy the element and add it to the end of the array
@@ -156,7 +167,33 @@ void arr_append(Array *arr, char *element)
 void arr_remove(Array *arr, char *element)
 {
 
-  // Search for the first occurence of the element and remove it.
+  // Search for the first occurence of the element and remove it
+  int found;
+  for (int i = 0; i < arr->count; i++)
+  { // loop over to find matching element
+    if (arr->elements[i] == element)
+    {                          // if match occurs at index
+      found = i;               // set temp variable to hold the index
+      arr->elements[i] = NULL; // WITHOUT -> ERROR: 0x1063a9fa8: pointer being freed was not allocated
+      // Don't forget to free its memory!
+      free(arr->elements[i]);
+
+      // Shift over every element after the removed element to the left one position
+      for (int j = found; j < arr->count; j++)
+      {
+        arr->elements[j] = arr->elements[j + 1];
+      }
+
+      // Decrement count by 1
+      arr->count--;
+      break;
+    }
+    else if (i == arr->count)
+    { // if the index has reached the end of the array
+      fprintf(stderr, "Value is not found.");
+      exit(1);
+    }
+  }
   // Don't forget to free its memory!
 
   // Shift over every element after the removed element to the left one position
