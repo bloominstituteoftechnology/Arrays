@@ -96,7 +96,7 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-  if(index > arr-count) {
+  if(index > arr->count) {
     fprintf(stderr, "Index out of range!\n");
     exit(0);
     /* looking at how to do the above while using errno as well */
@@ -110,7 +110,7 @@ void arr_insert(Array *arr, char *element, int index) {
     arr->elements[i+1] = arr->elements[i]; /* shifts each elements one position right */
   }
   // Copy the element and add it to the array
-  arr-elements[index] = element;
+  arr->elements[index] = element;
   // Increment count by 1
   arr->count++;
 }
