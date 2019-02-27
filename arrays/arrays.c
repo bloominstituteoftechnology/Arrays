@@ -170,8 +170,8 @@ void arr_remove(Array *arr, char *element)
   for (int i = 0; i < arr->count; i++)
   { // loop over to find matching element
     if (arr->elements[i] == element)
-    {                          // if match occurs at index
-      found = i;               // set temp variable to hold the index
+    {
+      found = i;
       arr->elements[i] = NULL; // WITHOUT -> ERROR: 0x1063a9fa8: pointer being freed was not allocated
       // Don't forget to free its memory!
       free(arr->elements[i]);
