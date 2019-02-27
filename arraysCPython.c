@@ -24,9 +24,9 @@ void destroy_array(Array *arr) {
 
   // Free all elements
   // Free array
-  // for (int i = 0; i < arr->count; i++) {
-  //     free(arr->elements[i]);
-  // } 
+  for (int i = 0; i < arr->count; i++) {
+      free(arr->elements[i]);
+  } 
   // free(arr->elements[0]);
   free(arr->elements);
   free(arr);
@@ -86,12 +86,12 @@ void arr_insert(Array *arr, char *element, int index) {
 void arr_append(Array *arr, char *element) {
 
 
-  if(! (arr->count < arr->capacity)) {
-    printf("ERROR");
-    return;
-  }
+  // if(! (arr->count < arr->capacity)) {
+  //   printf("****ERROR");
+  //   return;
+  // }
 
-  if (arr->capacity <= arr->count) {
+  if (!(arr->capacity < arr->count)) {
     resize_array(arr);
   }
   char *copy = strdup(element); 
@@ -140,23 +140,23 @@ int main(void)
   printf("*********\n");
   Array *arr = create_array(1); // []
   
-  arr_print(arr);
+  // arr_print(arr);
   resize_array(arr);  // []
-  arr_print(arr);
+  // arr_print(arr);
   arr_insert(arr, "STRING1", 0); // [STRING1]
   // printf("(%s)\n", arr_read(arr, 0));
-  arr_print(arr);
+  // arr_print(arr);
   arr_append(arr, "STRING4"); // [STRING1,STRING4]
-  arr_print(arr);
+  // arr_print(arr);
   arr_insert(arr, "STRING2", 0); // [STRING2,STRING1,STRING4]
-  arr_print(arr);
+  // arr_print(arr);
   arr_insert(arr, "STRING3", 1); // [STRING2,STRING3,STRING1,STRING4]
-  arr_print(arr);
+  // arr_print(arr);
   arr_remove(arr, "STRING3"); // [STRING2,STRING1,STRING4]
   // printf("(%s)\n", arr_read(arr, 0));
   // printf("(%s)\n", arr_read(arr, 1));
   // printf("(%s)\n", arr_read(arr, 2));
-  arr_print(arr);
+  // arr_print(arr);
 
   
 

@@ -37,9 +37,9 @@ void destroy_array(Array *arr) {
 
   // Free all elements
   // Free array
-  // for (int i = 0; i < arr->count; i++) {
-  //     free(arr->elements[i]);
-  // } 
+  for (int i = 0; i < arr->count; i++) {
+      free(arr->elements[i]);
+  } 
   // free(arr->elements[0]);
   free(arr->elements);
   free(arr);
@@ -61,7 +61,7 @@ void resize_array(Array *arr) {
   for (int i = 0; i < arr->count; i++) {
     new_storage[i] = arr->elements[i];
   }
-  // free(arr->elements);
+  free(arr->elements);
   arr->capacity = doubled;
   arr->elements = new_storage;
 }
@@ -85,10 +85,10 @@ char *arr_read(Array *arr, int index) {
   // Throw an error if the index is greater than the current count
   // Otherwise, return the element at the given index
 
-  if (index > arr->count) {
+  if (index >= arr->count) {
     fprintf(stderr, "Arr-Read IndexError: Index %d out of range\n", index);
-    exit(1);
-    // return NULL;
+    // exit(1);
+    return NULL;
   }
     return arr->elements[index];
 }
@@ -106,7 +106,8 @@ void arr_insert(Array *arr, char *element, int index) {
   // Increment count by 1
   if (index > arr->count) {
     fprintf(stderr, "Arr_Insert IndexError: Index %d out of range\n", index);
-    exit(1);
+    // exit(1);
+    return;
   }
 
   if (arr->capacity <= arr->count) {
@@ -117,7 +118,9 @@ void arr_insert(Array *arr, char *element, int index) {
   for (int i = arr->count - 1; i >= index; i--) {
     arr->elements[i + 1] = arr->elements[i];
   }
-  arr->elements[index] = element;
+  char *copy = strdup(element); 
+  arr->elements[index] = copy;
+  // arr->elements[index] = element;
   arr->count++;
 }
 
@@ -156,12 +159,11 @@ void arr_remove(Array *arr, char *element) {
   // Shift over every element after the removed element to the left one position
   // Decrement count by 1
 
-
 int pos = -1;
   for (int i = 0; i < arr->count; i++) {
-    if (element == arr->elements[i]) {
+    if (strcmp(element, arr->elements[i]) == 0) {
       pos = i;
-      arr->elements[pos] = NULL;
+      free(arr->elements[pos]);
       break;
     }
   }
@@ -210,9 +212,6 @@ int main(void)
   arr_insert(arr, "STRING3", 1); // [STRING2,STRING3,STRING1,STRING4]
   arr_print(arr);
   arr_remove(arr, "STRING3"); // [STRING2,STRING1,STRING4]
-  // printf("(%s)\n", arr_read(arr, 0));
-  // printf("(%s)\n", arr_read(arr, 1));
-  // printf("(%s)\n", arr_read(arr, 2));
   arr_print(arr);
 
   
