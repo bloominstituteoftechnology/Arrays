@@ -183,7 +183,7 @@ void arr_remove(Array *arr, char *element)
       break;
     }
     else if (i == arr->count)
-    { // if the index has reached the end of the array
+    {
       fprintf(stderr, "Value is not found.");
       exit(1);
     }
