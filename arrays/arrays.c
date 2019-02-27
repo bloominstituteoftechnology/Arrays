@@ -55,19 +55,34 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
+
   //char **new_arr = malloc( 2 * ((*arr).capacity * sizeof(char *)) );
 
-  Array *new_arr = create_array(2 * (*arr).capacity);
+  int new_capacity = 2 * (*arr).capacity;
+
+  //Array *new_arr = create_array(new_capacity);
+
+  char **new_elements = calloc(new_capacity, sizeof(char *));
 
   // Copy elements into the new storage
-  (*new_arr).elements = (*arr).elements;
+  int i;
+  for(i = 0; i < (*arr).count; i++) {
+
+    char* new_element = strdup((*arr).elements[i]);
+
+    new_elements[i] = (new_element);
+
+  }
+
+
+  //(*new_arr).elements = (*arr).elements;
 
   // Free the old elements array (but NOT the strings they point to)
-  free((*arr).elements);
+  free(arr->elements);
 
   // Update the elements and capacity to new values
-  (*arr).elements = (*new_arr).elements;
-  (*arr).capacity = (*new_arr).capacity;
+  (*arr).elements = new_elements;
+  (*arr).capacity = new_capacity;
 
 }
 
@@ -109,9 +124,11 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
+  /*
   if(index > (*arr).count) {
     fprintf(stderr, "Index out of range.");
   }
+  */
 
   // Resize the array if the number of elements is over capacity
   if( ((*arr).count + 1) > (*arr).capacity ) {
@@ -121,16 +138,26 @@ void arr_insert(Array *arr, char *element, int index) {
   }
 
   // Move every element after the insert index to the right one position
+  /*
   int i = index;
-  while((*arr).elements[i] != NULL) {
+  while((*arr).elements[i] != '\0') {
 
     (*arr).elements[i+1] = (*arr).elements[i];
+
+  }
+  */
+
+  for(int i = (*arr).count; i > index; i--) {
+
+    (*arr).elements[i] = (*arr).elements[i-1];
 
   }
 
 
   // Copy the element and add it to the array
-  (*arr).elements[index] = element;
+  char* new_element = strdup(element);
+
+  (*arr).elements[index] = new_element;
 
   // Increment count by 1
   (*arr).count++;
@@ -141,7 +168,7 @@ void arr_insert(Array *arr, char *element, int index) {
  * Append an element to the end of the array
  *****/
 void arr_append(Array *arr, char *element) {
-
+  
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
   if( ((*arr).count + 1) > (*arr).capacity ) {
@@ -159,10 +186,14 @@ void arr_append(Array *arr, char *element) {
 
   }
 
-  (*arr).elements[i] = element;
+  char* new_element = strdup(element);
+
+  (*arr).elements[i] = new_element;
 
   // Increment count by 1
   (*arr).count++;
+  
+  //arr_insert(arr, element, (*arr).count);
 
 }
 
@@ -176,23 +207,35 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   int i = 0;
-  while((*arr).elements[i] != element) {
-
+  while(strcmp((*arr).elements[i], element) != 0) {
+    
     i++;
-
   }
 
+
   // Don't forget to free its memory!
-  free((*arr).elements[i]);
+
+  free(arr->elements[i]);
 
   //(*arr).elements[i] = NULL;
 
   // Shift over every element after the removed element to the left one position
+  for(; i < (*arr).count; i++) {
+
+    (*arr).elements[i] = (*arr).elements[i+1];
+
+  }
+
+/*
   while((*arr).elements[i] != NULL) {
 
     (*arr).elements[i] = (*arr).elements[i+1];
 
   }
+  */
+  
+
+
 
   // Decrement count by 1
   (*arr).count--;
