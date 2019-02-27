@@ -173,7 +173,7 @@ void arr_append(Array *arr, char *element) {
   // or throw an error if resize isn't implemented yet.
   if( ((*arr).count + 1) > (*arr).capacity ) {
 
-    fprintf(stderr, "Index out of range.");
+    resize_array(arr);
 
   }
 
