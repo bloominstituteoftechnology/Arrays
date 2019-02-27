@@ -69,6 +69,7 @@ char *day_2_array_tests()
 
 
 
+
 char *all_tests()
 {
     mu_suite_start();
