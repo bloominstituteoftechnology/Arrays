@@ -103,11 +103,11 @@ void arr_insert(Array *arr, char *element, int index)
   // Throw an error if the index is greater than the current count
   if (index > arr->count)
   {
-    exit(1);
+    exit(0);
   }
 
   // Resize the array if the number of elements is over capacity
-  if ((arr->count) > (arr->capacity))
+  if ((arr->count) >= (arr->capacity))
   {
     resize_array(arr);
   }
@@ -180,7 +180,7 @@ void arr_remove(Array *arr, char *element)
     else
     {
       printf("Element not found\n");
-      exit(1);
+      exit(0);
     }
   }
 }
