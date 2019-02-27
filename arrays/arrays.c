@@ -113,7 +113,7 @@ void arr_insert(Array *arr, char *element, int index)
   }
 
   // Move every element after the insert index to the right one position
-  for (int i = 0; i <= arr->count; i++)
+  for (int i = index; i <= arr->count; i++)
   {
     arr->elements[i + 1] = arr->elements[i];
   }
