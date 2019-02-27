@@ -164,8 +164,6 @@ void arr_append(Array *arr, char *element)
  *****/
 void arr_remove(Array *arr, char *element)
 {
-
-  // Search for the first occurence of the element and remove it
   int found;
   for (int i = 0; i < arr->count; i++)
   { // loop over to find matching element
@@ -181,8 +179,6 @@ void arr_remove(Array *arr, char *element)
       {
         arr->elements[j] = arr->elements[j + 1];
       }
-
-      // Decrement count by 1
       arr->count--;
       break;
     }
