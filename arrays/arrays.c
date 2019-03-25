@@ -38,9 +38,9 @@ Array *create_array(int capacity)
 void destroy_array(Array *arr)
 {
   // Free all elements
-  free(arr->capacity);
-  free(arr->count);
-  free(arr->elements);
+  free(&arr->capacity);
+  free(&arr->count);
+  free(&arr->elements);
   // Free array
   free(arr);
 }
@@ -53,7 +53,7 @@ void resize_array(Array *arr)
 {
 
   // Create a new element storage with double capacity
-
+  realloc(arr->capacity, size(&arr->capacity) * 2);
   // Copy elements into the new storage
 
   // Free the old elements array (but NOT the strings they point to)
