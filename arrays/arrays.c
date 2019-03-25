@@ -77,10 +77,16 @@ void resize_array(Array *arr)
  *****/
 char *arr_read(Array *arr, int index)
 {
-
   // Throw an error if the index is greater than the current count
-
-  // Otherwise, return the element at the given index
+  if (index > arr->count)
+  {
+    printf("That index is beyond the current arrays size, you may try again or let the code perish");
+  }
+  else
+  {
+    // Otherwise, return the element at the given index
+    return arr->elements[index];
+  }
 }
 
 /*****
