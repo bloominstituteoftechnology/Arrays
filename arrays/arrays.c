@@ -78,7 +78,7 @@ char *arr_read(Array *arr, int index)
   if (index > arr->count)
   {
     printf("Error: index greater than the current count.\n");
-    exit(0);
+    return NULL;
   }
   // Otherwise, return the element at the given index
   else
