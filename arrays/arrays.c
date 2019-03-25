@@ -37,8 +37,11 @@ void destroy_array(Array *arr)
 {
 
   // Free all elements
-
+  free(&arr->capacity);
+  free(&arr->count);
+  free(&arr->elements);
   // Free array
+  free(arr);
 }
 
 /*****
