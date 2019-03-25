@@ -6,7 +6,7 @@
 typedef struct Array {
   int capacity;  // How many elements can this array hold?
   int count;  // How many states does the array currently hold?
-  char **elements;  // The string elements contained in the array
+  char **elements;  // The string elements contained in the array  // like array of string in Py
 } Array;
 
 
@@ -21,10 +21,15 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-
+  Array *arr = malloc(sizeof(Array));
   // Set initial values for capacity and count
+  arr->capacity = capacity;
+  arr->count = 0;
 
   // Allocate memory for elements
+  // element store array of string.  capacity is num of string.
+  // so element needs to store capacity number of string which is char*
+  arr->elements = malloc(capacity  * sizeof(char*)); 
 
 }
 
@@ -35,7 +40,7 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
-
+  
   // Free array
 
 }
