@@ -38,9 +38,12 @@ Array *create_array(int capacity)
 void destroy_array(Array *arr)
 {
   // Free all elements
-  free(&arr->capacity);
-  free(&arr->count);
-  free(&arr->elements);
+  for (int i = 0; i < arr->count; i++)
+  {
+    free(arr->elements[i]);
+  }
+
+  free(arr->elements);
   // Free array
   free(arr);
 }
@@ -96,6 +99,10 @@ void arr_insert(Array *arr, char *element, int index)
 {
 
   // Throw an error if the index is greater than the current count
+  if (index > arr->count)
+  {
+    printf("bruhh :dev 🐱‍👤");
+  }
 
   // Resize the array if the number of elements is over capacity
 
@@ -113,6 +120,10 @@ void arr_append(Array *arr, char *element)
 {
 
   // Resize the array if the number of elements is over capacity
+  if (arr->count > arr->capacity)
+  {
+    resize_array(arr);
+  }
   // or throw an error if resize isn't implemented yet.
 
   // Copy the element and add it to the end of the array
