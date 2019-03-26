@@ -52,12 +52,20 @@ void resize_array(Array *arr)
 {
 
   // Create a new element storage with double capacity
-
+  char **double_storage = malloc(2 * sizeof(arr));
   // Copy elements into the new storage
-
+  for (int i = 0; i < arr->count; i++)
+  {
+    double_storage[i] = arr->elements[i];
+  }
   // Free the old elements array (but NOT the strings they point to)
-
+  if (arr->elements != NULL)
+  {
+    free(arr->elements);
+  }
   // Update the elements and capacity to new values
+  arr->elements = double_storage;
+  arr->capacity = 2 * arr->capacity;
 }
 
 /************************************
@@ -140,13 +148,33 @@ void arr_append(Array *arr, char *element)
  *****/
 void arr_remove(Array *arr, char *element)
 {
-
+  int count = 0;
   // Search for the first occurence of the element and remove it.
+  for (int i = 0; i < arr->count; i++)
+  {
+    if (count != 0)
+    {
+      break;
+    }
+    if (arr->elements[i] == element)
+    {
+      count = i;
+    }
+  }
   // Don't forget to free its memory!
+  if (count)
+  {
+    arr->elements[count] = NULL;
+    free(arr->elements[count]);
+  }
 
   // Shift over every element after the removed element to the left one position
-
+  for (int j = count; j < arr->count; j++)
+  {
+    arr->elements[j] = arr->elements[j + 1];
+  }
   // Decrement count by 1
+  arr->count--;
 }
 
 /*****
