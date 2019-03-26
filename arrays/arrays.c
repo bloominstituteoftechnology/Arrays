@@ -134,6 +134,7 @@ void arr_append(Array *arr, char *element)
 
   // Copy the element and add it to the end of the array
   char *new_element = strdup(element);
+  arr_insert(arr, new_element, arr->count);
   // Increment count by 1
   arr->count++;
 }
@@ -147,21 +148,26 @@ void arr_append(Array *arr, char *element)
 void arr_remove(Array *arr, char *element)
 {
 
-  int del_idx;
-  // Search for the first occurence of the element and remove it.
-  for (int i = 0; i < arr->count; i++)
+  // Search for the first occurrence of the element and remove it.
+  int count = arr->count;
+  int i;
+  int idx;
+  for (i = 0; i < count; i++)
   {
-    del_idx = arr->elements[i];
-    if (element == arr->elements[i])
+    // strcmp compares to string values until it reaches NULL or a value that is different
+    // if the values are identical, strcmp will return 0
+    if (strcmp(element, arr->elements[i]) == 0)
     {
-      char current = arr_read(arr, i);
+      idx = i;
+      // Don't forget to free its memory!
+      free(arr->elements[i]);
     }
+    // Shift over every element after the removed element to the left one position
+    arr->elements[i] = arr->elements[i + 1];
   }
-  // Don't forget to free its memory!
-
-  // Shift over every element after the removed element to the left one position
 
   // Decrement count by 1
+  arr->count - 1;
 }
 
 /*****
