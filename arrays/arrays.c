@@ -55,16 +55,21 @@ void destroy_array(Array *arr)
 void resize_array(Array *arr)
 {
   // Create a new element storage with double capacity
-  void *newStorage = realloc(arr->elements, sizeof(&arr->capacity) * 2);
+  int new_size = 2 * arr->capacity;
+  char **new_elements = malloc(new_size * sizeof(char *));
+
   // Copy elements into the new storage
-  char **oldArray = arr->elements;
-  malloc(sizeof(newStorage));
+  for (int i = 0; i < arr->count; i++)
+  {
+    new_elements[i] = arr->elements[i];
+  }
 
   // Free the old elements array (but NOT the strings they point to)
   free(arr->elements);
 
   // Update the elements and capacity to new values
-  arr->elements = oldArray;
+  arr->capacity = new_size;
+  arr->elements = new_elements;
 }
 
 /************************************
@@ -84,6 +89,7 @@ char *arr_read(Array *arr, int index)
   if (index > arr->count)
   {
     printf("That index is beyond the current arrays size, you may try again or let the code perish");
+    return NULL;
   }
   else
   {
@@ -127,8 +133,9 @@ void arr_append(Array *arr, char *element)
   // or throw an error if resize isn't implemented yet.
 
   // Copy the element and add it to the end of the array
-
+  char *new_element = strdup(element);
   // Increment count by 1
+  arr->count++;
 }
 
 /*****
@@ -140,7 +147,16 @@ void arr_append(Array *arr, char *element)
 void arr_remove(Array *arr, char *element)
 {
 
+  int del_idx;
   // Search for the first occurence of the element and remove it.
+  for (int i = 0; i < arr->count; i++)
+  {
+    del_idx = arr->elements[i];
+    if (element == arr->elements[i])
+    {
+      char current = arr_read(arr, i);
+    }
+  }
   // Don't forget to free its memory!
 
   // Shift over every element after the removed element to the left one position
