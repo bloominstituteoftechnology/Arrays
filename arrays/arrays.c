@@ -28,6 +28,7 @@ Array *create_array(int capacity)
   arr->count = 0;
   // Allocate memory for elements
   arr->elements = malloc(sizeof(char *) * capacity);
+  return arr;
 }
 
 /*****
@@ -37,9 +38,10 @@ void destroy_array(Array *arr)
 {
 
   // Free all elements
-  free(&arr->capacity);
-  free(&arr->count);
-  free(&arr->elements);
+  if (arr->elements != NULL)
+  {
+    free(arr->elements);
+  }
   // Free array
   free(arr);
 }
@@ -83,9 +85,9 @@ char *arr_read(Array *arr, int index)
 {
 
   // Throw an error if the index is greater than or equal to the current count
-  if (index > arr->count)
+  if (index >= arr->count)
   {
-    printf("Error: index greater than the current count.\n");
+    fprintf(stderr, "Error: index %d greater than the current count.\n", index);
     return NULL;
   }
   // Otherwise, return the element at the given index
