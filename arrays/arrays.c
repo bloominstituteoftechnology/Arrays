@@ -57,9 +57,8 @@ void destroy_array(Array *arr)
 void resize_array(Array *arr)
 {
   // Create a new element storage with double capacity
-  int new_size = 2 * arr->capacity;
-  char **new_elements = malloc(new_size * sizeof(char *));
-
+  int new_capacity = 2 * arr->capacity;
+  char **new_elements = malloc(new_capacity * sizeof(char *));
   // Copy elements into the new storage
   for (int i = 0; i < arr->count; i++)
   {
@@ -70,7 +69,7 @@ void resize_array(Array *arr)
   free(arr->elements);
 
   // Update the elements and capacity to new values
-  arr->capacity = new_size;
+  arr->capacity = new_capacity;
   arr->elements = new_elements;
 }
 
@@ -88,7 +87,7 @@ void resize_array(Array *arr)
 char *arr_read(Array *arr, int index)
 {
   // Throw an error if the index is greater than the current count
-  if (index > arr->count)
+  if (index >= arr->count)
   {
     printf("That index is beyond the current arrays size, you may try again or let the code perish");
     return NULL;
@@ -108,23 +107,21 @@ void arr_insert(Array *arr, char *element, int index)
   // Throw an error if the index is greater than the current count
   if (index > arr->count)
   {
-     printf("bruhh :dev 🐱‍👤");
+    printf("bruhh :dev 🐱‍👤");
   }
 
   // Resize the array if the number of elements is over capacity
-  if (arr->capacity > arr->count) {
+  if (arr->capacity > arr->count)
+  {
     resize_array(arr);
   }
   // Move every element after the insert index to the right one position
-  char *current = arr->elements[index];
-  char *temp;
-  for (int i = index; i < arr->count; i++) {
-       temp = arr->elements[i + 1];
-       arr->elements[i + 1] = current;
-       temp = current;
+  for (int i = arr->count; i > index; i--)
+  {
+    arr->elements[i] = arr->elements[i - 1];
   }
   // Copy the element and add it to the array
-  arr->elements[index] = element;
+  arr->elements[index] = strdup(element);
   // Increment count by 1
   arr->count++;
 }
@@ -170,10 +167,10 @@ void arr_remove(Array *arr, char *element)
     {
       idx = i;
       // Don't forget to free its memory!
-      free(arr->elements[i]);
+      free(arr->elements[idx]);
     }
     // Shift over every element after the removed element to the left one position
-    arr->elements[i] = arr->elements[i + 1];
+    arr->elements[idx] = arr->elements[idx + 1];
   }
 
   // Decrement count by 1
