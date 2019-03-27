@@ -103,20 +103,28 @@ char *arr_read(Array *arr, int index)
  *****/
 void arr_insert(Array *arr, char *element, int index)
 {
-
   // Throw an error if the index is greater than the current count
   if (index > arr->count)
   {
-    printf("bruhh :dev 🐱‍👤");
+     printf("bruhh :dev 🐱‍👤");
   }
 
   // Resize the array if the number of elements is over capacity
-
+  if (arr->capacity > arr->count) {
+    resize_array(arr);
+  }
   // Move every element after the insert index to the right one position
-
+  char *current = arr->elements[index];
+  char *temp;
+  for (int i = index; i < arr->count; i++) {
+       temp = arr->elements[i + 1];
+       arr->elements[i + 1] = current;
+       temp = current;
+  }
   // Copy the element and add it to the array
-
+  arr->elements[index] = element;
   // Increment count by 1
+  arr->count++;
 }
 
 /*****
@@ -167,7 +175,7 @@ void arr_remove(Array *arr, char *element)
   }
 
   // Decrement count by 1
-  arr->count - 1;
+  arr->count--;
 }
 
 /*****
