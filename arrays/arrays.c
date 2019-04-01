@@ -26,7 +26,7 @@ Array *create_array (int capacity) {
   newArr->capacity = capacity;
   newArr->count = 0;
   // Allocate memory for elements
-  newArr->elements = malloc(capacity * sizeof(int));
+  newArr->elements = malloc(capacity * sizeof(char *));
 }
 
 
@@ -47,13 +47,17 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-
+  arr->capacity *= 2;
+  int *newStorage = malloc(arr->capacity * sizeof(char *));
   // Copy elements into the new storage
+  for(int i = 0; i < arr->count; i++) {
+    strcpy(newStorage[i], arr->elements[i]);
+  }
 
   // Free the old elements array (but NOT the strings they point to)
-
+  free(arr->elements);
   // Update the elements and capacity to new values
-
+  arr->elements = newStorage;
 }
 
 
@@ -101,12 +105,18 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
+  if(arr->capacity == arr->count ) {
+    resize_array(arr);
+  } else {
+    printf("resize not needed yet");
+  }
   // Copy the element and add it to the end of the array
-
+  char *newElement = strdup(element);
+  arr->elements[arr->count] = newElement;
   // Increment count by 1
-
+  arr->count += 1;
 }
+
 
 /*****
  * Remove the first occurence of the given element from the array,
@@ -148,7 +158,7 @@ int main(void)
   Array *arr = create_array(1);
 
   // arr_insert(arr, "STRING1", 0);
-  // arr_append(arr, "STRING4");
+  arr_append(arr, "STRING4");
   // arr_insert(arr, "STRING2", 0);
   // arr_insert(arr, "STRING3", 1);
   // arr_print(arr);
