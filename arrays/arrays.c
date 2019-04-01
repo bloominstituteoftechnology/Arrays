@@ -20,11 +20,18 @@ typedef struct Array {
  * Allocate memory for a new array
  *****/
 Array *create_array (int capacity) {
+  printf("Creating array with size of \"%d\"\n", capacity);
   // Allocate memory for the Array struct
+  Array *new_array = malloc(sizeof(Array));
 
   // Set initial values for capacity and count
+  new_array->count = 0;
+  new_array->capacity = capacity;
 
   // Allocate memory for elements
+  new_array->elements = malloc(capacity * sizeof(char));
+
+  return new_array;
 
 }
 
@@ -35,8 +42,12 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
+  for (int i = 0; i < arr->count; i++) {
+    free(arr->elements[i]);
+  }
 
   // Free array
+  free(arr);
 
 }
 
@@ -47,13 +58,19 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
+  int new_capacity = arr->capacity * 2 * sizeof(char);
+  char ** new_elements = malloc(arr->capacity * 2 * sizeof(char));
 
   // Copy elements into the new storage
+  for (int i = 0; i < arr->count; i++) {
+    new_elements[i] = arr->elements[i];
+  }
 
   // Free the old elements array (but NOT the strings they point to)
+  free(arr->elements);
 
   // Update the elements and capacity to new values
-
+  arr->elements = new_elements;
 }
 
 
@@ -72,6 +89,10 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater or equal to than the current count
+  if (index >= arr->count) {
+    printf("can not access index: %d out side of array %d", index, arr->count);
+    // Throw Error;
+  }
 
   // Otherwise, return the element at the given index
 }
@@ -83,6 +104,11 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
+  if (index >= arr->count) {
+    printf("can not insert index: %d out side of array %d", index, arr->count);
+    // Throw Error;
+  }
+
 
   // Resize the array if the number of elements is over capacity
 
