@@ -59,6 +59,7 @@ void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
   int new_capacity = arr->capacity * 2 * sizeof(char);
+  printf("resizing arr with cap: %d to: %d\n", arr->capacity, new_capacity);
   char ** new_elements = malloc(arr->capacity * 2 * sizeof(char));
 
   // Copy elements into the new storage
@@ -107,7 +108,7 @@ void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
   if (index >= arr->count) {
-    printf("can not insert index: %d out side of array %d\n", index, arr->count);
+    printf("can not insert index: %d outside of array %d\n", index, arr->count);
     // Throw Error;
   }
 
@@ -122,6 +123,7 @@ void arr_insert(Array *arr, char *element, int index) {
 
 }
 
+
 /*****
  * Append an element to the end of the array
  *****/
@@ -129,13 +131,19 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  printf("Adding %s to array\n", element);
   if (arr->count >= arr->capacity) {
     resize_array(arr);
   }
   // Copy the element and add it to the end of the array
   char * new_element = malloc(strlen(element) * sizeof(char));
+  // new_element = element;
+  int length = strlen(element)+1;
+  for (int i = 0; i < length; i++) {
+    new_element[i] = element[i];
+  }
+  printf("str %scopied\n", element);
   arr->elements[arr->count] = new_element;
-
   // Increment count by 1
   arr->count++;
 }
