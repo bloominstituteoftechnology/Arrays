@@ -49,10 +49,10 @@ void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
   arr->capacity *= 2;
-  int *newStorage = malloc(arr->capacity * sizeof(char *));
+  int **newStorage = malloc(arr->capacity * sizeof(char *));
   // Copy elements into the new storage
   for(int i = 0; i < arr->count; i++) {
-    strcpy(newStorage[i], arr->elements[i]);
+    newStorage[i] = strdup(arr->elements[i]);
   }
 
   // Free the old elements array (but NOT the strings they point to)
@@ -99,20 +99,24 @@ void arr_insert(Array *arr, char *element, int index) {
   }
 
   // Resize the array if the number of elements is over capacity
-  if(arr->elements > arr->count) {
+  if(arr->count == arr->capacity) {
     resize_array(arr);
   };
 
   // Move every element after the insert index to the right one position
-  for(int i = index; i < arr->count; i++ ) {
-    arr->elements[i + 1] = arr->elements[i]; 
+   if (arr->count == 0) {
+    arr_append(arr, element);
+  } else {
+    for(int i = index; i < arr->count; i++ ) {
+      arr->elements[i + 1] = arr->elements[i]; 
+    };
+    // Copy the element and add it to the array
+    char *newElement = strdup(element);
+    arr->elements[index] = newElement;
+    
+    
+    arr->count += 1;
   };
-
-  // Copy the element and add it to the array
-  char *newElement = strdup(element);
-  arr->elements[index] = newElement;
-  // Increment count by 1
-  arr->count += 1;
 
 }
 
