@@ -169,19 +169,6 @@ void arr_append(Array *arr, char *element) {
   // Increment count by 1
   arr->count++;
 }
-
-int compare_string(char *string1, char* string2) {
-  int match = 1;
-  int i = 0;
-  while (string1[i] != '\0') {
-    if (string1[i] != string2[i]) {
-      match = 0;
-      break;
-    }
-  }
-  return match;
-}
-
 /*****
  * Remove the first occurence of the given element from the array,
  * then shift every element after that occurence to the left one slot.
@@ -189,21 +176,67 @@ int compare_string(char *string1, char* string2) {
  * Throw an error if the value is not found.
  *****/
 void arr_remove(Array *arr, char *element) {
-
+  printf("attemping to remove %s from array\n", element);
   // Search for the first occurence of the element and remove it.
-  // char * 
-  // for (int i = 0; i < arr->count; i++) {
-
-  // }
+  char * ele_to_remove;
+  int i = 0;
+  int found_str = 0;
+   for (; i < arr->count; i++) {
+     printf("i: %d\n", i);
+     if (!strcmp( arr->elements[i], element)) {
+       ele_to_remove = arr->elements[i];
+       found_str = 1;
+       break;
+   }
+  }
+  if (!found_str || i >= arr->count) {
+    fprintf(stderr, "Did not find string %s in array\n", element);
+    return;
+  }
   // Don't forget to free its memory!
-
+  free(ele_to_remove);
   // Shift over every element after the removed element to the left one position
-
+  for (int j = i; j < arr->count; j++) {
+    arr->elements[j] = arr->elements[j+1];
+  }
   // Decrement count by 1
-
+  arr->count--;
 }
-
-
+// void arr_remove(Array *arr, char *element) {
+//   printf("attemping to remove %s from array\n", element);
+//   // Search for the first occurence of the element and remove it.
+//   char * ele_to_remove;
+//   int i = 0;
+//   int found_str = 0;
+//   // for (; i < arr->count; i++) {
+//   //   printf("i: %d\n", i);
+//   //   if (strcmp( arr->elements[i], element)) {
+//   //     ele_to_remove = arr->elements[i];
+//   //     found_str = 1;
+//   //     break;
+//   //   }
+//   // }
+//   while (strcmp(element, arr->elements[i]) && i < arr->count) {
+//     if (!strcmp(element, arr->elements[i])) {
+//       ele_to_remove = arr->elements[i];
+//       break;
+//     }
+//     printf("i: %d\n", i);
+//     i++;
+//   }
+//   if (!found_str || i >= arr->count) {
+//     fprintf(stderr, "Did not find string %s in array\n", element);
+//     return;
+//   }
+//   // Don't forget to free its memory!
+//   free(ele_to_remove);
+//   // Shift over every element after the removed element to the left one position
+//   for (int j = i; j < arr->count; j++) {
+//     arr->elements[j] = arr->elements[j+1];
+//   }
+//   // Decrement count by 1
+//   arr->count--;
+// }
 /*****
  * Utility function to print an array.
  *****/
