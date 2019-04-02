@@ -3,12 +3,21 @@
 #include <string.h>
 #include <errno.h>
 
+
+
 typedef struct Array {
   int capacity;  // How many elements can this array hold?
   int count;  // How many states does the array currently hold?
   char **elements;  // The string elements contained in the array
 } Array;
 
+// function prototypes
+Array *create_array (int capacity);
+void resize_array(Array *arr);
+void destroy_array(Array *arr);
+void resize_array(Array *arr);
+char *arr_read(Array *arr, int index);
+void arr_print(Array *arr);
 
 /************************************
  *
@@ -29,7 +38,7 @@ Array *create_array (int capacity) {
   new_array->capacity = capacity;
 
   // Allocate memory for elements
-  new_array->elements = malloc(capacity * sizeof(char));
+  new_array->elements = malloc(capacity * sizeof(char*));
 
   return new_array;
 
@@ -45,10 +54,9 @@ void destroy_array(Array *arr) {
   for (int i = 0; i < arr->count; i++) {
     free(arr->elements[i]);
   }
-
+  free(arr->elements);
   // Free array
   free(arr);
-
 }
 
 /*****
@@ -58,9 +66,9 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-  int new_capacity = arr->capacity * 2 * sizeof(char);
+  int new_capacity = arr->capacity * 2 * sizeof(char*); // in bytes
   printf("resizing arr with cap: %d to: %d\n", arr->capacity, new_capacity);
-  char ** new_elements = malloc(arr->capacity * 2 * sizeof(char));
+  char ** new_elements = malloc(new_capacity);
 
   // Copy elements into the new storage
   for (int i = 0; i < arr->count; i++) {
@@ -71,6 +79,7 @@ void resize_array(Array *arr) {
   free(arr->elements);
 
   // Update the elements and capacity to new values
+  arr->capacity = new_capacity / sizeof(char*); // get real num
   arr->elements = new_elements;
 }
 
@@ -100,27 +109,38 @@ char *arr_read(Array *arr, int index) {
   return arr->elements[index];
 }
 
-
 /*****
  * Insert an element to the array at the given index
  *****/
 void arr_insert(Array *arr, char *element, int index) {
-
   // Throw an error if the index is greater than the current count
+  int errnum;
   if (index >= arr->count) {
     printf("can not insert index: %d outside of array %d\n", index, arr->count);
     // Throw Error;
+    errnum = errno;
+    fprintf(stderr, "Error num:%d \ncan not insert index: %d outside of array %d\n", errnum, index, arr->count);
+    perror("Error\n");
+    // fprintf(stderr, "Error inserting outside of array capacity %s\n", stderr( errno ));
   }
 
-
   // Resize the array if the number of elements is over capacity
+  if (arr->count >= arr->capacity) {
+    resize_array(arr);
+  }
 
   // Move every element after the insert index to the right one position
-
+  // starting from the end is eaiser
+  for (int i = arr->count; i > index; i--) {
+    arr->elements[i] = arr->elements[i-1];
+  }
+  printf("array with space missing ");
+  arr_print(arr);
   // Copy the element and add it to the array
+  arr->elements[index] = strdup(element);
 
   // Increment count by 1
-
+  arr->count++;
 }
 
 
@@ -135,17 +155,31 @@ void arr_append(Array *arr, char *element) {
   if (arr->count >= arr->capacity) {
     resize_array(arr);
   }
+
   // Copy the element and add it to the end of the array
-  char * new_element = malloc(strlen(element) * sizeof(char));
-  // new_element = element;
   int length = strlen(element)+1;
+  char * new_element = malloc(length * sizeof(char));
+  // new_element = element;
   for (int i = 0; i < length; i++) {
     new_element[i] = element[i];
   }
-  printf("str %scopied\n", element);
+
+  printf("string %s copied\n", element);
   arr->elements[arr->count] = new_element;
   // Increment count by 1
   arr->count++;
+}
+
+int compare_string(char *string1, char* string2) {
+  int match = 1;
+  int i = 0;
+  while (string1[i] != '\0') {
+    if (string1[i] != string2[i]) {
+      match = 0;
+      break;
+    }
+  }
+  return match;
 }
 
 /*****
@@ -157,6 +191,10 @@ void arr_append(Array *arr, char *element) {
 void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
+  // char * 
+  // for (int i = 0; i < arr->count; i++) {
+
+  // }
   // Don't forget to free its memory!
 
   // Shift over every element after the removed element to the left one position
@@ -188,7 +226,9 @@ int main(void)
   Array *arr = create_array(1);
 
   arr_insert(arr, "STRING1", 0);
-  arr_append(arr, "STRING4");
+  // arr_append(arr, "STRING4");
+  // arr_append(arr, "STRING5");
+  // arr_append(arr, "STRING6");
   arr_insert(arr, "STRING2", 0);
   arr_insert(arr, "STRING3", 1);
   arr_print(arr);
