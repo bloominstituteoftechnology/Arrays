@@ -114,8 +114,8 @@ void arr_insert(Array *arr, char *element, int index) {
    if (arr->count == 0) {
     arr_append(arr, element);
   } else {
-    for(int i = index; i < arr->count; i++ ) {
-      arr->elements[i + 1] = arr->elements[i]; 
+    for(int i = arr->count; i > index; i-- ) {
+      arr->elements[i] = arr->elements[i - 1]; 
     };
     // Copy the element and add it to the array
     char *newElement = strdup(element);
@@ -169,7 +169,11 @@ void arr_remove(Array *arr, char *element) {
   // Shift over every element after the removed element to the left one position
 
   for (found; found < arr->count; found++){
-    arr->elements[found] = arr->elements[found + 1];  
+      if (found == arr->count - 1) {
+        arr->elements[found] = '\0';
+        continue;
+    }
+    arr->elements[found + 1] = arr->elements[found];  
   };
 
   // Decrement count by 1
