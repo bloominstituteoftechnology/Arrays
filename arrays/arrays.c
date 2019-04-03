@@ -3,8 +3,6 @@
 #include <string.h>
 #include <errno.h>
 
-
-
 typedef struct Array {
   int capacity;  // How many elements can this array hold?
   int count;  // How many states does the array currently hold?
@@ -12,12 +10,12 @@ typedef struct Array {
 } Array;
 
 // function prototypes
-Array *create_array (int capacity);
-void resize_array(Array *arr);
-void destroy_array(Array *arr);
-void resize_array(Array *arr);
-char *arr_read(Array *arr, int index);
-void arr_print(Array *arr);
+// Array *create_array (int capacity);
+// void resize_array(Array *arr);
+// void destroy_array(Array *arr);
+// void resize_array(Array *arr);
+// char *arr_read(Array *arr, int index);
+// void arr_print(Array *arr);
 
 /************************************
  *
@@ -38,7 +36,7 @@ Array *create_array (int capacity) {
   new_array->capacity = capacity;
 
   // Allocate memory for elements
-  new_array->elements = malloc(capacity * sizeof(char*));
+  new_array->elements = calloc(capacity, sizeof(char*));
 
   return new_array;
 
@@ -67,8 +65,8 @@ void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
   int new_capacity = arr->capacity * 2 * sizeof(char*); // in bytes
-  printf("resizing arr with cap: %d to: %d\n", arr->capacity, new_capacity);
-  char ** new_elements = malloc(new_capacity);
+  printf("resizing arr with cap: %d to: %lu\n", arr->capacity, new_capacity/sizeof(char*));
+  char ** new_elements = calloc(arr->capacity * 2, sizeof(char*));
 
   // Copy elements into the new storage
   for (int i = 0; i < arr->count; i++) {
@@ -102,7 +100,7 @@ char *arr_read(Array *arr, int index) {
   if (index >= arr->count) {
     printf("can not access index: %d out side of array %d\n", index, arr->count);
     // Throw Error;
-    return "error";
+    return NULL;
   }
 
   // Otherwise, return the element at the given index
@@ -135,14 +133,12 @@ void arr_insert(Array *arr, char *element, int index) {
     arr->elements[i] = arr->elements[i-1];
   }
   printf("array with space missing ");
-  arr_print(arr);
   // Copy the element and add it to the array
   arr->elements[index] = strdup(element);
 
   // Increment count by 1
   arr->count++;
 }
-
 
 /*****
  * Append an element to the end of the array
@@ -195,48 +191,14 @@ void arr_remove(Array *arr, char *element) {
   }
   // Don't forget to free its memory!
   free(ele_to_remove);
-  // Shift over every element after the removed element to the left one position
+  // Shift over every element after the removed element to the right one position
   for (int j = i; j < arr->count; j++) {
     arr->elements[j] = arr->elements[j+1];
   }
   // Decrement count by 1
   arr->count--;
 }
-// void arr_remove(Array *arr, char *element) {
-//   printf("attemping to remove %s from array\n", element);
-//   // Search for the first occurence of the element and remove it.
-//   char * ele_to_remove;
-//   int i = 0;
-//   int found_str = 0;
-//   // for (; i < arr->count; i++) {
-//   //   printf("i: %d\n", i);
-//   //   if (strcmp( arr->elements[i], element)) {
-//   //     ele_to_remove = arr->elements[i];
-//   //     found_str = 1;
-//   //     break;
-//   //   }
-//   // }
-//   while (strcmp(element, arr->elements[i]) && i < arr->count) {
-//     if (!strcmp(element, arr->elements[i])) {
-//       ele_to_remove = arr->elements[i];
-//       break;
-//     }
-//     printf("i: %d\n", i);
-//     i++;
-//   }
-//   if (!found_str || i >= arr->count) {
-//     fprintf(stderr, "Did not find string %s in array\n", element);
-//     return;
-//   }
-//   // Don't forget to free its memory!
-//   free(ele_to_remove);
-//   // Shift over every element after the removed element to the left one position
-//   for (int j = i; j < arr->count; j++) {
-//     arr->elements[j] = arr->elements[j+1];
-//   }
-//   // Decrement count by 1
-//   arr->count--;
-// }
+
 /*****
  * Utility function to print an array.
  *****/
@@ -259,7 +221,7 @@ int main(void)
   Array *arr = create_array(1);
 
   arr_insert(arr, "STRING1", 0);
-  // arr_append(arr, "STRING4");
+  arr_append(arr, "STRING4");
   // arr_append(arr, "STRING5");
   // arr_append(arr, "STRING6");
   arr_insert(arr, "STRING2", 0);
