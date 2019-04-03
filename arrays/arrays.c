@@ -65,7 +65,11 @@ void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
   int new_capacity = arr->capacity * 2 * sizeof(char*); // in bytes
+<<<<<<< HEAD
   printf("resizing arr with cap: %d to: %lu\n", arr->capacity, new_capacity/sizeof(char*));
+=======
+  printf("resizing arr with cap: %d to: %d\n", arr->capacity, new_capacity);
+>>>>>>> 12bcdaed40bc9ff936ce7d745cb93514b4880665
   char ** new_elements = calloc(arr->capacity * 2, sizeof(char*));
 
   // Copy elements into the new storage
