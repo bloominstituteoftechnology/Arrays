@@ -79,6 +79,8 @@ char *arr_read(Array *arr, int index) {
 
 /*****
  * Insert an element to the array at the given index
+ *
+ * Store the VALUE of the given string, not the REFERENCE
  *****/
 void arr_insert(Array *arr, char *element, int index) {
 
@@ -88,7 +90,7 @@ void arr_insert(Array *arr, char *element, int index) {
 
   // Move every element after the insert index to the right one position
 
-  // Copy the element and add it to the array
+  // Copy the element (hint: use `strdup()`) and add it to the array
 
   // Increment count by 1
 
