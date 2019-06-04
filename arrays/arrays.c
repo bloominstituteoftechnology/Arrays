@@ -216,6 +216,7 @@ void arr_remove(Array *arr, char *element)
       printf("in if statement\n");
       free(arr->elements[i]);
       confirmed_index = i;
+      break;
     }
     printf("after remove ---------------------------------\n");
     printf("i: %d\n", i);
@@ -260,7 +261,6 @@ void arr_print(Array *arr)
 #ifndef TESTING
 int main(void)
 {
-
   Array *arr = create_array(1);
   arr_insert(arr, "VALUE-1", 0);
   arr_read(arr, 0);
@@ -269,8 +269,18 @@ int main(void)
   printf("arr->count: %d\n", arr->count);
   arr_read(arr, 0);
   arr_read(arr, 1);
+  arr_insert(arr, "VALUE-3", 1);
+  printf("arr->capacity: %d\n", arr->capacity);
+  printf("arr->count: %d\n", arr->count);
+  arr_read(arr, 0);
+  arr_read(arr, 1);
+  arr_read(arr, 2);
+  arr_remove(arr, "VALUE-3");
+  printf("arr->count: %d\n", arr->count);
+  arr_read(arr, 0);
+  arr_read(arr, 1);
+  arr_read(arr, 2);
   destroy_array(arr);
-
   return 0;
 }
 #endif
