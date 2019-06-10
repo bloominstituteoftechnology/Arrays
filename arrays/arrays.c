@@ -21,7 +21,7 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-  Array * arr = malloc(sizeof(Array));
+  Array *arr = malloc(sizeof(Array));
   // Set initial values for capacity and count
   arr->capacity = capacity;
   arr->count = 0;
@@ -77,6 +77,7 @@ char *arr_read(Array *arr, int index) {
   // Throw an error if the index is greater or equal to than the current count
   if (index >= arr->count) {
     fprintf(stderr, "Index is too large");
+    exit(1);
   }
   // Otherwise, return the element at the given index
   return arr->elements[index]; 
@@ -89,17 +90,24 @@ char *arr_read(Array *arr, int index) {
  * Store the VALUE of the given string, not the REFERENCE
  *****/
 void arr_insert(Array *arr, char *element, int index) {
-
+  int count = arr->count;
   // Throw an error if the index is greater than the current count
-
+  if (index > count) {
+    fprintf(stderr, "Index is greater than current count");
+    exit(1);
+  }
   // Resize the array if the number of elements is over capacity
-
+  if (arr->count > arr->capacity) {
+    resize_array(arr);
+  }
   // Move every element after the insert index to the right one position
-
+  for (int i = count; index < i; i--) {
+    arr->elements[i] = arr->elements[i - 1];
+  }
   // Copy the element (hint: use `strdup()`) and add it to the array
-
+  arr->elements[index] = strdup(element);
   // Increment count by 1
-
+  count++;
 }
 
 /*****
@@ -111,6 +119,7 @@ void arr_append(Array *arr, char *element) {
   // or throw an error if resize isn't implemented yet.
   if (arr->count > arr->capacity) {
     fprintf(stderr, "The array is over capacity");
+    exit(1);
   }
   // Copy the element and add it to the end of the array
   arr->elements[arr->count] = strdup(element);
