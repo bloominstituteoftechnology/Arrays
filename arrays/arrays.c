@@ -36,9 +36,9 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
-
+  free(arr->elements);
   // Free array
-
+  free(arr);
 }
 
 /*****
@@ -73,10 +73,13 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater or equal to than the current count
-
+  if(index >= arr->count || index< 0) {
+    printf("Index %d, is out of boundssss!", index);
+    exit(1);
+  }
   // Otherwise, return the element at the given index
+  return arr->elements[index];
 }
-
 
 /*****
  * Insert an element to the array at the given index
@@ -104,11 +107,13 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
+  if(arr->count >= arr->capacity) {
+    arr->capacity *= 2;
+    arr->elements = realloc(arr->elements, sizeof(char *) * arr->capacity);
+  }
   // Copy the element and add it to the end of the array
-
   // Increment count by 1
-
+  arr->elements[arr->count++] = element;
 }
 
 /*****
