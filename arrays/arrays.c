@@ -37,7 +37,7 @@ void destroy_array(Array *arr) {
   
   // Free all elements
   for (int i = 0; i < len(arr); i++) {
-    arr[i] = arr[i + 1];
+    free(arr->elements[i]);
   }
   // Free array
   free(arr);
@@ -75,8 +75,11 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater or equal to than the current count
-
+  if (index >= arr->count) {
+    fprintf(stderr, "Index is too large");
+  }
   // Otherwise, return the element at the given index
+  return arr->elements[index]; 
 }
 
 
@@ -106,11 +109,13 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
-
+  if (arr->count > arr->capacity) {
+    fprintf(stderr, "The array is over capacity");
+  }
   // Copy the element and add it to the end of the array
-
+  arr->elements[arr->count] = strdup(element);
   // Increment count by 1
-
+  arr->count++;
 }
 
 /*****
