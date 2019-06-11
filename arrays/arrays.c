@@ -36,8 +36,10 @@ Array *create_array (int capacity) {
  * Free memory for an array and all of its stored elements
  *****/
 void destroy_array(Array *arr) {
-
-  // Free all elements
+  for(int i = 0; i < arr->count; i++){
+    free(arr->elements[i]);  
+  } 
+   // Free all elements
   free(arr->elements);
   // Free array
   free(arr);
@@ -47,17 +49,31 @@ void destroy_array(Array *arr) {
  * Create a new elements array with double capacity and copy elements
  * from old to new
  *****/
-// void resize_array(Array *arr) {
+void vector_double_capacity_if_full(Vector *vector) {
+  if (vector->size >= vector->capacity) {
+    // double vector->capacity and resize the allocated memory accordingly
+    vector->capacity *= 2;
+    vector->data = realloc(vector->data, sizeof(int) * vector->capacity);
+  }
+}
 
-//   // Create a new element storage with double capacity
+void resize_array(Array *arr) {
 
-//   // Copy elements into the new storage
+  // Create a new element storage with double capacity
+  int newCapacity = 2 * arr->capacity;
+  char **newStorage = create_array(newCapacity);
+  // Copy elements into the new storage
+  for(int i = 0; i < arr->count; i++) {
+    char *newElement = strdup(arr->elements[i]);
+    newStorage[i] = newElement;
+  }
+  // Free the old elements array (but NOT the strings they point to)
+  free(arr->elements);
 
-//   // Free the old elements array (but NOT the strings they point to)
-
-//   // Update the elements and capacity to new values
-
-// }
+  // Update the elements and capacity to new values
+  *arr->elements = newStorage;
+  arr->capacity = newCapacity;
+}
 
 
 
@@ -88,19 +104,26 @@ char *arr_read(Array *arr, int index) {
  *
  * Store the VALUE of the given string, not the REFERENCE
  *****/
-// void arr_insert(Array *arr, char *element, int index) {
+void arr_insert(Array *arr, char *element, int index) {
 
-//   // Throw an error if the index is greater than the current count
-
-//   // Resize the array if the number of elements is over capacity
-
-//   // Move every element after the insert index to the right one position
-
-//   // Copy the element (hint: use `strdup()`) and add it to the array
-
-//   // Increment count by 1
-
-// }
+  // Throw an error if the index is greater than the current count
+  if(index > arr->count){
+    printf("Index %d, too large", index);
+  }
+  // Resize the array if the number of elements is over capacity
+  if(arr->count > arr->capacity) {
+    resize_array(arr);
+  }
+  // Move every element after the insert index to the right one position
+  for(int i = index; i <= arr->count; i++ ) {
+    arr->elements[i + 1] = arr->elements[i];  
+  }
+  // Copy the element (hint: use `strdup()`) and add it to the array
+  char *newElement = strdup(element);
+  arr->elements[index] = newElement;
+  // Increment count by 1
+  arr->count++;
+}
 
 /*****
  * Append an element to the end of the array
