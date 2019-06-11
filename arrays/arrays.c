@@ -3,6 +3,11 @@
 #include <string.h>
 #include <errno.h>
 
+// Array Notes
+// list of elements of same type in a sequential (contiguous) memory block
+// Can access data in constant time with this equation: 
+// memory_address = starting_address + index * data_size
+
 typedef struct Array {
   int capacity;  // How many elements can this array hold?
   int count;  // How many states does the array currently hold?
@@ -21,11 +26,18 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
+    Array *arr = malloc(sizeof(Array));
 
   // Set initial values for capacity and count
+    arr->capacity = capacity;
+  arr->count = 0;
 
   // Allocate memory for elements
-
+  arr->elements = malloc(sizeof(char*) * capacity);
+  for (int i = 0; i < capacity; i++) {
+  arr->elements[i] = NULL;
+  }
+return arr;
 }
 
 
@@ -35,9 +47,13 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
-
+  if (arr->elements != NULL) {
+    free(arr->elements);
+}
   // Free array
-
+if (arr != NULL) {
+free(arr);
+  }
 }
 
 /*****
@@ -47,13 +63,20 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
+  char **doubleCapacityStorage = malloc(sizeof(char *) * (arr->capacity * 2));
 
   // Copy elements into the new storage
+  for (int i = 0; i < arr->count; i++) {
+    doubleCapacityStorage[i] = arr->elements[i];
+  }
 
   // Free the old elements array (but NOT the strings they point to)
-
+if (arr->elements != NULL) {
+  free(arr->elements);
+}
   // Update the elements and capacity to new values
-
+arr->elements = doubleCapacityStorage;
+arr->capacity = arr->capacity * 2;
 }
 
 
@@ -72,7 +95,12 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater or equal to than the current count
-
+  if (index >= arr->count) {
+    printf("Index out of range!");
+    return NULL;
+  } else {
+    return arr->elements[index];
+  }
   // Otherwise, return the element at the given index
 }
 
@@ -103,11 +131,14 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  if (arr->count >= arr->capacity) {
+    resize_array(arr);
+  }
 
   // Copy the element and add it to the end of the array
-
+  arr->elements[arr->count] = strdup(element);
   // Increment count by 1
-
+  arr->count += 1;
 }
 
 /*****
@@ -147,8 +178,12 @@ void arr_print(Array *arr) {
 int main(void)
 {
 
-  Array *arr = create_array(1);
+  Array *arr = create_array(8);
 
+  arr->elements[0] = "string1";
+
+  arr->elements[1] = "string2";
+  
   arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
   arr_insert(arr, "STRING2", 0);
@@ -156,7 +191,7 @@ int main(void)
   arr_print(arr);
   arr_remove(arr, "STRING3");
   arr_print(arr);
-
+  printf("Array capacity: %d, array count: %d\n", arr->capacity, arr->count);
   destroy_array(arr);
 
   return 0;
