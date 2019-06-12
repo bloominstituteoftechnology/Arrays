@@ -33,7 +33,7 @@ Array *create_array (int capacity) {
   arr->count = 0;
 
   // Allocate memory for elements
-  arr->elements = malloc(sizeof(char*) * capacity);
+  arr->elements = calloc(sizeof(char*), capacity);
   for (int i = 0; i < capacity; i++) {
   arr->elements[i] = NULL;
   }
@@ -117,14 +117,14 @@ void arr_insert(Array *arr, char *element, int index) {
    return;
   }
   // Resize the array if the number of elements is over capacity
-  if (arr->count == arr->capacity) {
+  if (arr->count >= arr->capacity) {
     resize_array(arr);
   }
   // Move every element after the insert index to the right one position
-  int i = (arr->count - 1);
+  int i = (arr->count);
 
-  for (i; i >= index; i--) {
-    arr->elements[i + 1] = arr->elements[i];
+  for (i; i > index; i--) {
+    arr->elements[i] = arr->elements[i - 1];
   }
   // Copy the element (hint: use `strdup()`) and add it to the array
   arr->elements[index] = strdup(element);
@@ -159,22 +159,42 @@ void arr_append(Array *arr, char *element) {
 void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
-  for (int i = 0; i < arr->count; i++) {
-    if (arr->elements[i] == element) {
-      free(arr->elements[i]);
-      for (i; i < (arr->count - 1); i++) {
-        arr->elements[i] = arr->elements[i + 1];
-      }
-      arr->elements[arr->count-1] = NULL;
-      arr->count -= 1;
-    }
-  }
+  // for (int i = 0; i < arr->count; i++) {
+  //   if (arr->elements[i] == element) {
+  //     free(arr->elements[i]);
+  //     for (i; i < (arr->count - 1); i++) {
+  //       arr->elements[i] = arr->elements[i + 1];
+  //     }
+  //     arr->elements[arr->count-1] = NULL;
+  //     arr->count -= 1;
+  //   }
+  // }
   // Don't forget to free its memory!
 
   // Shift over every element after the removed element to the left one position
 
   // Decrement count by 1
   
+
+
+  int removed = 0;
+  for (int i = 0 ; i < arr->count ; i++) {
+    if (removed) {
+      arr->elements[i - 1] = arr->elements[i];
+    } else if (strcmp(arr->elements[i], element) == 0) {
+      // Free element
+      free(arr->elements[i]);
+      removed = 1;
+    }
+  }
+
+  if (removed) {
+    arr->count--;
+    arr->elements[arr->count] = NULL;
+  } else {
+    fprintf(stderr, "ValueError: %s not in array", element);
+  }
+
 }
 
 
@@ -208,10 +228,7 @@ int main(void)
   arr_insert(arr, "STRING3", 1);
   arr_remove(arr, "STRING1");
   arr_print(arr);
- 
-  printf("arr pointer: %p, arr2 pointer:\n", arr);
-
-
+  arr_remove(arr, "STRING4");
   arr_print(arr);
   arr_print(arr);
   destroy_array(arr);
