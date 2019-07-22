@@ -21,11 +21,14 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-
+  Array *arr = malloc(sizeof(Array));
   // Set initial values for capacity and count
-
+  arr->capacity = capacity;
+  arr->count = 0;
   // Allocate memory for elements
+  arr -> elements = malloc(sizeof(char *) * capacity);
 
+  return arr;
 }
 
 
@@ -35,9 +38,9 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
-
+  free(arr->elements);
   // Free array
-
+  free(arr);
 }
 
 /*****
@@ -47,13 +50,18 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-
+  char *doubleCapacityStorage = malloc(sizeof(char *) * (arr->capacity * 2));
   // Copy elements into the new storage
-
+  for (int i = 0; i < arr->count; i++) {
+    doubleCapacityStorage[i] = arr ->elements[i];
+  }
   // Free the old elements array (but NOT the strings they point to)
-
+  if (arr->elements != NULL) {
+    free(arr->elements);
+  }
   // Update the elements and capacity to new values
-
+  arr->elements = doubleCapacityStorage;
+  arr->capacity = arr->capacity * 2;
 }
 
 
@@ -72,8 +80,12 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater or equal to than the current count
-
+  if (index >= arr->count){
+    fprintf(stderr, "IndexError: Array index is out of range.");
+    return NULL;
+  }
   // Otherwise, return the element at the given index
+  return arr->elements[index];
 }
 
 
