@@ -37,6 +37,11 @@ Array *create_array (int capacity) {
  *****/
 void destroy_array(Array *arr) {
 
+  //Create loop to free elements
+  for(int i=0; i <arr->count; i++) {
+    free(arr->elements[i]);
+  }
+
   // Free all elements
   free(arr->elements);
   // Free array
@@ -80,7 +85,7 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater or equal to than the current count
-  if (index >= arr->count){
+  if (index >= arr->count) {
     fprintf(stderr, "IndexError: Array index is out of range.");
     return NULL;
   }
@@ -94,33 +99,53 @@ char *arr_read(Array *arr, int index) {
  *
  * Store the VALUE of the given string, not the REFERENCE
  *****/
-void arr_insert(Array *arr, char *element, int index) {
+void arr_insert(Array *arr, char *element, int index) 
+{
 
   // Throw an error if the index is greater than the current count
-
+  if (index > arr->count) {
+    fprintf(stderr, "Attempted to insert but index is out of range");
+    exit(1);
+  }
   // Resize the array if the number of elements is over capacity
-
+  if (arr->capacity <= arr->count) {
+    resize_array(arr);
+  }
   // Move every element after the insert index to the right one position
-
+  for (int i = arr->count; i >= 0; i--) {
+    arr->elements[i + 1] = arr->elements[i];
+  }
   // Copy the element (hint: use `strdup()`) and add it to the array
-
+  char *element_copy = strdup(element);
+  arr->elements[index] = element_copy;
   // Increment count by 1
+  arr->count++;
 
 }
 
 /*****
  * Append an element to the end of the array
  *****/
-void arr_append(Array *arr, char *element) {
+void arr_append(Array *arr, char *element) 
+{
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  if (arr->capacity <= arr->count) {
+    fprintf(stderr, "Yo, error!");
+    return;
+  }
 
+  //otherwise, let's copy elements and append to the back of the array
+  //strdup is recommended => hidden malloc inside here
+  char *element_copy = strdup(element);
   // Copy the element and add it to the end of the array
-
+  arr->elements[arr->count] = element_copy;
   // Increment count by 1
+  arr->count++;
 
 }
+
 
 /*****
  * Remove the first occurence of the given element from the array,
@@ -128,14 +153,25 @@ void arr_append(Array *arr, char *element) {
  *
  * Throw an error if the value is not found.
  *****/
-void arr_remove(Array *arr, char *element) {
+void arr_remove(Array *arr, char *element) 
+{
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
+  for (int i = 0; i < arr->count; i++) {
+    if (strcmp(arr->elements[i], element) == 0) {
 
-  // Shift over every element after the removed element to the left one position
+      free(arr->elements[i]);
+      for (int x = 1; x < arr->count - i; x++) {
 
+        // Shift over every element after the removed element to the left one position
+        arr->elements[x] = arr->elements[x + 1];
+
+      }
+    }
+  }
   // Decrement count by 1
+  arr->count--;
 
 }
 
