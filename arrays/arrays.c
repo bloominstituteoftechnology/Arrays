@@ -21,11 +21,13 @@ typedef struct Array {
  *****/
 Array *create_array (int capacity) {
   // Allocate memory for the Array struct
-
+  Array *Array = malloc(sizeof(struct Array));  
   // Set initial values for capacity and count
-
+  Array->capacity = capacity;
+  Array->count = -1;
   // Allocate memory for elements
-
+  Array->elements = malloc(capacity);
+  return Array;
 }
 
 
@@ -35,6 +37,9 @@ Array *create_array (int capacity) {
 void destroy_array(Array *arr) {
 
   // Free all elements
+
+  free(arr->elements);
+  free(arr);
 
   // Free array
 
@@ -47,8 +52,13 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
+  arr->capacity *= 2;
 
   // Copy elements into the new storage
+  arr->elements = realloc(arr->elements, arr->capacity);
+
+  free(*arr->elements);
+  return;
 
   // Free the old elements array (but NOT the strings they point to)
 
@@ -74,6 +84,7 @@ char *arr_read(Array *arr, int index) {
   // Throw an error if the index is greater or equal to than the current count
 
   // Otherwise, return the element at the given index
+  return arr->elements[index];
 }
 
 
@@ -87,6 +98,15 @@ void arr_insert(Array *arr, char *element, int index) {
   // Throw an error if the index is greater than the current count
 
   // Resize the array if the number of elements is over capacity
+  if(arr->count + 1 > arr->capacity){
+    resize_array(arr);
+  }
+  
+  for(int i = index; i < arr->count; i++){  
+    arr->elements[i+1] = arr->elements[i];
+  }
+  arr->elements[index] = element;
+  ++arr->count;
 
   // Move every element after the insert index to the right one position
 
@@ -100,6 +120,11 @@ void arr_insert(Array *arr, char *element, int index) {
  * Append an element to the end of the array
  *****/
 void arr_append(Array *arr, char *element) {
+  if(arr->count + 1 > arr->capacity){
+    resize_array(arr);
+  }
+
+  arr->elements[++arr->count] = element;
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
@@ -120,6 +145,18 @@ void arr_remove(Array *arr, char *element) {
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
+  int index;
+  for(int i = 0; i < arr->count; i++){
+    if(arr->elements[i] == element){
+      index = i;
+      arr->elements[i] = NULL;
+      free(arr->elements[i]);
+    }    
+  }
+  for(int i = index; i < arr->count; i++){
+      arr->elements[i] = arr->elements[i+1];
+    }
+  --arr->count;
 
   // Shift over every element after the removed element to the left one position
 
