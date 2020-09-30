@@ -35,7 +35,7 @@ Resizing involves allocating a block of memory with double the storage, copying 
 
 ### Stretch Goals
 
-1. Reimplement your Dynamic Array using a linked list instead of a contiguous array (or if you used a linked list in the first place, use a contiguous array). How does the time complexity of each operation change as a result of swapping out the underlying data structure?
+1. Re-implement your Dynamic Array using a linked list instead of a contiguous array (or if you used a linked list in the first place, use a contiguous array). How does the time complexity of each operation change as a result of swapping out the underlying data structure?
 
 2. How would we go about making our dynamic array be able to handle multiple types in a single instance? Hint: we'll probably want to make use of [C unions](https://www.tutorialspoint.com/cprogramming/c_unions.htm) for this. Think about how you might do this and then implement it!
 
